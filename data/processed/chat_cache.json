@@ -1,0 +1,2874 @@
+{
+  "BUG-002": [
+    {
+      "user": "laila",
+      "text": "strict json parsing isn't failing on lone surrogates like high surrogate escape sequences"
+    },
+    {
+      "user": "omar",
+      "text": "wait really? strict mode should definitely reject unpaired surrogates per the json spec"
+    },
+    {
+      "user": "laila",
+      "text": "yeah it passes them straight through without verifying whether the following char is a matching low surrogate"
+    },
+    {
+      "user": "karim",
+      "text": "good catch, i just pushed PR #3116 to validate surrogate pairs properly in strict mode"
+    }
+  ],
+  "BUG-004": [
+    {
+      "user": "rana",
+      "text": "hey is nextInt supposed to accept non-ascii numerals? someone passed full-width digits and it parsed"
+    },
+    {
+      "user": "salma",
+      "text": "json spec requires ascii digits only, where did this happen?"
+    },
+    {
+      "user": "rana",
+      "text": "in the tree reader when calling nextInt and nextLong on primitive elements"
+    },
+    {
+      "user": "youssef",
+      "text": "standard java integer parsing allows unicode digits by default unless we specifically check for ascii"
+    },
+    {
+      "user": "rana",
+      "text": "makes sense, opened PR #3063 to reject any non-ascii digit characters"
+    }
+  ],
+  "BUG-005": [
+    {
+      "user": "mona",
+      "text": "running into a weird bug where two json primitives are equal but break when used in a hash set"
+    },
+    {
+      "user": "hassan",
+      "text": "let me guess, numeric primitives with different number types?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah 1 as a long and 1.0 as a double return true on equals but their hash codes differ"
+    },
+    {
+      "user": "hassan",
+      "text": "that violates the general hashcode contract, map lookups will definitely fail"
+    },
+    {
+      "user": "mona",
+      "text": "submitting PR #3059 to align hashcode with how equals normalizes numbers"
+    }
+  ],
+  "BUG-006": [
+    {
+      "user": "omar",
+      "text": "has anyone noticed uri roundtripping altering characters for non-ascii uris?"
+    },
+    {
+      "user": "laila",
+      "text": "what is the uri adapter doing during serialization?"
+    },
+    {
+      "user": "karim",
+      "text": "checking TypeAdapters right now and it calls toASCIIString instead of toString"
+    },
+    {
+      "user": "omar",
+      "text": "so it percent-encodes or punycodes characters that were originally raw unicode"
+    },
+    {
+      "user": "laila",
+      "text": "yeah that breaks identity, i will write a fix to preserve original string representations"
+    }
+  ],
+  "BUG-007": [
+    {
+      "user": "salma",
+      "text": "got a crash deserializing an atomic long array containing a null element"
+    },
+    {
+      "user": "rana",
+      "text": "does it throw an unexpected null pointer exception?"
+    },
+    {
+      "user": "salma",
+      "text": "yes direct npe instead of our usual json syntax exception"
+    },
+    {
+      "user": "rana",
+      "text": "looking at TypeAdapters for atomic long array, it unboxes the parsed long value directly"
+    },
+    {
+      "user": "salma",
+      "text": "unboxing null would cause that npe immediately, i will update it to throw json syntax exception"
+    }
+  ],
+  "BUG-008": [
+    {
+      "user": "youssef",
+      "text": "saw an issue where peekNumber rejects certain valid large numbers with trailing zeros"
+    },
+    {
+      "user": "hassan",
+      "text": "like numbers above two to the sixty fourth power?"
+    },
+    {
+      "user": "mona",
+      "text": "in JsonReader the peekNumber logic tries to track overflow on digit shifts but trips on zero"
+    },
+    {
+      "user": "youssef",
+      "text": "right, it treats the zero digit as an overflow error instead of letting it parse as an unquoted string number"
+    },
+    {
+      "user": "mona",
+      "text": "i can fix the overflow check condition so it handles those numerals correctly"
+    }
+  ],
+  "BUG-009": [
+    {
+      "user": "karim",
+      "text": "we had an out of memory crash processing a proto json message with an unusually high field number"
+    },
+    {
+      "user": "laila",
+      "text": "was the payload itself large?"
+    },
+    {
+      "user": "karim",
+      "text": "tiny payload, just a single field tag that was huge"
+    },
+    {
+      "user": "laila",
+      "text": "in LegacyProtoTypeAdapterFactory it indexes bit fields directly by field number"
+    },
+    {
+      "user": "karim",
+      "text": "so it attempts to allocate massive arrays for crazy indexes, i will cap the bitfield index to avoid the memory blowup"
+    }
+  ],
+  "BUG-011": [
+    {
+      "user": "omar",
+      "text": "duplicate key detection seems broken when the first value in the map is null"
+    },
+    {
+      "user": "salma",
+      "text": "it should reject duplicate keys when complex keys are enabled, right?"
+    },
+    {
+      "user": "omar",
+      "text": "it does unless the existing value is null, then it just overwrites it without throwing"
+    },
+    {
+      "user": "rana",
+      "text": "inside MapTypeAdapterFactory it checks if map.put returned null to detect duplicates"
+    },
+    {
+      "user": "salma",
+      "text": "ah classic map mistake, if the old value was null it thinks the key was absent. i will fix it"
+    }
+  ],
+  "BUG-018": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone seeing weird behavior when deserializing into custom sets and maps?"
+    },
+    {
+      "user": "omar",
+      "text": "what kind of behavior? are values missing?"
+    },
+    {
+      "user": "rana",
+      "text": "no, the deserializer is giving back standard hash tables even when the field requested a sorted variant or a specialized collection."
+    },
+    {
+      "user": "salma",
+      "text": "oh wait, i ran into that. the internal constructor logic has fallbacks that end up returning raw mismatching instances instead of checking if the requested interface is actually compatible with the concrete type it creates."
+    },
+    {
+      "user": "omar",
+      "text": "that explains why we were getting type cast errors downstream."
+    },
+    {
+      "user": "salma",
+      "text": "yeah, i can put together a fix so it selects the right container type properly."
+    }
+  ],
+  "BUG-019": [
+    {
+      "user": "youssef",
+      "text": "heads up, when i configure multiple custom graph serializers, the second one keeps getting delegated to the previous creator instead of its own."
+    },
+    {
+      "user": "laila",
+      "text": "wait, really? so registering a second type just reuses the creator from before?"
+    },
+    {
+      "user": "youssef",
+      "text": "exactly, the output for the second structure ends up completely wrong because it calls into the previous type handler."
+    },
+    {
+      "user": "karim",
+      "text": "looking at the chaining logic now... yeah, the builder registration captures the existing delegate reference incorrectly and delegates backwards."
+    },
+    {
+      "user": "laila",
+      "text": "good catch. i can take this and fix the registration chaining so each one keeps its own creator."
+    }
+  ],
+  "BUG-021": [
+    {
+      "user": "laila",
+      "text": "our service froze during startup today under heavy load. thread dump shows two worker threads stuck waiting on each other."
+    },
+    {
+      "user": "karim",
+      "text": "is it a synchronized block or static init?"
+    },
+    {
+      "user": "laila",
+      "text": "looks like a class loading deadlock. one thread initialized the core json serializer while the other accessed static adapter fields."
+    },
+    {
+      "user": "youssef",
+      "text": "ah classic, circular class initialization dependencies between the main serializer and the adapters."
+    },
+    {
+      "user": "karim",
+      "text": "i see where the cycle is triggered. i'll open PR #2740 to break the static dependency and avoid the deadlock."
+    }
+  ],
+  "BUG-023": [
+    {
+      "user": "mona",
+      "text": "seeing a strange bug with generic type resolution on inner classes. the type arguments on the original type seem to get modified."
+    },
+    {
+      "user": "hassan",
+      "text": "wait, modified in place? are they not immutable?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, when resolving a parameterized type whose enclosing owner changes, the resolved types seem to bleed back into subsequent lookups."
+    },
+    {
+      "user": "hassan",
+      "text": "let me check the resolver. wow, when owner changes, it passes the existing array directly instead of cloning it."
+    },
+    {
+      "user": "mona",
+      "text": "that's definitely it. i'll push a fix under PR #2706 shortly."
+    }
+  ],
+  "BUG-026": [
+    {
+      "user": "salma",
+      "text": "quick question, does setting the date format with default date style actually work for you guys?"
+    },
+    {
+      "user": "omar",
+      "text": "i tried using it yesterday with default style and it seemed to ignore my setting and fallback to full timestamp string."
+    },
+    {
+      "user": "salma",
+      "text": "yeah! the builder method that takes an integer style checks against default and drops it completely if only one part is specified."
+    },
+    {
+      "user": "omar",
+      "text": "that's confusing, plus those integer constants are super error-prone anyway."
+    },
+    {
+      "user": "salma",
+      "text": "totally. i'll put up PR #2556 to honor default styles properly and deprecate the old integer-based method."
+    }
+  ],
+  "BUG-027": [
+    {
+      "user": "rana",
+      "text": "our pipeline threw a null pointer exception while comparing type variables in generic methods."
+    },
+    {
+      "user": "youssef",
+      "text": "which method was comparing them?"
+    },
+    {
+      "user": "rana",
+      "text": "it blew up inside $Gson$Types when checking if two type variables are equal."
+    },
+    {
+      "user": "youssef",
+      "text": "let me inspect that. it assumes the generic declaration is always a class, so calling getDeclaringClass on a method declaration returns null or causes a failure."
+    },
+    {
+      "user": "rana",
+      "text": "ah, generic declarations can be methods or constructors too!"
+    },
+    {
+      "user": "youssef",
+      "text": "exactly. i will handle non-class declarations properly so it stops crashing."
+    }
+  ],
+  "BUG-029": [
+    {
+      "user": "laila",
+      "text": "we have a weird date parsing issue where dates suddenly shift timezones after a few requests."
+    },
+    {
+      "user": "karim",
+      "text": "is the formatter shared across threads?"
+    },
+    {
+      "user": "laila",
+      "text": "yes, but it happens even sequentially on one thread. once a date with a specific timezone is parsed, every subsequent date uses that timezone!"
+    },
+    {
+      "user": "karim",
+      "text": "wait, inside DefaultDateTypeAdapter it modifies the timezone on the underlying date format but never restores the original timezone afterwards."
+    },
+    {
+      "user": "laila",
+      "text": "wow, that's why all following dates got corrupted. i'll update it to restore the previous timezone in a finally block."
+    }
+  ],
+  "BUG-032": [
+    {
+      "user": "mona",
+      "text": "shouldn't calling name() throw an error if you're not inside an object?"
+    },
+    {
+      "user": "omar",
+      "text": "definitely, calling name inside an array or top level is invalid json. does it allow it?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, with JsonTreeWriter it just accepts the name call and produces corrupted tree output instead of throwing an illegal state exception."
+    },
+    {
+      "user": "omar",
+      "text": "ah, standard writer enforces state checks but the tree writer implementation missed that validation."
+    },
+    {
+      "user": "mona",
+      "text": "i'll add the proper state check to make sure it throws when outside an object."
+    }
+  ],
+  "BUG-033": [
+    {
+      "user": "salma",
+      "text": "hey team, getting an illegalargumentexception when calling getDelegateAdapter on a type annotated with an adapter annotation. it just blows up with adapter not found"
+    },
+    {
+      "user": "youssef",
+      "text": "wait, is this happening with custom factory delegation or standard Gson setup?"
+    },
+    {
+      "user": "salma",
+      "text": "standard Gson instance, just using the annotation on a class and then trying to fetch the delegate inside its factory"
+    },
+    {
+      "user": "youssef",
+      "text": "ah i see the issue. the factory created from the annotation isn't passing the right skip-past factory reference, so it recurses and fails to find the next delegate"
+    },
+    {
+      "user": "salma",
+      "text": "yeah exactly, it cannot find delegate adapter for that type and throws"
+    },
+    {
+      "user": "youssef",
+      "text": "let me push a fix for the delegate lookup logic"
+    }
+  ],
+  "BUG-038": [
+    {
+      "user": "karim",
+      "text": "is anyone seeing unexpected syntax errors when streaming large payload chunks?"
+    },
+    {
+      "user": "mona",
+      "text": "what kind of error are you seeing?"
+    },
+    {
+      "user": "karim",
+      "text": "malformed json exception saying unexpected character, but the json is completely valid"
+    },
+    {
+      "user": "mona",
+      "text": "how are you reading it?"
+    },
+    {
+      "user": "karim",
+      "text": "just using JsonReader with a buffered input reader. happens right at the buffer boundary when parsing unquoted strings"
+    },
+    {
+      "user": "mona",
+      "text": "oh right, JsonReader has an issue where filling the buffer in the middle of a token loses track of the state or misreads the char buffer"
+    },
+    {
+      "user": "karim",
+      "text": "yeah that explains why it only repros on big payloads. i will write a test and fix it"
+    }
+  ],
+  "BUG-043": [
+    {
+      "user": "laila",
+      "text": "hey, our equality checks for parsed numeric elements are failing in unit tests"
+    },
+    {
+      "user": "omar",
+      "text": "what values are failing?"
+    },
+    {
+      "user": "laila",
+      "text": "when we compare an arbitrary-precision integer element against an identical one, equals returns false"
+    },
+    {
+      "user": "omar",
+      "text": "wait really? even if they hold the exact same value?"
+    },
+    {
+      "user": "laila",
+      "text": "yeah, the equality check tries to cast to standard integer types or compares as floating point, losing precision"
+    },
+    {
+      "user": "omar",
+      "text": "ah, it doesn't handle the arbitrary precision branch in the equality comparison"
+    },
+    {
+      "user": "laila",
+      "text": "exactly. i can take care of patching the equality method to compare them accurately"
+    }
+  ],
+  "BUG-044": [
+    {
+      "user": "rana",
+      "text": "we are seeing intermittent crashes in production when multiple threads serialize models with self-referencing fields"
+    },
+    {
+      "user": "hassan",
+      "text": "what kind of crash? stack overflow or null pointer?"
+    },
+    {
+      "user": "rana",
+      "text": "null pointer exception. it only happens under heavy concurrent load on startup"
+    },
+    {
+      "user": "hassan",
+      "text": "interesting, cyclic types use a deferred placeholder while building the serializer, right?"
+    },
+    {
+      "user": "rana",
+      "text": "yes, and that map or lookup cache seems to leak across threads or get accessed before it is bound"
+    },
+    {
+      "user": "hassan",
+      "text": "so one thread grabs another thread's uninitialized placeholder and calls it"
+    },
+    {
+      "user": "rana",
+      "text": "exactly. i will rework the thread safety around cyclical dependency resolution"
+    }
+  ],
+  "BUG-047": [
+    {
+      "user": "youssef",
+      "text": "why is runtime polymorphism not kicking in for tree-based serializer wrappers?"
+    },
+    {
+      "user": "rana",
+      "text": "what do you mean?"
+    },
+    {
+      "user": "youssef",
+      "text": "if a field is declared as a base type, it serializes using the base serializer even when the actual instance is a subtype, whenever a tree adapter or future adapter is involved"
+    },
+    {
+      "user": "rana",
+      "text": "oh, the runtime wrapper check checks if the delegate is reflective, but it doesn't unwrap future or tree adapters to see that they wrap reflective adapters underneath"
+    },
+    {
+      "user": "youssef",
+      "text": "right, so it thinks it shouldn't override the runtime type!"
+    },
+    {
+      "user": "rana",
+      "text": "someone started looking at this in PR #1787"
+    },
+    {
+      "user": "youssef",
+      "text": "awesome, i will finish that up and get the checks unwrapping correctly"
+    }
+  ],
+  "BUG-050": [
+    {
+      "user": "mona",
+      "text": "why is our custom writer throwing an assertion error during serialization?"
+    },
+    {
+      "user": "karim",
+      "text": "wait, an assertion error? not an io exception?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, our underlying stream throws a custom io exception, but toJson wraps it in an assertion error thinking it can never happen with a string writer"
+    },
+    {
+      "user": "karim",
+      "text": "oh wow, it catches io exception and literally rethrows assertion error assuming it is impossible"
+    },
+    {
+      "user": "mona",
+      "text": "but custom adapters can explicitly throw io exceptions from their write methods!"
+    },
+    {
+      "user": "karim",
+      "text": "take a look at PR #2172, i think there was discussion on wrapping in jsonioexception instead"
+    },
+    {
+      "user": "mona",
+      "text": "perfect, i will fix it so it wraps in jsonioexception instead of blowing up with assertion error"
+    }
+  ],
+  "BUG-051": [
+    {
+      "user": "salma",
+      "text": "why is parsing nan or infinity throwing numberformatexception instead of malformedjsonexception when reading an in-memory tree?"
+    },
+    {
+      "user": "laila",
+      "text": "wait, the stream reader throws malformedjsonexception for non-finite doubles when lenient mode is off, right?"
+    },
+    {
+      "user": "salma",
+      "text": "yeah exactly, but tree reader just lets numberformatexception bubble up instead of malformedjsonexception"
+    },
+    {
+      "user": "laila",
+      "text": "that breaks consistency for anyone handling parse exceptions"
+    },
+    {
+      "user": "salma",
+      "text": "i will submit PR #1782 to align the exception types across readers"
+    },
+    {
+      "user": "laila",
+      "text": "sounds good, thanks for fixing!"
+    }
+  ],
+  "BUG-052": [
+    {
+      "user": "omar",
+      "text": "hey, has anyone noticed nullSafe wrapping behaving weirdly when called multiple times?"
+    },
+    {
+      "user": "rana",
+      "text": "in what way?"
+    },
+    {
+      "user": "omar",
+      "text": "if an adapter is already null-safe and you call nullSafe on it, or if it handles nulls internally, it delegates improperly or creates unnecessary wrappers"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, there were cases where nullSafe was applied redundantly or did not check if the adapter already handled nulls, leading to wrong delegation behavior"
+    },
+    {
+      "user": "omar",
+      "text": "that is tracked in issue #1553 i think"
+    },
+    {
+      "user": "rana",
+      "text": "let me grab that and make sure nullSafe is idempotent and handles existing null-safety properly"
+    }
+  ],
+  "BUG-053": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone seeing weird output when serializing objects lately?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, getting some unexpected results with CharSequence types. it's totally breaking our api responses."
+    },
+    {
+      "user": "salma",
+      "text": "checked the repo, looks like issue #1702 covers exactly this behavior."
+    },
+    {
+      "user": "rana",
+      "text": "oh wow, good catch. looks like it's failing to call the string representation correctly."
+    },
+    {
+      "user": "omar",
+      "text": "i see it now. i'll take a look and get a patch ready."
+    }
+  ],
+  "BUG-054": [
+    {
+      "user": "youssef",
+      "text": "anyone else having trouble with polymorphic serialization?"
+    },
+    {
+      "user": "laila",
+      "text": "yes! the output format is completely wrong for our nested objects."
+    },
+    {
+      "user": "karim",
+      "text": "i think the issue is inside RuntimeTypeAdapterFactory, it seems to be dropping the type labels."
+    },
+    {
+      "user": "youssef",
+      "text": "that explains it. i'll dig into that logic and see why it's misbehaving."
+    },
+    {
+      "user": "laila",
+      "text": "let me know if you need help testing the fix."
+    }
+  ],
+  "BUG-055": [
+    {
+      "user": "mona",
+      "text": "hey guys, why is the date parser failing on valid inputs?"
+    },
+    {
+      "user": "hassan",
+      "text": "not sure, what does the stack trace say?"
+    },
+    {
+      "user": "mona",
+      "text": "it seems like ISO8601Utils is rejecting some of our standard date strings now."
+    },
+    {
+      "user": "hassan",
+      "text": "ah, that might be a regression in the validation logic."
+    },
+    {
+      "user": "mona",
+      "text": "i'm on it, i'll prepare a fix for the parsing error."
+    }
+  ],
+  "BUG-057": [
+    {
+      "user": "rana",
+      "text": "getting an infinite loop in the parser, anyone else?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, looks like hasNext is returning true even when the document is empty."
+    },
+    {
+      "user": "salma",
+      "text": "i think it's related to how JsonTreeReader handles the end of the stream."
+    },
+    {
+      "user": "rana",
+      "text": "that makes sense. i'll double check the termination condition."
+    },
+    {
+      "user": "omar",
+      "text": "great, i'll review your pr once you push it."
+    }
+  ],
+  "BUG-058": [
+    {
+      "user": "youssef",
+      "text": "hey, the app is dying with a weird index error when processing lists."
+    },
+    {
+      "user": "laila",
+      "text": "i saw that too, it seems to happen whenever the list is empty."
+    },
+    {
+      "user": "karim",
+      "text": "it looks like we are trying to access a position that doesn't exist."
+    },
+    {
+      "user": "youssef",
+      "text": "exactly, the bounds check is definitely missing."
+    },
+    {
+      "user": "karim",
+      "text": "i'll go ahead and add a proper check to prevent that crash."
+    }
+  ],
+  "BUG-059": [
+    {
+      "user": "mona",
+      "text": "our backend keeps crashing when trying to serialize private data structures."
+    },
+    {
+      "user": "hassan",
+      "text": "is it failing because of the constructor visibility?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, it seems to throw a hard error instead of trying to work around it."
+    },
+    {
+      "user": "hassan",
+      "text": "that's annoying. i'll look into adding a fallback for inaccessible constructors."
+    },
+    {
+      "user": "mona",
+      "text": "thanks, that would save us a lot of trouble."
+    }
+  ],
+  "BUG-061": [
+    {
+      "user": "rana",
+      "text": "is anyone else noticing that the writer settings are being ignored?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, specifically the lenient and html-safe flags."
+    },
+    {
+      "user": "salma",
+      "text": "i was just looking at PR #1989 and it seems like the configuration isn't propagating correctly."
+    },
+    {
+      "user": "rana",
+      "text": "good find. i'll try to fix the propagation logic this afternoon."
+    },
+    {
+      "user": "omar",
+      "text": "sounds good, let me know if you need eyes on the change."
+    }
+  ],
+  "BUG-063": [
+    {
+      "user": "youssef",
+      "text": "hey, the field naming policy is acting super weird with special characters."
+    },
+    {
+      "user": "laila",
+      "text": "yeah, it's uppercasing things that aren't even letters."
+    },
+    {
+      "user": "karim",
+      "text": "i saw this mentioned in PR #2004 earlier today."
+    },
+    {
+      "user": "youssef",
+      "text": "oh, i missed that. i'll check the logic to make sure we only target actual letters."
+    },
+    {
+      "user": "laila",
+      "text": "perfect, thanks for handling that."
+    }
+  ],
+  "BUG-064": [
+    {
+      "user": "rana",
+      "text": "hey, seeing some random index out of bounds crashes in the reader during deep nesting"
+    },
+    {
+      "user": "omar",
+      "text": "oh that sounds like the getPath method isn't checking bounds properly"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, looks like it's trying to access an index that doesn't exist when the tree is deep"
+    },
+    {
+      "user": "omar",
+      "text": "i think i have a fix for that, check out PR #2001 when you get a chance"
+    },
+    {
+      "user": "rana",
+      "text": "nice, that looks exactly like what we need, thanks"
+    }
+  ],
+  "BUG-065": [
+    {
+      "user": "salma",
+      "text": "security scan flagged a potential deserialization vulnerability in our internal classes"
+    },
+    {
+      "user": "youssef",
+      "text": "that's not good, which part of the stack is triggering it?"
+    },
+    {
+      "user": "salma",
+      "text": "looks like the way we handle LazilyParsedNumber is being exploited"
+    },
+    {
+      "user": "youssef",
+      "text": "ah, we should restrict that to prevent arbitrary class loading"
+    },
+    {
+      "user": "salma",
+      "text": "agreed, i'll put together a patch to block those classes during deserialization"
+    }
+  ],
+  "BUG-066": [
+    {
+      "user": "laila",
+      "text": "anyone notice our output format for longs is inconsistent lately?"
+    },
+    {
+      "user": "karim",
+      "text": "yeah, it seems like the LongSerializationPolicy is behaving weirdly compared to the legacy version"
+    },
+    {
+      "user": "laila",
+      "text": "exactly, it's ignoring nulls in some cases where it shouldn't"
+    },
+    {
+      "user": "karim",
+      "text": "i'll take a look at the serialization logic and see why it deviates"
+    },
+    {
+      "user": "laila",
+      "text": "thanks, appreciate it"
+    }
+  ],
+  "BUG-068": [
+    {
+      "user": "mona",
+      "text": "we are seeing crashes when running on restricted environments"
+    },
+    {
+      "user": "hassan",
+      "text": "is it failing to reflect into private fields?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, the UnsafeReflectionAccessor is throwing exceptions when it can't get access"
+    },
+    {
+      "user": "hassan",
+      "text": "that makes sense, we probably need a better fallback for when the security manager gets in the way"
+    },
+    {
+      "user": "mona",
+      "text": "i'll look into a more robust fallback strategy today"
+    }
+  ],
+  "BUG-071": [
+    {
+      "user": "rana",
+      "text": "getting incorrect types back when dealing with recursive generics"
+    },
+    {
+      "user": "omar",
+      "text": "is the type resolution getting stuck in a loop?"
+    },
+    {
+      "user": "rana",
+      "text": "looks like it, the way $Gson$Types handles those variables seems to be failing"
+    },
+    {
+      "user": "omar",
+      "text": "we definitely need to add some protection against infinite recursion there"
+    },
+    {
+      "user": "rana",
+      "text": "i'm on it, will push a fix shortly"
+    }
+  ],
+  "BUG-073": [
+    {
+      "user": "salma",
+      "text": "getting reports about crashes when parsing specific date formats"
+    },
+    {
+      "user": "youssef",
+      "text": "is it related to the DefaultDateTypeAdapter?"
+    },
+    {
+      "user": "salma",
+      "text": "yeah, it seems to trip up on some edge case inputs"
+    },
+    {
+      "user": "youssef",
+      "text": "i think i know the issue, it isn't handling nulls or empty strings gracefully there"
+    },
+    {
+      "user": "salma",
+      "text": "cool, let me know if you want me to help verify the fix"
+    }
+  ],
+  "BUG-075": [
+    {
+      "user": "laila",
+      "text": "date parsing is completely broken since we updated the runtime"
+    },
+    {
+      "user": "karim",
+      "text": "is it failing to recognize the format?"
+    },
+    {
+      "user": "laila",
+      "text": "yep, it just throws an exception instead of parsing the string"
+    },
+    {
+      "user": "karim",
+      "text": "sounds like the standard library changed how it formats dates"
+    },
+    {
+      "user": "laila",
+      "text": "i'll dig into the parsing logic and try to adjust for the new behavior"
+    }
+  ],
+  "BUG-078": [
+    {
+      "user": "mona",
+      "text": "i am getting the wrong type back when deserializing a collection with wildcards"
+    },
+    {
+      "user": "hassan",
+      "text": "is it returning an object instead of the specific type?"
+    },
+    {
+      "user": "mona",
+      "text": "exactly, it's losing the element type information"
+    },
+    {
+      "user": "hassan",
+      "text": "seems like the resolver isn't correctly unwrapping the wildcard"
+    },
+    {
+      "user": "mona",
+      "text": "i'll start working on a patch for the resolver"
+    }
+  ],
+  "BUG-079": [
+    {
+      "user": "rana",
+      "text": "hey, seeing a weird crash in the date adapter, getting nulls where i don't expect them."
+    },
+    {
+      "user": "omar",
+      "text": "is it happening for all date formats or just the default one?"
+    },
+    {
+      "user": "rana",
+      "text": "looks like it's the default type adapter failing to handle primitives correctly."
+    },
+    {
+      "user": "salma",
+      "text": "ah i think i see the issue, i'm opening PR #1100 to address the contract mismatch."
+    },
+    {
+      "user": "rana",
+      "text": "awesome, thanks salma!"
+    }
+  ],
+  "BUG-080": [
+    {
+      "user": "youssef",
+      "text": "anyone else getting a stackoverflow error during type resolution?"
+    },
+    {
+      "user": "laila",
+      "text": "yeah, i saw that earlier. it seems to happen when there's recursion in the type variables."
+    },
+    {
+      "user": "youssef",
+      "text": "exactly, the resolver just spins forever."
+    },
+    {
+      "user": "karim",
+      "text": "i've got a fix ready in PR #1128, should stop the infinite loop."
+    },
+    {
+      "user": "youssef",
+      "text": "sweet, let me know when it's merged."
+    }
+  ],
+  "BUG-082": [
+    {
+      "user": "mona",
+      "text": "getting a random npe in the post construct adapter factory, anyone know why?"
+    },
+    {
+      "user": "hassan",
+      "text": "that sounds like the factory isn't handling null instances properly."
+    },
+    {
+      "user": "mona",
+      "text": "yeah, it's blowing up when the instance is null during reflection."
+    },
+    {
+      "user": "hassan",
+      "text": "i'll put up PR #1103 to add a null check there."
+    },
+    {
+      "user": "mona",
+      "text": "thanks hassan, appreciate it."
+    }
+  ],
+  "BUG-083": [
+    {
+      "user": "rana",
+      "text": "hey, we have a major crash on recursive types, hitting a stack overflow."
+    },
+    {
+      "user": "omar",
+      "text": "is this related to the issues we saw in issue #440?"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, the type bounds are creating a loop."
+    },
+    {
+      "user": "salma",
+      "text": "i'm going to collapse those chains and submit PR #1075 to fix it."
+    },
+    {
+      "user": "rana",
+      "text": "perfect, thanks salma."
+    }
+  ],
+  "BUG-084": [
+    {
+      "user": "youssef",
+      "text": "we are having issues parsing negative zero values in the library."
+    },
+    {
+      "user": "laila",
+      "text": "is it failing during the read operation?"
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, the JsonReader treats it as an invalid token sometimes."
+    },
+    {
+      "user": "karim",
+      "text": "i see the logic error, i'll take care of the fix today."
+    },
+    {
+      "user": "laila",
+      "text": "sounds good, thanks karim."
+    }
+  ],
+  "BUG-086": [
+    {
+      "user": "mona",
+      "text": "getting an array index out of bounds exception when skipping values."
+    },
+    {
+      "user": "hassan",
+      "text": "are you using the JsonTreeReader for that?"
+    },
+    {
+      "user": "mona",
+      "text": "yep, it seems to be miscalculating the index on nested nodes."
+    },
+    {
+      "user": "hassan",
+      "text": "i'll look into it and push a fix for the skipping logic."
+    },
+    {
+      "user": "mona",
+      "text": "thanks, let me know when it's ready."
+    }
+  ],
+  "BUG-088": [
+    {
+      "user": "rana",
+      "text": "we're failing to handle explicit nulls in the json stream."
+    },
+    {
+      "user": "omar",
+      "text": "is it breaking the ProtoTypeAdapter?"
+    },
+    {
+      "user": "rana",
+      "text": "yes, it just ignores the null instead of setting the field."
+    },
+    {
+      "user": "omar",
+      "text": "got it, i'll write a patch to handle those properly."
+    },
+    {
+      "user": "rana",
+      "text": "cool, thanks omar."
+    }
+  ],
+  "BUG-089": [
+    {
+      "user": "youssef",
+      "text": "getting crashes when trying to instantiate specific classes."
+    },
+    {
+      "user": "laila",
+      "text": "what kind of classes? maybe the UnsafeAllocator is failing?"
+    },
+    {
+      "user": "youssef",
+      "text": "exactly, the modifiers aren't being checked before allocation."
+    },
+    {
+      "user": "laila",
+      "text": "i'll add a check to throw an unsupported operation exception instead."
+    },
+    {
+      "user": "youssef",
+      "text": "that would be a big help, thanks."
+    }
+  ],
+  "BUG-090": [
+    {
+      "user": "rana",
+      "text": "hey, the service is blowing up with unhandled exceptions during serialization"
+    },
+    {
+      "user": "omar",
+      "text": "is it happening on all requests?"
+    },
+    {
+      "user": "rana",
+      "text": "no, just when the stream is interrupted unexpectedly"
+    },
+    {
+      "user": "hassan",
+      "text": "looks like we are throwing the wrong exception type so the handler doesn't catch it"
+    },
+    {
+      "user": "omar",
+      "text": "ah, good catch. i will swap it out for the correct exception type now"
+    }
+  ],
+  "BUG-091": [
+    {
+      "user": "salma",
+      "text": "we are seeing a sudden spike in crashes after the latest update"
+    },
+    {
+      "user": "youssef",
+      "text": "any stack trace?"
+    },
+    {
+      "user": "salma",
+      "text": "it seems like we are hitting a null value where an object was expected during initialization"
+    },
+    {
+      "user": "laila",
+      "text": "i think i found it, the factory is returning nothing instead of an instance"
+    },
+    {
+      "user": "youssef",
+      "text": "that explains the crash. i'll patch it to handle the empty return value"
+    }
+  ],
+  "BUG-093": [
+    {
+      "user": "karim",
+      "text": "hey, the output from the api is completely wrong for the nested structures"
+    },
+    {
+      "user": "mona",
+      "text": "are the custom TypeAdapters configured correctly?"
+    },
+    {
+      "user": "karim",
+      "text": "they seem fine, but the hierarchy isn't being resolved as expected"
+    },
+    {
+      "user": "hassan",
+      "text": "i suspect we are missing a runtime check on the hierarchy"
+    },
+    {
+      "user": "mona",
+      "text": "that makes sense. i'll implement the check and push the fix"
+    }
+  ],
+  "BUG-094": [
+    {
+      "user": "rana",
+      "text": "our tests are failing because equality checks are returning false for identical numbers"
+    },
+    {
+      "user": "omar",
+      "text": "that sounds like an issue with LazilyParsedNumber"
+    },
+    {
+      "user": "rana",
+      "text": "exactly, the object comparison is failing even when the values are the same"
+    },
+    {
+      "user": "omar",
+      "text": "i'll add the missing comparison methods to fix the logic"
+    },
+    {
+      "user": "rana",
+      "text": "thanks, that should clear up the test failures"
+    }
+  ],
+  "BUG-095": [
+    {
+      "user": "salma",
+      "text": "the app is crashing whenever a null value hits our polymorphic setup"
+    },
+    {
+      "user": "youssef",
+      "text": "is this related to issue #680?"
+    },
+    {
+      "user": "salma",
+      "text": "yes, it seems so"
+    },
+    {
+      "user": "laila",
+      "text": "i'll take a look at making the factory null-safe to prevent the crash"
+    },
+    {
+      "user": "youssef",
+      "text": "awesome, let me know when you have a pr ready"
+    }
+  ],
+  "BUG-096": [
+    {
+      "user": "karim",
+      "text": "i'm seeing duplicate nulls in the output array"
+    },
+    {
+      "user": "mona",
+      "text": "are you sure it's not just how you're constructing the JsonArray?"
+    },
+    {
+      "user": "karim",
+      "text": "pretty sure, it happens consistently during serialization"
+    },
+    {
+      "user": "hassan",
+      "text": "i think i see the problem in the loop logic"
+    },
+    {
+      "user": "mona",
+      "text": "cool, i'll let you handle the fix then"
+    }
+  ],
+  "BUG-097": [
+    {
+      "user": "rana",
+      "text": "our date serialization is stripping out nulls instead of keeping them"
+    },
+    {
+      "user": "omar",
+      "text": "are you using the UtcDateTypeAdapter?"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, it seems to ignore nulls entirely"
+    },
+    {
+      "user": "hassan",
+      "text": "i can fix the logic so it preserves the null values correctly"
+    },
+    {
+      "user": "omar",
+      "text": "please do, thanks"
+    }
+  ],
+  "BUG-099": [
+    {
+      "user": "salma",
+      "text": "we are getting stack overflows when logging errors in Gson"
+    },
+    {
+      "user": "youssef",
+      "text": "is there a circular reference?"
+    },
+    {
+      "user": "salma",
+      "text": "yes, the cause points back to the exception itself"
+    },
+    {
+      "user": "laila",
+      "text": "i'll add a factory to handle self-referencing throwables"
+    },
+    {
+      "user": "youssef",
+      "text": "that should solve it, thanks"
+    }
+  ],
+  "BUG-100": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone else seeing weird output when parsing arrays of objects?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, i noticed it too. it seems like the nesting level is getting messed up."
+    },
+    {
+      "user": "salma",
+      "text": "i think the issue is inside the JsonReader logic. it struggles when it hits an array of arrays."
+    },
+    {
+      "user": "rana",
+      "text": "that makes sense. i'll take a look at the traversal logic there."
+    },
+    {
+      "user": "salma",
+      "text": "thanks rana, let me know if you need help debugging that flow."
+    }
+  ],
+  "BUG-105": [
+    {
+      "user": "youssef",
+      "text": "anyone seeing intermittent weirdness with typeadapters in parallel requests?"
+    },
+    {
+      "user": "laila",
+      "text": "wait, are we seeing cross-talk between requests?"
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, it looks like generated adapters are leaking into the next call. it's definitely a concurrency issue in Gson."
+    },
+    {
+      "user": "karim",
+      "text": "that sounds like we need a threadsafe adapter invocation. i'll jump on that today."
+    },
+    {
+      "user": "youssef",
+      "text": "awesome, thanks karim."
+    }
+  ],
+  "BUG-106": [
+    {
+      "user": "mona",
+      "text": "hey, i'm seeing that the field-level annotation is being ignored in favor of the class-level one."
+    },
+    {
+      "user": "hassan",
+      "text": "that's definitely not right. it should prioritize the field."
+    },
+    {
+      "user": "mona",
+      "text": "exactly. the tests are failing because of this override issue."
+    },
+    {
+      "user": "hassan",
+      "text": "i'll dig into the mapping logic and get it sorted out."
+    },
+    {
+      "user": "mona",
+      "text": "thanks, let me know when you have a patch."
+    }
+  ],
+  "BUG-107": [
+    {
+      "user": "rana",
+      "text": "the app is crashing whenever i try to deserialize these inner static classes."
+    },
+    {
+      "user": "omar",
+      "text": "i see the same thing. it seems like the system thinks they are non-static."
+    },
+    {
+      "user": "salma",
+      "text": "yeah, it breaks during the type creation phase."
+    },
+    {
+      "user": "rana",
+      "text": "i'll check the reflection logic. i'll fix it."
+    },
+    {
+      "user": "omar",
+      "text": "great, thanks rana."
+    }
+  ],
+  "BUG-108": [
+    {
+      "user": "youssef",
+      "text": "has anyone noticed data loss in our maps?"
+    },
+    {
+      "user": "laila",
+      "text": "yeah, it looks like elements are just disappearing from the LinkedHashTreeMap."
+    },
+    {
+      "user": "youssef",
+      "text": "this is pretty bad. i suspect some pointers are getting dropped during rebalancing."
+    },
+    {
+      "user": "karim",
+      "text": "i'll investigate the LinkedHashTreeMap implementation right now."
+    },
+    {
+      "user": "youssef",
+      "text": "thanks karim, please keep us posted."
+    }
+  ],
+  "BUG-112": [
+    {
+      "user": "mona",
+      "text": "hey, why is the app crashing on EnumSet deserialization?"
+    },
+    {
+      "user": "hassan",
+      "text": "looks like we don't have a way to instantiate those collections."
+    },
+    {
+      "user": "mona",
+      "text": "the ConstructorConstructor doesn't seem to know how to handle them."
+    },
+    {
+      "user": "hassan",
+      "text": "i see. i'll add the construction logic for them today."
+    },
+    {
+      "user": "mona",
+      "text": "thanks hassan!"
+    }
+  ],
+  "BUG-114": [
+    {
+      "user": "rana",
+      "text": "is anyone else seeing memory pressure in Gson?"
+    },
+    {
+      "user": "omar",
+      "text": "oh yeah, i think we have an object leak in the thread locals."
+    },
+    {
+      "user": "salma",
+      "text": "that would explain the heap growth. are we not cleaning them up?"
+    },
+    {
+      "user": "rana",
+      "text": "looks like it. i'll refactor the cleanup and push a fix."
+    },
+    {
+      "user": "omar",
+      "text": "sounds good, thanks rana."
+    }
+  ],
+  "BUG-116": [
+    {
+      "user": "youssef",
+      "text": "the order of elements in our maps is coming out totally wrong."
+    },
+    {
+      "user": "laila",
+      "text": "i've noticed that too. the LinkedHashTreeMap seems to be corrupted."
+    },
+    {
+      "user": "youssef",
+      "text": "i'll take a look at the logic. it needs some optimization anyway."
+    },
+    {
+      "user": "karim",
+      "text": "cool, let me know if you need a second pair of eyes on that LinkedHashTreeMap code."
+    },
+    {
+      "user": "youssef",
+      "text": "will do!"
+    }
+  ],
+  "BUG-117": [
+    {
+      "user": "rana",
+      "text": "hey, anyone seeing weird structure issues in the graph? some nodes are disappearing."
+    },
+    {
+      "user": "omar",
+      "text": "i saw that too. looks like we are unlinking stuff that should stay connected."
+    },
+    {
+      "user": "salma",
+      "text": "could it be the logic inside LinkedTreeMap? i remember touching that area last week."
+    },
+    {
+      "user": "omar",
+      "text": "oh good catch, let me check the pointers there."
+    },
+    {
+      "user": "rana",
+      "text": "yep, looks like an accidental removal during the rebalance."
+    },
+    {
+      "user": "omar",
+      "text": "got it, i'll push a fix for that now."
+    }
+  ],
+  "BUG-119": [
+    {
+      "user": "youssef",
+      "text": "is anyone else having trouble parsing files with a BOM?"
+    },
+    {
+      "user": "laila",
+      "text": "yeah, it seems like the JsonReader is skipping over the byte order mark incorrectly."
+    },
+    {
+      "user": "youssef",
+      "text": "it feels like we aren't reading enough characters at the start."
+    },
+    {
+      "user": "laila",
+      "text": "i'll take a look at how we handle the buffer initialization."
+    },
+    {
+      "user": "youssef",
+      "text": "thanks, let me know if you need help."
+    }
+  ],
+  "BUG-120": [
+    {
+      "user": "karim",
+      "text": "hey, the parser is throwing exceptions on valid numbers."
+    },
+    {
+      "user": "mona",
+      "text": "really? which part?"
+    },
+    {
+      "user": "karim",
+      "text": "it seems like JsonReader is failing on some edge cases."
+    },
+    {
+      "user": "mona",
+      "text": "i think i see the issue, the logic for number parsing is a bit too strict."
+    },
+    {
+      "user": "karim",
+      "text": "can you take a look? i'm stuck on this."
+    },
+    {
+      "user": "mona",
+      "text": "sure, i'll submit a fix today."
+    }
+  ],
+  "BUG-121": [
+    {
+      "user": "hassan",
+      "text": "is our integer parsing broken?"
+    },
+    {
+      "user": "rana",
+      "text": "what makes you say that?"
+    },
+    {
+      "user": "hassan",
+      "text": "some values are coming back as null or crashing the JsonReader."
+    },
+    {
+      "user": "rana",
+      "text": "ah, let me check the integer logic."
+    },
+    {
+      "user": "hassan",
+      "text": "found it, it's definitely in the parsing method."
+    },
+    {
+      "user": "rana",
+      "text": "alright, i'll get that fixed up."
+    }
+  ],
+  "BUG-122": [
+    {
+      "user": "omar",
+      "text": "hey, the parser is getting stuck in a bad state after a failed conversion."
+    },
+    {
+      "user": "salma",
+      "text": "yeah, i noticed it doesn't recover properly."
+    },
+    {
+      "user": "omar",
+      "text": "it just keeps failing for every subsequent read, it's super annoying."
+    },
+    {
+      "user": "salma",
+      "text": "i think we need to hold onto the raw string before trying to parse it."
+    },
+    {
+      "user": "omar",
+      "text": "agreed, i'll work on that."
+    }
+  ],
+  "BUG-124": [
+    {
+      "user": "laila",
+      "text": "getting unexpected crashes when the content ends abruptly."
+    },
+    {
+      "user": "youssef",
+      "text": "i'm seeing that too, it just dies instead of throwing a clean exception."
+    },
+    {
+      "user": "laila",
+      "text": "exactly, the app just shuts down."
+    },
+    {
+      "user": "youssef",
+      "text": "i'll add a check to throw a proper exception when the end is reached too early."
+    }
+  ],
+  "BUG-125": [
+    {
+      "user": "karim",
+      "text": "anyone working on issue #443?"
+    },
+    {
+      "user": "mona",
+      "text": "not yet, what's the deal?"
+    },
+    {
+      "user": "karim",
+      "text": "empty docs are failing to parse correctly."
+    },
+    {
+      "user": "mona",
+      "text": "ah, i see, it should probably just return a null object."
+    },
+    {
+      "user": "karim",
+      "text": "exactly, i'll fix it now."
+    }
+  ],
+  "BUG-128": [
+    {
+      "user": "hassan",
+      "text": "the parser is failing on strings ending with a slash."
+    },
+    {
+      "user": "rana",
+      "text": "did you check the JsonReader logic?"
+    },
+    {
+      "user": "hassan",
+      "text": "yeah, the whitespace check seems to be off by one."
+    },
+    {
+      "user": "rana",
+      "text": "classic off-by-one, good catch."
+    },
+    {
+      "user": "hassan",
+      "text": "i'll update it to point to the correct position."
+    }
+  ],
+  "BUG-129": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone else seeing a crash when trying to write multiple objects to the stream?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, i hit that too. looks like issue #397 might be related."
+    },
+    {
+      "user": "rana",
+      "text": "ah, good catch. it seems like it's choking when the writer is already closed too."
+    },
+    {
+      "user": "omar",
+      "text": "yeah, the state checking is definitely off there. i'll take a look at the lenient mode logic."
+    }
+  ],
+  "BUG-130": [
+    {
+      "user": "salma",
+      "text": "hey, the parsing logic is acting weird with some prefixes."
+    },
+    {
+      "user": "youssef",
+      "text": "what kind of weird? are you using JsonReader?"
+    },
+    {
+      "user": "salma",
+      "text": "yeah, the nonexecute prefix is causing some unexpected behavior during tokenization."
+    },
+    {
+      "user": "youssef",
+      "text": "i see. it's probably missing some coverage. i'll dig into the code and add some tests."
+    }
+  ],
+  "BUG-135": [
+    {
+      "user": "laila",
+      "text": "heads up, a bunch of tests are failing after the latest merge."
+    },
+    {
+      "user": "karim",
+      "text": "oh no, is it the TypeAdapters stuff again?"
+    },
+    {
+      "user": "laila",
+      "text": "looks like it. everything seems to be returning the wrong values."
+    },
+    {
+      "user": "karim",
+      "text": "got it. i'll check the recent commits and get those tests passing again."
+    }
+  ],
+  "BUG-139": [
+    {
+      "user": "mona",
+      "text": "hey, i'm getting a stack overflow in the serialization layer."
+    },
+    {
+      "user": "hassan",
+      "text": "that sounds like an infinite loop. are you using a custom TypeAdapter?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, it seems to happen when calling nullSafe on non-null inputs."
+    },
+    {
+      "user": "hassan",
+      "text": "yikes, that shouldn't be recursing like that. i'll fix the logic."
+    }
+  ],
+  "BUG-140": [
+    {
+      "user": "rana",
+      "text": "anyone else seeing a crash when registering multiple type hierarchy adapters?"
+    },
+    {
+      "user": "omar",
+      "text": "are you configuring them through GsonBuilder?"
+    },
+    {
+      "user": "rana",
+      "text": "exactly. it blows up as soon as i try to use them together."
+    },
+    {
+      "user": "omar",
+      "text": "that's definitely a bug. i'll look into the registration logic and fix the test."
+    }
+  ],
+  "BUG-141": [
+    {
+      "user": "salma",
+      "text": "why is the wrong adapter being picked up? i registered the correct one last."
+    },
+    {
+      "user": "youssef",
+      "text": "are you adding them via GsonBuilder?"
+    },
+    {
+      "user": "salma",
+      "text": "yes, but it's completely ignoring the precedence rules."
+    },
+    {
+      "user": "youssef",
+      "text": "i suspect the precedence logic is flipped. i'll check it out."
+    }
+  ],
+  "BUG-145": [
+    {
+      "user": "laila",
+      "text": "hey, i'm seeing some weird behavior with generic types."
+    },
+    {
+      "user": "karim",
+      "text": "what's happening? is it not matching the right implementation?"
+    },
+    {
+      "user": "laila",
+      "text": "exactly. if i register a raw type, it's failing to recognize the parameterized versions."
+    },
+    {
+      "user": "karim",
+      "text": "that makes sense. i think i broke the matching logic in the latest update. i'll patch it."
+    }
+  ],
+  "BUG-147": [
+    {
+      "user": "mona",
+      "text": "hey, the app is crashing when it gets an unexpected data format."
+    },
+    {
+      "user": "hassan",
+      "text": "is it throwing a generic exception instead of something we can catch?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, it's basically dying on type mismatches during binding."
+    },
+    {
+      "user": "hassan",
+      "text": "i'll update it to throw a proper parsing exception so we can handle it gracefully."
+    }
+  ],
+  "BUG-151": [
+    {
+      "user": "rana",
+      "text": "hey, has anyone noticed that our dates are shifting by a few hours in the staging environment?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, i saw that. looks like it depends on the server timezone."
+    },
+    {
+      "user": "salma",
+      "text": "are we using the standard date adapters? maybe gson is doing something weird with the local time zone settings."
+    },
+    {
+      "user": "rana",
+      "text": "i think so. it seems to be ignoring utc and applying local offsets."
+    },
+    {
+      "user": "salma",
+      "text": "found it. the adapters are assuming the default zone. i'll patch them to be timezone agnostic."
+    }
+  ],
+  "BUG-152": [
+    {
+      "user": "youssef",
+      "text": "the map serialization is failing when i use subclasses in the values."
+    },
+    {
+      "user": "laila",
+      "text": "interesting. are you checking the test cases for map types?"
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, testMapOfSubclassFields is definitely broken right now."
+    },
+    {
+      "user": "laila",
+      "text": "looks like MapTypeAdapterFactory isn't handling the runtime type properly for the values."
+    },
+    {
+      "user": "youssef",
+      "text": "good catch. i'll update the factory to handle that logic."
+    }
+  ],
+  "BUG-156": [
+    {
+      "user": "karim",
+      "text": "the build is crashing on the older ci agent."
+    },
+    {
+      "user": "mona",
+      "text": "what error are you seeing?"
+    },
+    {
+      "user": "karim",
+      "text": "looks like a method not found exception, seems like a java version issue."
+    },
+    {
+      "user": "mona",
+      "text": "maybe something in DefaultTypeAdapters is using a newer api call?"
+    },
+    {
+      "user": "karim",
+      "text": "yep, found one call that is definitely 1.7 only. i'll swap it out."
+    }
+  ],
+  "BUG-158": [
+    {
+      "user": "hassan",
+      "text": "getting random crashes during deserialization when the types don't match up."
+    },
+    {
+      "user": "rana",
+      "text": "is it just returning null or actually blowing up?"
+    },
+    {
+      "user": "hassan",
+      "text": "it's throwing a raw exception, not caught."
+    },
+    {
+      "user": "rana",
+      "text": "check the ReflectiveTypeAdapter, it might be missing a proper validation check."
+    },
+    {
+      "user": "hassan",
+      "text": "you're right, it needs to throw a proper JsonSyntaxException. i'm on it."
+    }
+  ],
+  "BUG-161": [
+    {
+      "user": "salma",
+      "text": "why are we getting generic exceptions when parsing numbers?"
+    },
+    {
+      "user": "omar",
+      "text": "not sure, which part of the parser?"
+    },
+    {
+      "user": "salma",
+      "text": "it's failing inside the BigDecimalTypeAdapter when the input is garbage."
+    },
+    {
+      "user": "omar",
+      "text": "ah, it's probably swallowing the specific error. we should throw something more descriptive."
+    },
+    {
+      "user": "salma",
+      "text": "agreed, i'll fix the exception handling there."
+    }
+  ],
+  "BUG-163": [
+    {
+      "user": "laila",
+      "text": "our custom serializers are being ignored when dealing with base classes."
+    },
+    {
+      "user": "youssef",
+      "text": "is it using the runtime type instead?"
+    },
+    {
+      "user": "laila",
+      "text": "exactly. testBaseClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances is failing."
+    },
+    {
+      "user": "youssef",
+      "text": "check TypeAdapterRuntimeTypeWrapper, it might be overriding the preference."
+    },
+    {
+      "user": "laila",
+      "text": "good call, found the logic error. i'll restore the expected behavior."
+    }
+  ],
+  "BUG-166": [
+    {
+      "user": "karim",
+      "text": "the parser is acting up when reading character by character."
+    },
+    {
+      "user": "mona",
+      "text": "that sounds like an off-by-one error in the buffer handling."
+    },
+    {
+      "user": "karim",
+      "text": "yeah, i've been looking at the JsonReader implementation."
+    },
+    {
+      "user": "mona",
+      "text": "did you check the boundary conditions?"
+    },
+    {
+      "user": "karim",
+      "text": "found a couple of spots where the index is off. fixing it now."
+    }
+  ],
+  "BUG-169": [
+    {
+      "user": "hassan",
+      "text": "the integration tests are failing after the latest benchmark refactor."
+    },
+    {
+      "user": "rana",
+      "text": "did we change any of the core serialization logic?"
+    },
+    {
+      "user": "hassan",
+      "text": "not really, just some performance tweaks in MiniGson."
+    },
+    {
+      "user": "rana",
+      "text": "maybe check if those changes affected the default behavior."
+    },
+    {
+      "user": "hassan",
+      "text": "good idea, i'll trace the changes and fix the tests."
+    }
+  ],
+  "BUG-170": [
+    {
+      "user": "rana",
+      "text": "hey, the app keeps blowing up whenever i try to serialize some of our complex objects."
+    },
+    {
+      "user": "omar",
+      "text": "that sounds bad. is it happening consistently?"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, every time it hits a recursive structure it just dies."
+    },
+    {
+      "user": "salma",
+      "text": "i think i see why, it hits an infinite loop trying to resolve the structure."
+    },
+    {
+      "user": "rana",
+      "text": "ah, that makes sense. can you handle that?"
+    },
+    {
+      "user": "salma",
+      "text": "on it, i'll patch the serialization logic now."
+    }
+  ],
+  "BUG-171": [
+    {
+      "user": "youssef",
+      "text": "anyone else seeing weird state inconsistencies during heavy load?"
+    },
+    {
+      "user": "laila",
+      "text": "yeah, i noticed some values getting overwritten unexpectedly."
+    },
+    {
+      "user": "youssef",
+      "text": "looks like a race condition, it's totally non-deterministic."
+    },
+    {
+      "user": "karim",
+      "text": "found it, multiple threads are accessing that shared method without protection."
+    },
+    {
+      "user": "youssef",
+      "text": "good catch, should we just sync the method?"
+    },
+    {
+      "user": "karim",
+      "text": "yeah, that should stop the bleeding for now."
+    }
+  ],
+  "BUG-175": [
+    {
+      "user": "mona",
+      "text": "the output format for our entities is completely wrong again."
+    },
+    {
+      "user": "hassan",
+      "text": "is it related to issue #205?"
+    },
+    {
+      "user": "mona",
+      "text": "exactly, the type information is being stripped out."
+    },
+    {
+      "user": "hassan",
+      "text": "i see a few other spots where that's happening too."
+    },
+    {
+      "user": "mona",
+      "text": "can you take a look? it's breaking the consumer side."
+    },
+    {
+      "user": "hassan",
+      "text": "working on it now, i'll push a fix for all those cases."
+    }
+  ],
+  "BUG-180": [
+    {
+      "user": "rana",
+      "text": "our service is crashing hard during type mapping."
+    },
+    {
+      "user": "omar",
+      "text": "any stack trace info?"
+    },
+    {
+      "user": "rana",
+      "text": "it seems like ParameterizedTypeHandlerMap is failing when we have nested class hierarchies."
+    },
+    {
+      "user": "salma",
+      "text": "oh i think i know why, it's not handling the copy operation correctly for those base types."
+    },
+    {
+      "user": "rana",
+      "text": "can you confirm?"
+    },
+    {
+      "user": "salma",
+      "text": "yep, verified. i'll get a fix out in ten minutes."
+    }
+  ],
+  "BUG-182": [
+    {
+      "user": "youssef",
+      "text": "getting frequent crashes on the android build."
+    },
+    {
+      "user": "laila",
+      "text": "is it related to the memory allocation?"
+    },
+    {
+      "user": "youssef",
+      "text": "looks like it, MappedObjectConstructor is throwing an exception in some environments."
+    },
+    {
+      "user": "karim",
+      "text": "that's an unsafe allocation pattern, we should change how we're doing that."
+    },
+    {
+      "user": "youssef",
+      "text": "agreed, can you handle the refactor?"
+    },
+    {
+      "user": "karim",
+      "text": "doing it right now."
+    }
+  ],
+  "BUG-185": [
+    {
+      "user": "mona",
+      "text": "the api response is returning empty for valid requests."
+    },
+    {
+      "user": "hassan",
+      "text": "are you sure the path is correct?"
+    },
+    {
+      "user": "mona",
+      "text": "yeah, the ResourceQueryClient is just failing to parse the body if it's a list."
+    },
+    {
+      "user": "hassan",
+      "text": "ah, it probably expects a single object only."
+    },
+    {
+      "user": "mona",
+      "text": "can we make it more flexible?"
+    },
+    {
+      "user": "hassan",
+      "text": "yeah, i'll update the spec to handle lists."
+    }
+  ],
+  "BUG-186": [
+    {
+      "user": "rana",
+      "text": "we have a regression in our data parsing logic."
+    },
+    {
+      "user": "omar",
+      "text": "what changed?"
+    },
+    {
+      "user": "rana",
+      "text": "it's handling unquoted strings differently than it used to in Gson."
+    },
+    {
+      "user": "salma",
+      "text": "that might be intentional, but it's throwing the wrong exception type."
+    },
+    {
+      "user": "rana",
+      "text": "can we make it throw the specific one we need?"
+    },
+    {
+      "user": "salma",
+      "text": "sure, i'll adjust the parser."
+    }
+  ],
+  "BUG-187": [
+    {
+      "user": "youssef",
+      "text": "the parser is returning null on unexpected end of file."
+    },
+    {
+      "user": "laila",
+      "text": "that's breaking our downstream logic."
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, it's happening inside the Streams implementation."
+    },
+    {
+      "user": "karim",
+      "text": "we should check if the document is actually empty before returning null."
+    },
+    {
+      "user": "youssef",
+      "text": "exactly, that would restore the old behavior."
+    },
+    {
+      "user": "karim",
+      "text": "i'll push the fix shortly."
+    }
+  ],
+  "BUG-190": [
+    {
+      "user": "omar",
+      "text": "hey, the service is crashing whenever we try to deserialize the new payload."
+    },
+    {
+      "user": "salma",
+      "text": "is it throwing a null pointer?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, looks like it's happening inside TypeInfoFactory during the reflection phase."
+    },
+    {
+      "user": "laila",
+      "text": "ah, i think i see why, the factory isn't handling the new generic types correctly."
+    },
+    {
+      "user": "laila",
+      "text": "i'll take a look and get a fix pushed out."
+    }
+  ],
+  "BUG-192": [
+    {
+      "user": "hassan",
+      "text": "anyone else seeing crashes with long fields in Gson?"
+    },
+    {
+      "user": "rana",
+      "text": "what kind of crash?"
+    },
+    {
+      "user": "hassan",
+      "text": "it seems to be failing when it hits a primitive long vs the wrapper class."
+    },
+    {
+      "user": "youssef",
+      "text": "oh, i see what's happening. it's treating them as the same adapter but they have different requirements."
+    },
+    {
+      "user": "youssef",
+      "text": "i'll throw together a patch to keep them separate for now."
+    }
+  ],
+  "BUG-193": [
+    {
+      "user": "mona",
+      "text": "hey team, everything is blowing up when we try to cast these objects."
+    },
+    {
+      "user": "karim",
+      "text": "is it happening on the client side or backend?"
+    },
+    {
+      "user": "mona",
+      "text": "backend, getting a hard crash on startup."
+    },
+    {
+      "user": "karim",
+      "text": "it looks like the primitive values aren't wrapping correctly before the cast."
+    },
+    {
+      "user": "mona",
+      "text": "good catch, can you handle that?"
+    },
+    {
+      "user": "karim",
+      "text": "yup, on it."
+    }
+  ],
+  "BUG-197": [
+    {
+      "user": "salma",
+      "text": "hey, the output stream is being closed prematurely."
+    },
+    {
+      "user": "laila",
+      "text": "are you sure? it should be keeping the streams open based on the flags."
+    },
+    {
+      "user": "salma",
+      "text": "it's definitely closing them even when i tell it not to."
+    },
+    {
+      "user": "laila",
+      "text": "that's weird. let me check the logic where we handle the stream copying."
+    },
+    {
+      "user": "laila",
+      "text": "found it, the flag isn't propagating correctly. i'll fix it."
+    }
+  ],
+  "BUG-199": [
+    {
+      "user": "omar",
+      "text": "why are my enum constants missing from the output?"
+    },
+    {
+      "user": "youssef",
+      "text": "are they anonymous enums?"
+    },
+    {
+      "user": "omar",
+      "text": "yeah, they are."
+    },
+    {
+      "user": "youssef",
+      "text": "that's a known issue #226 that we haven't touched yet."
+    },
+    {
+      "user": "omar",
+      "text": "can we prioritize it? it's breaking the frontend."
+    },
+    {
+      "user": "youssef",
+      "text": "fine, i'll patch it today."
+    }
+  ],
+  "BUG-200": [
+    {
+      "user": "rana",
+      "text": "the data format is completely wrong for the latest API response."
+    },
+    {
+      "user": "hassan",
+      "text": "is it missing fields?"
+    },
+    {
+      "user": "rana",
+      "text": "no, it's just serializing the wrong types for some reason."
+    },
+    {
+      "user": "hassan",
+      "text": "oh, that sounds like issue #178."
+    },
+    {
+      "user": "rana",
+      "text": "can you verify? we need this fixed asap."
+    },
+    {
+      "user": "hassan",
+      "text": "checking now, i'll get it sorted."
+    }
+  ],
+  "BUG-202": [
+    {
+      "user": "karim",
+      "text": "the type adapter priority seems completely messed up in the latest build."
+    },
+    {
+      "user": "mona",
+      "text": "what do you mean?"
+    },
+    {
+      "user": "karim",
+      "text": "it's registering the DefaultTypeAdapters in the wrong order, so the wrong one is being used."
+    },
+    {
+      "user": "mona",
+      "text": "that explains why the serialization tests are failing."
+    },
+    {
+      "user": "karim",
+      "text": "yep, i'm going to fix the registration logic now."
+    }
+  ],
+  "BUG-204": [
+    {
+      "user": "laila",
+      "text": "the requests are failing because the content-length header is missing when there's no body."
+    },
+    {
+      "user": "salma",
+      "text": "did you check the Preconditions logic?"
+    },
+    {
+      "user": "laila",
+      "text": "i did, it looks like it's blocking the header set even if the length is zero."
+    },
+    {
+      "user": "salma",
+      "text": "that sounds like a bug, it should allow zero."
+    },
+    {
+      "user": "laila",
+      "text": "agreed, i'll submit a fix for that."
+    }
+  ],
+  "BUG-207": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone else seeing weird data in the db dumps?"
+    },
+    {
+      "user": "omar",
+      "text": "what kind of weird?"
+    },
+    {
+      "user": "rana",
+      "text": "the sql date objects are including time components during serialization, it's messing up the format."
+    },
+    {
+      "user": "salma",
+      "text": "ah, i think that's happening in DefaultTypeAdapters."
+    },
+    {
+      "user": "omar",
+      "text": "good catch, let me take a look at those adapters."
+    },
+    {
+      "user": "rana",
+      "text": "thanks, let me know if you need help testing the fix."
+    }
+  ],
+  "BUG-210": [
+    {
+      "user": "youssef",
+      "text": "why is this object getting default values instead of null?"
+    },
+    {
+      "user": "laila",
+      "text": "what do you mean?"
+    },
+    {
+      "user": "youssef",
+      "text": "my custom deserializer is explicitly setting it to null, but it's ignored."
+    },
+    {
+      "user": "laila",
+      "text": "that sounds like an issue with the JsonDeserializationVisitor logic."
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, i'll dig into that visitor and see why it's overriding the nulls."
+    },
+    {
+      "user": "laila",
+      "text": "sounds good, let me know what you find."
+    }
+  ],
+  "BUG-212": [
+    {
+      "user": "karim",
+      "text": "my custom serializer is returning null but it's causing an error downstream."
+    },
+    {
+      "user": "mona",
+      "text": "is it crashing or just outputting wrong data?"
+    },
+    {
+      "user": "karim",
+      "text": "it's outputting some garbage instead of just skipping it."
+    },
+    {
+      "user": "mona",
+      "text": "check the JsonSerializationVisitor, it might not be handling the null return gracefully."
+    },
+    {
+      "user": "karim",
+      "text": "oh you're right, it's definitely missing a null check there."
+    },
+    {
+      "user": "mona",
+      "text": "i'll patch it up real quick."
+    }
+  ],
+  "BUG-213": [
+    {
+      "user": "hassan",
+      "text": "the app is throwing a null pointer exception when parsing nested json objects."
+    },
+    {
+      "user": "rana",
+      "text": "is it happening during the tree traversal?"
+    },
+    {
+      "user": "hassan",
+      "text": "yeah, looks like it."
+    },
+    {
+      "user": "rana",
+      "text": "check if the JsonDeserializationVisitor is trying to visit a custom handler incorrectly."
+    },
+    {
+      "user": "hassan",
+      "text": "that looks like the culprit, it shouldn't be hitting that node."
+    },
+    {
+      "user": "rana",
+      "text": "i'll fix the visitor logic to skip those."
+    }
+  ],
+  "BUG-214": [
+    {
+      "user": "omar",
+      "text": "anyone notice the output formatting is broken on nested lists?"
+    },
+    {
+      "user": "salma",
+      "text": "yeah, the separators are all over the place."
+    },
+    {
+      "user": "omar",
+      "text": "it seems like we are losing track of which element is the first one in the list."
+    },
+    {
+      "user": "salma",
+      "text": "it definitely feels like a state tracking issue."
+    },
+    {
+      "user": "omar",
+      "text": "i'll implement a stack to keep track of the hierarchy, that should clean it up."
+    }
+  ],
+  "BUG-216": [
+    {
+      "user": "youssef",
+      "text": "we are getting random corrupted dates in the logs under heavy load."
+    },
+    {
+      "user": "laila",
+      "text": "that sounds like a race condition."
+    },
+    {
+      "user": "youssef",
+      "text": "exactly, the date formatter seems to be shared across threads."
+    },
+    {
+      "user": "laila",
+      "text": "yikes, let's make sure those adapters are properly synchronized."
+    },
+    {
+      "user": "youssef",
+      "text": "on it, i'll add the synchronization locks now."
+    }
+  ],
+  "BUG-217": [
+    {
+      "user": "karim",
+      "text": "hey, is there a fix for issue #147 yet?"
+    },
+    {
+      "user": "mona",
+      "text": "not yet, why?"
+    },
+    {
+      "user": "karim",
+      "text": "my unit tests are failing because longs and ints aren't being compared correctly."
+    },
+    {
+      "user": "mona",
+      "text": "oh, right, the numeric types are not comparable to each other currently."
+    },
+    {
+      "user": "karim",
+      "text": "exactly, it's driving me crazy."
+    },
+    {
+      "user": "mona",
+      "text": "i'll fix the comparison logic so they treat types consistently."
+    }
+  ],
+  "BUG-218": [
+    {
+      "user": "hassan",
+      "text": "i'm seeing a stack overflow when parsing recursive structures in Gson."
+    },
+    {
+      "user": "rana",
+      "text": "is it deep nesting?"
+    },
+    {
+      "user": "hassan",
+      "text": "not even that deep, just standard recursive objects."
+    },
+    {
+      "user": "rana",
+      "text": "that's weird, i'll take a look at the traversal code."
+    },
+    {
+      "user": "hassan",
+      "text": "thanks, it's blocking the build for now."
+    },
+    {
+      "user": "rana",
+      "text": "got it, i'll push a fix shortly."
+    }
+  ],
+  "BUG-221": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone else getting a stack overflow when serializing objects with transient fields?"
+    },
+    {
+      "user": "omar",
+      "text": "oh, yeah, i saw that earlier. looks like it's trying to do type deduction on fields it shouldn't be touching."
+    },
+    {
+      "user": "hassan",
+      "text": "is this related to issue #126?"
+    },
+    {
+      "user": "rana",
+      "text": "exactly, it's definitely hitting the logic we touched there."
+    },
+    {
+      "user": "omar",
+      "text": "i'll look into skipping the deduction for transient fields and get a fix out."
+    }
+  ],
+  "BUG-225": [
+    {
+      "user": "salma",
+      "text": "we've got a crash in production where a classcastexception is bubbling all the way up to the client."
+    },
+    {
+      "user": "youssef",
+      "text": "that's weird, i thought we caught those inside our core logic."
+    },
+    {
+      "user": "laila",
+      "text": "it seems like the gson integration layer is leaking it before we can wrap it."
+    },
+    {
+      "user": "salma",
+      "text": "yeah, it's crashing the user's process completely."
+    },
+    {
+      "user": "youssef",
+      "text": "i see the issue. i'll add a catch block to handle those exceptions properly."
+    }
+  ],
+  "BUG-227": [
+    {
+      "user": "karim",
+      "text": "the main build is failing again, the set tests are failing with a cast error."
+    },
+    {
+      "user": "mona",
+      "text": "did that happen after the fix for issue #100?"
+    },
+    {
+      "user": "hassan",
+      "text": "yeah, it looks like we changed the underlying collection type and the test expectation is now wrong."
+    },
+    {
+      "user": "karim",
+      "text": "i'll update the test to handle both treese and hashset properly."
+    },
+    {
+      "user": "mona",
+      "text": "thanks, that should stabilize the suite."
+    }
+  ],
+  "BUG-228": [
+    {
+      "user": "rana",
+      "text": "getting crashes when deserializing lists of custom objects that don't implement comparable."
+    },
+    {
+      "user": "omar",
+      "text": "ah, that might be a limitation in how DefaultTypeAdapters handles collections."
+    },
+    {
+      "user": "salma",
+      "text": "can we make it more flexible?"
+    },
+    {
+      "user": "rana",
+      "text": "i think so, i'll look into relaxing the requirement for comparable elements."
+    },
+    {
+      "user": "omar",
+      "text": "sounds good, let me know if you need a hand with the logic."
+    }
+  ],
+  "BUG-233": [
+    {
+      "user": "youssef",
+      "text": "the output from the pretty printer looks really broken for nested objects."
+    },
+    {
+      "user": "laila",
+      "text": "are you seeing extra newlines or just bad indentation?"
+    },
+    {
+      "user": "youssef",
+      "text": "it's missing indentation entirely for deeper levels."
+    },
+    {
+      "user": "karim",
+      "text": "i think the JsonPrintFormatter state is getting desynced."
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, that makes sense. i'll take a look and patch it."
+    }
+  ],
+  "BUG-236": [
+    {
+      "user": "hassan",
+      "text": "we're seeing unhandled exceptions when parsing malformed uuids."
+    },
+    {
+      "user": "mona",
+      "text": "do they crash the whole thread?"
+    },
+    {
+      "user": "hassan",
+      "text": "yes, it seems inconsistent compared to how we handle other types in DefaultTypeAdapters."
+    },
+    {
+      "user": "rana",
+      "text": "we should definitely wrap that in our standard exception handler."
+    },
+    {
+      "user": "hassan",
+      "text": "agreed, i'll submit a fix for that."
+    }
+  ],
+  "BUG-237": [
+    {
+      "user": "salma",
+      "text": "why is the output showing empty object structures when we have arrays of primitives?"
+    },
+    {
+      "user": "youssef",
+      "text": "i noticed that too, it looks like it's trying to instantiate objects that shouldn't exist."
+    },
+    {
+      "user": "laila",
+      "text": "it's definitely firing during the array processing loop."
+    },
+    {
+      "user": "salma",
+      "text": "i'll remove those redundant instantiation calls and see if the output cleans up."
+    },
+    {
+      "user": "youssef",
+      "text": "that should fix it, thanks."
+    }
+  ],
+  "BUG-244": [
+    {
+      "user": "karim",
+      "text": "the parser is throwing an error on numbers like 1e5."
+    },
+    {
+      "user": "mona",
+      "text": "wait, is it failing because there is no decimal point?"
+    },
+    {
+      "user": "karim",
+      "text": "yeah, it seems to expect a fraction part if it sees an exponent."
+    },
+    {
+      "user": "hassan",
+      "text": "that's definitely a bug in our number detection logic."
+    },
+    {
+      "user": "karim",
+      "text": "i'll fix the regex to handle scientific notation without decimals."
+    }
+  ],
+  "BUG-247": [
+    {
+      "user": "rana",
+      "text": "hey, is anyone else having trouble with forward slashes in the json parser?"
+    },
+    {
+      "user": "omar",
+      "text": "what kind of trouble? like getting an error during parsing?"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, it seems escaped slashes are failing. i think this is related to issue #66."
+    },
+    {
+      "user": "salma",
+      "text": "ah, good catch. i think we need to update the gson version to 1.2.3 to handle that."
+    },
+    {
+      "user": "rana",
+      "text": "cool, i'll bump the version and see if that clears it up."
+    }
+  ],
+  "BUG-248": [
+    {
+      "user": "youssef",
+      "text": "seeing some weird memory errors in prod, looks like state is leaking between threads."
+    },
+    {
+      "user": "laila",
+      "text": "oh no, is it failing consistently?"
+    },
+    {
+      "user": "youssef",
+      "text": "yeah, it looks like issue #63, the internal stack is being shared when it shouldn't be."
+    },
+    {
+      "user": "laila",
+      "text": "that makes sense, we probably need to stop reusing the factory object."
+    },
+    {
+      "user": "karim",
+      "text": "i'll look into creating a new factory for each call to keep it thread-safe."
+    }
+  ],
+  "BUG-249": [
+    {
+      "user": "mona",
+      "text": "hey, the output for some fields is showing the wrong type, it's casting things incorrectly."
+    },
+    {
+      "user": "hassan",
+      "text": "are you seeing this for all fields or just specific ones?"
+    },
+    {
+      "user": "mona",
+      "text": "looks like it's trying to use the actual type of the field value too aggressively. it's issue #58."
+    },
+    {
+      "user": "hassan",
+      "text": "ah, i see. we should probably only do that when it's explicitly marked as an object."
+    },
+    {
+      "user": "mona",
+      "text": "agreed, i'll submit a patch to restrict that behavior."
+    }
+  ],
+  "BUG-251": [
+    {
+      "user": "rana",
+      "text": "dates are not serializing correctly, they keep coming out empty or wrong."
+    },
+    {
+      "user": "salma",
+      "text": "are you using the default date instances?"
+    },
+    {
+      "user": "rana",
+      "text": "yeah, it's definitely issue #53."
+    },
+    {
+      "user": "salma",
+      "text": "we might be missing the time style support in the formatter."
+    },
+    {
+      "user": "rana",
+      "text": "i'll add support for the default formatter to handle that."
+    }
+  ],
+  "BUG-252": [
+    {
+      "user": "omar",
+      "text": "why are null fields missing in the output even when serializeNulls is on?"
+    },
+    {
+      "user": "youssef",
+      "text": "that sounds like a bug in JsonSerializationVisitor."
+    },
+    {
+      "user": "omar",
+      "text": "yeah, it seems to be skipping strings and collections specifically."
+    },
+    {
+      "user": "youssef",
+      "text": "i'll check the logic in that class and see why it's ignoring the flag."
+    },
+    {
+      "user": "omar",
+      "text": "thanks, let me know if you need help testing the fix."
+    }
+  ],
+  "BUG-255": [
+    {
+      "user": "laila",
+      "text": "the pretty printing is totally breaking when arrays and objects are nested together."
+    },
+    {
+      "user": "karim",
+      "text": "is the indentation getting messed up?"
+    },
+    {
+      "user": "laila",
+      "text": "yeah, the interlacing is all wrong. it looks like an issue inside JsonPrintFormatter."
+    },
+    {
+      "user": "karim",
+      "text": "i'll take a look at the formatting logic, it probably loses track of the depth."
+    },
+    {
+      "user": "laila",
+      "text": "sounds good, let me know when you have a fix."
+    }
+  ]
+}

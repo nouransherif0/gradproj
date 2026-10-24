@@ -1,0 +1,43 @@
+{
+  "cutoff": "2022-01-01",
+  "files": 82,
+  "buggy_files": 27,
+  "results": {
+    "Random guessing": {
+      "top10": 0.340625,
+      "bugs_in_top20": 0.19660000000000002,
+      "spearman": 0.0007665158903148747,
+      "auc": 0.5008619528619527
+    },
+    "Largest files": {
+      "top10": 0.75,
+      "bugs_in_top20": 0.52,
+      "spearman": 0.5121207304104385,
+      "auc": 0.7932659932659932
+    },
+    "Most-edited files": {
+      "top10": 0.75,
+      "bugs_in_top20": 0.52,
+      "spearman": 0.42203067520826354,
+      "auc": 0.7225589225589225
+    },
+    "Code-only hotspots": {
+      "top10": 1.0,
+      "bugs_in_top20": 0.6,
+      "spearman": 0.5609932645172755,
+      "auc": 0.8114478114478114
+    },
+    "Ours, no chat/dependencies": {
+      "top10": 1.0,
+      "bugs_in_top20": 0.6,
+      "spearman": 0.5649095508229417,
+      "auc": 0.8175084175084175
+    },
+    "Ours, with chat/dependencies": {
+      "top10": 0.875,
+      "bugs_in_top20": 0.54,
+      "spearman": 0.4903895531698565,
+      "auc": 0.7696969696969697
+    }
+  }
+}

@@ -1,0 +1,5242 @@
+[
+  {
+    "thread_id": "T-002",
+    "channel": "#dev",
+    "ts": "2026-09-06T10:24:00",
+    "user": "laila",
+    "text": "strict json parsing isn't failing on lone surrogates like high surrogate escape sequences",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-002",
+    "channel": "#dev",
+    "ts": "2026-09-06T10:33:00",
+    "user": "omar",
+    "text": "wait really? strict mode should definitely reject unpaired surrogates per the json spec",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-002",
+    "channel": "#dev",
+    "ts": "2026-09-06T10:41:00",
+    "user": "laila",
+    "text": "yeah it passes them straight through without verifying whether the following char is a matching low surrogate",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-002",
+    "channel": "#dev",
+    "ts": "2026-09-06T10:49:00",
+    "user": "karim",
+    "text": "good catch, i just pushed PR #3116 to validate surrogate pairs properly in strict mode",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-004",
+    "channel": "#dev",
+    "ts": "2026-07-23T10:19:00",
+    "user": "rana",
+    "text": "hey is nextInt supposed to accept non-ascii numerals? someone passed full-width digits and it parsed",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-004",
+    "channel": "#dev",
+    "ts": "2026-07-23T10:33:00",
+    "user": "salma",
+    "text": "json spec requires ascii digits only, where did this happen?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-004",
+    "channel": "#dev",
+    "ts": "2026-07-23T10:35:00",
+    "user": "rana",
+    "text": "in the tree reader when calling nextInt and nextLong on primitive elements",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-004",
+    "channel": "#dev",
+    "ts": "2026-07-23T10:36:00",
+    "user": "youssef",
+    "text": "standard java integer parsing allows unicode digits by default unless we specifically check for ascii",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-004",
+    "channel": "#dev",
+    "ts": "2026-07-23T10:39:00",
+    "user": "rana",
+    "text": "makes sense, opened PR #3063 to reject any non-ascii digit characters",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-005",
+    "channel": "#dev",
+    "ts": "2026-07-22T12:18:00",
+    "user": "mona",
+    "text": "running into a weird bug where two json primitives are equal but break when used in a hash set",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-005",
+    "channel": "#dev",
+    "ts": "2026-07-22T12:25:00",
+    "user": "hassan",
+    "text": "let me guess, numeric primitives with different number types?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-005",
+    "channel": "#dev",
+    "ts": "2026-07-22T12:48:00",
+    "user": "mona",
+    "text": "yeah 1 as a long and 1.0 as a double return true on equals but their hash codes differ",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-005",
+    "channel": "#dev",
+    "ts": "2026-07-22T13:09:00",
+    "user": "hassan",
+    "text": "that violates the general hashcode contract, map lookups will definitely fail",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-005",
+    "channel": "#dev",
+    "ts": "2026-07-22T13:32:00",
+    "user": "mona",
+    "text": "submitting PR #3059 to align hashcode with how equals normalizes numbers",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-006",
+    "channel": "#bugs",
+    "ts": "2026-07-20T15:15:00",
+    "user": "omar",
+    "text": "has anyone noticed uri roundtripping altering characters for non-ascii uris?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-006",
+    "channel": "#bugs",
+    "ts": "2026-07-20T15:34:00",
+    "user": "laila",
+    "text": "what is the uri adapter doing during serialization?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-006",
+    "channel": "#bugs",
+    "ts": "2026-07-20T15:43:00",
+    "user": "karim",
+    "text": "checking TypeAdapters right now and it calls toASCIIString instead of toString",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-006",
+    "channel": "#bugs",
+    "ts": "2026-07-20T15:44:00",
+    "user": "omar",
+    "text": "so it percent-encodes or punycodes characters that were originally raw unicode",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-006",
+    "channel": "#bugs",
+    "ts": "2026-07-20T16:09:00",
+    "user": "laila",
+    "text": "yeah that breaks identity, i will write a fix to preserve original string representations",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-007",
+    "channel": "#backend",
+    "ts": "2026-06-21T15:09:00",
+    "user": "salma",
+    "text": "got a crash deserializing an atomic long array containing a null element",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-007",
+    "channel": "#backend",
+    "ts": "2026-06-21T15:14:00",
+    "user": "rana",
+    "text": "does it throw an unexpected null pointer exception?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-007",
+    "channel": "#backend",
+    "ts": "2026-06-21T15:21:00",
+    "user": "salma",
+    "text": "yes direct npe instead of our usual json syntax exception",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-007",
+    "channel": "#backend",
+    "ts": "2026-06-21T15:46:00",
+    "user": "rana",
+    "text": "looking at TypeAdapters for atomic long array, it unboxes the parsed long value directly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-007",
+    "channel": "#backend",
+    "ts": "2026-06-21T15:57:00",
+    "user": "salma",
+    "text": "unboxing null would cause that npe immediately, i will update it to throw json syntax exception",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-008",
+    "channel": "#help",
+    "ts": "2026-06-03T10:04:00",
+    "user": "youssef",
+    "text": "saw an issue where peekNumber rejects certain valid large numbers with trailing zeros",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-008",
+    "channel": "#help",
+    "ts": "2026-06-03T10:16:00",
+    "user": "hassan",
+    "text": "like numbers above two to the sixty fourth power?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-008",
+    "channel": "#help",
+    "ts": "2026-06-03T10:28:00",
+    "user": "mona",
+    "text": "in JsonReader the peekNumber logic tries to track overflow on digit shifts but trips on zero",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-008",
+    "channel": "#help",
+    "ts": "2026-06-03T10:48:00",
+    "user": "youssef",
+    "text": "right, it treats the zero digit as an overflow error instead of letting it parse as an unquoted string number",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-008",
+    "channel": "#help",
+    "ts": "2026-06-03T10:57:00",
+    "user": "mona",
+    "text": "i can fix the overflow check condition so it handles those numerals correctly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-009",
+    "channel": "#dev",
+    "ts": "2026-05-27T16:13:00",
+    "user": "karim",
+    "text": "we had an out of memory crash processing a proto json message with an unusually high field number",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-009",
+    "channel": "#dev",
+    "ts": "2026-05-27T16:16:00",
+    "user": "laila",
+    "text": "was the payload itself large?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-009",
+    "channel": "#dev",
+    "ts": "2026-05-27T16:34:00",
+    "user": "karim",
+    "text": "tiny payload, just a single field tag that was huge",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-009",
+    "channel": "#dev",
+    "ts": "2026-05-27T16:44:00",
+    "user": "laila",
+    "text": "in LegacyProtoTypeAdapterFactory it indexes bit fields directly by field number",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-009",
+    "channel": "#dev",
+    "ts": "2026-05-27T17:05:00",
+    "user": "karim",
+    "text": "so it attempts to allocate massive arrays for crazy indexes, i will cap the bitfield index to avoid the memory blowup",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-011",
+    "channel": "#bugs",
+    "ts": "2026-04-02T14:23:00",
+    "user": "omar",
+    "text": "duplicate key detection seems broken when the first value in the map is null",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-011",
+    "channel": "#bugs",
+    "ts": "2026-04-02T14:26:00",
+    "user": "salma",
+    "text": "it should reject duplicate keys when complex keys are enabled, right?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-011",
+    "channel": "#bugs",
+    "ts": "2026-04-02T14:28:00",
+    "user": "omar",
+    "text": "it does unless the existing value is null, then it just overwrites it without throwing",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-011",
+    "channel": "#bugs",
+    "ts": "2026-04-02T14:50:00",
+    "user": "rana",
+    "text": "inside MapTypeAdapterFactory it checks if map.put returned null to detect duplicates",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-011",
+    "channel": "#bugs",
+    "ts": "2026-04-02T14:58:00",
+    "user": "salma",
+    "text": "ah classic map mistake, if the old value was null it thinks the key was absent. i will fix it",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-018",
+    "channel": "#bugs",
+    "ts": "2025-03-17T10:04:00",
+    "user": "rana",
+    "text": "hey, is anyone seeing weird behavior when deserializing into custom sets and maps?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-018",
+    "channel": "#bugs",
+    "ts": "2025-03-17T10:17:00",
+    "user": "omar",
+    "text": "what kind of behavior? are values missing?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-018",
+    "channel": "#bugs",
+    "ts": "2025-03-17T10:26:00",
+    "user": "rana",
+    "text": "no, the deserializer is giving back standard hash tables even when the field requested a sorted variant or a specialized collection.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-018",
+    "channel": "#bugs",
+    "ts": "2025-03-17T10:41:00",
+    "user": "salma",
+    "text": "oh wait, i ran into that. the internal constructor logic has fallbacks that end up returning raw mismatching instances instead of checking if the requested interface is actually compatible with the concrete type it creates.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-018",
+    "channel": "#bugs",
+    "ts": "2025-03-17T11:02:00",
+    "user": "omar",
+    "text": "that explains why we were getting type cast errors downstream.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-018",
+    "channel": "#bugs",
+    "ts": "2025-03-17T11:14:00",
+    "user": "salma",
+    "text": "yeah, i can put together a fix so it selects the right container type properly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-019",
+    "channel": "#backend",
+    "ts": "2025-02-20T14:07:00",
+    "user": "youssef",
+    "text": "heads up, when i configure multiple custom graph serializers, the second one keeps getting delegated to the previous creator instead of its own.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-019",
+    "channel": "#backend",
+    "ts": "2025-02-20T14:29:00",
+    "user": "laila",
+    "text": "wait, really? so registering a second type just reuses the creator from before?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-019",
+    "channel": "#backend",
+    "ts": "2025-02-20T14:38:00",
+    "user": "youssef",
+    "text": "exactly, the output for the second structure ends up completely wrong because it calls into the previous type handler.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-019",
+    "channel": "#backend",
+    "ts": "2025-02-20T15:01:00",
+    "user": "karim",
+    "text": "looking at the chaining logic now... yeah, the builder registration captures the existing delegate reference incorrectly and delegates backwards.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-019",
+    "channel": "#backend",
+    "ts": "2025-02-20T15:23:00",
+    "user": "laila",
+    "text": "good catch. i can take this and fix the registration chaining so each one keeps its own creator.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-021",
+    "channel": "#bugs",
+    "ts": "2024-09-13T10:18:00",
+    "user": "laila",
+    "text": "our service froze during startup today under heavy load. thread dump shows two worker threads stuck waiting on each other.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-021",
+    "channel": "#bugs",
+    "ts": "2024-09-13T10:42:00",
+    "user": "karim",
+    "text": "is it a synchronized block or static init?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-021",
+    "channel": "#bugs",
+    "ts": "2024-09-13T10:50:00",
+    "user": "laila",
+    "text": "looks like a class loading deadlock. one thread initialized the core json serializer while the other accessed static adapter fields.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-021",
+    "channel": "#bugs",
+    "ts": "2024-09-13T10:56:00",
+    "user": "youssef",
+    "text": "ah classic, circular class initialization dependencies between the main serializer and the adapters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-021",
+    "channel": "#bugs",
+    "ts": "2024-09-13T11:11:00",
+    "user": "karim",
+    "text": "i see where the cycle is triggered. i'll open PR #2740 to break the static dependency and avoid the deadlock.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-023",
+    "channel": "#bugs",
+    "ts": "2024-06-25T13:22:00",
+    "user": "mona",
+    "text": "seeing a strange bug with generic type resolution on inner classes. the type arguments on the original type seem to get modified.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-023",
+    "channel": "#bugs",
+    "ts": "2024-06-25T13:33:00",
+    "user": "hassan",
+    "text": "wait, modified in place? are they not immutable?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-023",
+    "channel": "#bugs",
+    "ts": "2024-06-25T13:58:00",
+    "user": "mona",
+    "text": "yeah, when resolving a parameterized type whose enclosing owner changes, the resolved types seem to bleed back into subsequent lookups.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-023",
+    "channel": "#bugs",
+    "ts": "2024-06-25T14:23:00",
+    "user": "hassan",
+    "text": "let me check the resolver. wow, when owner changes, it passes the existing array directly instead of cloning it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-023",
+    "channel": "#bugs",
+    "ts": "2024-06-25T14:25:00",
+    "user": "mona",
+    "text": "that's definitely it. i'll push a fix under PR #2706 shortly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-026",
+    "channel": "#backend",
+    "ts": "2024-02-29T09:13:00",
+    "user": "salma",
+    "text": "quick question, does setting the date format with default date style actually work for you guys?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-026",
+    "channel": "#backend",
+    "ts": "2024-02-29T09:22:00",
+    "user": "omar",
+    "text": "i tried using it yesterday with default style and it seemed to ignore my setting and fallback to full timestamp string.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-026",
+    "channel": "#backend",
+    "ts": "2024-02-29T09:25:00",
+    "user": "salma",
+    "text": "yeah! the builder method that takes an integer style checks against default and drops it completely if only one part is specified.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-026",
+    "channel": "#backend",
+    "ts": "2024-02-29T09:32:00",
+    "user": "omar",
+    "text": "that's confusing, plus those integer constants are super error-prone anyway.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-026",
+    "channel": "#backend",
+    "ts": "2024-02-29T09:51:00",
+    "user": "salma",
+    "text": "totally. i'll put up PR #2556 to honor default styles properly and deprecate the old integer-based method.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-027",
+    "channel": "#bugs",
+    "ts": "2024-01-27T14:21:00",
+    "user": "rana",
+    "text": "our pipeline threw a null pointer exception while comparing type variables in generic methods.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-027",
+    "channel": "#bugs",
+    "ts": "2024-01-27T14:37:00",
+    "user": "youssef",
+    "text": "which method was comparing them?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-027",
+    "channel": "#bugs",
+    "ts": "2024-01-27T14:50:00",
+    "user": "rana",
+    "text": "it blew up inside $Gson$Types when checking if two type variables are equal.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-027",
+    "channel": "#bugs",
+    "ts": "2024-01-27T15:11:00",
+    "user": "youssef",
+    "text": "let me inspect that. it assumes the generic declaration is always a class, so calling getDeclaringClass on a method declaration returns null or causes a failure.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-027",
+    "channel": "#bugs",
+    "ts": "2024-01-27T15:26:00",
+    "user": "rana",
+    "text": "ah, generic declarations can be methods or constructors too!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-027",
+    "channel": "#bugs",
+    "ts": "2024-01-27T15:31:00",
+    "user": "youssef",
+    "text": "exactly. i will handle non-class declarations properly so it stops crashing.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-029",
+    "channel": "#bugs",
+    "ts": "2023-12-03T11:24:00",
+    "user": "laila",
+    "text": "we have a weird date parsing issue where dates suddenly shift timezones after a few requests.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-029",
+    "channel": "#bugs",
+    "ts": "2023-12-03T11:42:00",
+    "user": "karim",
+    "text": "is the formatter shared across threads?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-029",
+    "channel": "#bugs",
+    "ts": "2023-12-03T12:00:00",
+    "user": "laila",
+    "text": "yes, but it happens even sequentially on one thread. once a date with a specific timezone is parsed, every subsequent date uses that timezone!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-029",
+    "channel": "#bugs",
+    "ts": "2023-12-03T12:09:00",
+    "user": "karim",
+    "text": "wait, inside DefaultDateTypeAdapter it modifies the timezone on the underlying date format but never restores the original timezone afterwards.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-029",
+    "channel": "#bugs",
+    "ts": "2023-12-03T12:33:00",
+    "user": "laila",
+    "text": "wow, that's why all following dates got corrupted. i'll update it to restore the previous timezone in a finally block.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-032",
+    "channel": "#help",
+    "ts": "2023-08-26T15:12:00",
+    "user": "mona",
+    "text": "shouldn't calling name() throw an error if you're not inside an object?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-032",
+    "channel": "#help",
+    "ts": "2023-08-26T15:20:00",
+    "user": "omar",
+    "text": "definitely, calling name inside an array or top level is invalid json. does it allow it?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-032",
+    "channel": "#help",
+    "ts": "2023-08-26T15:25:00",
+    "user": "mona",
+    "text": "yeah, with JsonTreeWriter it just accepts the name call and produces corrupted tree output instead of throwing an illegal state exception.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-032",
+    "channel": "#help",
+    "ts": "2023-08-26T15:42:00",
+    "user": "omar",
+    "text": "ah, standard writer enforces state checks but the tree writer implementation missed that validation.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-032",
+    "channel": "#help",
+    "ts": "2023-08-26T15:58:00",
+    "user": "mona",
+    "text": "i'll add the proper state check to make sure it throws when outside an object.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-033",
+    "channel": "#dev",
+    "ts": "2023-08-21T09:05:00",
+    "user": "salma",
+    "text": "hey team, getting an illegalargumentexception when calling getDelegateAdapter on a type annotated with an adapter annotation. it just blows up with adapter not found",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-033",
+    "channel": "#dev",
+    "ts": "2023-08-21T09:26:00",
+    "user": "youssef",
+    "text": "wait, is this happening with custom factory delegation or standard Gson setup?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-033",
+    "channel": "#dev",
+    "ts": "2023-08-21T09:32:00",
+    "user": "salma",
+    "text": "standard Gson instance, just using the annotation on a class and then trying to fetch the delegate inside its factory",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-033",
+    "channel": "#dev",
+    "ts": "2023-08-21T09:54:00",
+    "user": "youssef",
+    "text": "ah i see the issue. the factory created from the annotation isn't passing the right skip-past factory reference, so it recurses and fails to find the next delegate",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-033",
+    "channel": "#dev",
+    "ts": "2023-08-21T10:08:00",
+    "user": "salma",
+    "text": "yeah exactly, it cannot find delegate adapter for that type and throws",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-033",
+    "channel": "#dev",
+    "ts": "2023-08-21T10:28:00",
+    "user": "youssef",
+    "text": "let me push a fix for the delegate lookup logic",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T15:20:00",
+    "user": "karim",
+    "text": "is anyone seeing unexpected syntax errors when streaming large payload chunks?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T15:35:00",
+    "user": "mona",
+    "text": "what kind of error are you seeing?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T15:52:00",
+    "user": "karim",
+    "text": "malformed json exception saying unexpected character, but the json is completely valid",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T16:01:00",
+    "user": "mona",
+    "text": "how are you reading it?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T16:19:00",
+    "user": "karim",
+    "text": "just using JsonReader with a buffered input reader. happens right at the buffer boundary when parsing unquoted strings",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T16:20:00",
+    "user": "mona",
+    "text": "oh right, JsonReader has an issue where filling the buffer in the middle of a token loses track of the state or misreads the char buffer",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-038",
+    "channel": "#help",
+    "ts": "2023-03-05T16:42:00",
+    "user": "karim",
+    "text": "yeah that explains why it only repros on big payloads. i will write a test and fix it",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T10:25:00",
+    "user": "laila",
+    "text": "hey, our equality checks for parsed numeric elements are failing in unit tests",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T10:46:00",
+    "user": "omar",
+    "text": "what values are failing?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T10:57:00",
+    "user": "laila",
+    "text": "when we compare an arbitrary-precision integer element against an identical one, equals returns false",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T11:01:00",
+    "user": "omar",
+    "text": "wait really? even if they hold the exact same value?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T11:11:00",
+    "user": "laila",
+    "text": "yeah, the equality check tries to cast to standard integer types or compares as floating point, losing precision",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T11:25:00",
+    "user": "omar",
+    "text": "ah, it doesn't handle the arbitrary precision branch in the equality comparison",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-043",
+    "channel": "#backend",
+    "ts": "2023-02-03T11:31:00",
+    "user": "laila",
+    "text": "exactly. i can take care of patching the equality method to compare them accurately",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T09:17:00",
+    "user": "rana",
+    "text": "we are seeing intermittent crashes in production when multiple threads serialize models with self-referencing fields",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T09:42:00",
+    "user": "hassan",
+    "text": "what kind of crash? stack overflow or null pointer?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T09:48:00",
+    "user": "rana",
+    "text": "null pointer exception. it only happens under heavy concurrent load on startup",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T10:05:00",
+    "user": "hassan",
+    "text": "interesting, cyclic types use a deferred placeholder while building the serializer, right?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T10:09:00",
+    "user": "rana",
+    "text": "yes, and that map or lookup cache seems to leak across threads or get accessed before it is bound",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T10:30:00",
+    "user": "hassan",
+    "text": "so one thread grabs another thread's uninitialized placeholder and calls it",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-044",
+    "channel": "#backend",
+    "ts": "2022-12-03T10:40:00",
+    "user": "rana",
+    "text": "exactly. i will rework the thread safety around cyclical dependency resolution",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T12:12:00",
+    "user": "youssef",
+    "text": "why is runtime polymorphism not kicking in for tree-based serializer wrappers?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T12:37:00",
+    "user": "rana",
+    "text": "what do you mean?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T12:43:00",
+    "user": "youssef",
+    "text": "if a field is declared as a base type, it serializes using the base serializer even when the actual instance is a subtype, whenever a tree adapter or future adapter is involved",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T13:01:00",
+    "user": "rana",
+    "text": "oh, the runtime wrapper check checks if the delegate is reflective, but it doesn't unwrap future or tree adapters to see that they wrap reflective adapters underneath",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T13:26:00",
+    "user": "youssef",
+    "text": "right, so it thinks it shouldn't override the runtime type!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T13:43:00",
+    "user": "rana",
+    "text": "someone started looking at this in PR #1787",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-047",
+    "channel": "#bugs",
+    "ts": "2022-10-07T13:44:00",
+    "user": "youssef",
+    "text": "awesome, i will finish that up and get the checks unwrapping correctly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:01:00",
+    "user": "mona",
+    "text": "why is our custom writer throwing an assertion error during serialization?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:05:00",
+    "user": "karim",
+    "text": "wait, an assertion error? not an io exception?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:17:00",
+    "user": "mona",
+    "text": "yeah, our underlying stream throws a custom io exception, but toJson wraps it in an assertion error thinking it can never happen with a string writer",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:27:00",
+    "user": "karim",
+    "text": "oh wow, it catches io exception and literally rethrows assertion error assuming it is impossible",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:35:00",
+    "user": "mona",
+    "text": "but custom adapters can explicitly throw io exceptions from their write methods!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:37:00",
+    "user": "karim",
+    "text": "take a look at PR #2172, i think there was discussion on wrapping in jsonioexception instead",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-050",
+    "channel": "#help",
+    "ts": "2022-08-05T14:45:00",
+    "user": "mona",
+    "text": "perfect, i will fix it so it wraps in jsonioexception instead of blowing up with assertion error",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-051",
+    "channel": "#dev",
+    "ts": "2022-08-05T10:24:00",
+    "user": "salma",
+    "text": "why is parsing nan or infinity throwing numberformatexception instead of malformedjsonexception when reading an in-memory tree?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-051",
+    "channel": "#dev",
+    "ts": "2022-08-05T10:40:00",
+    "user": "laila",
+    "text": "wait, the stream reader throws malformedjsonexception for non-finite doubles when lenient mode is off, right?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-051",
+    "channel": "#dev",
+    "ts": "2022-08-05T10:43:00",
+    "user": "salma",
+    "text": "yeah exactly, but tree reader just lets numberformatexception bubble up instead of malformedjsonexception",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-051",
+    "channel": "#dev",
+    "ts": "2022-08-05T11:08:00",
+    "user": "laila",
+    "text": "that breaks consistency for anyone handling parse exceptions",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-051",
+    "channel": "#dev",
+    "ts": "2022-08-05T11:26:00",
+    "user": "salma",
+    "text": "i will submit PR #1782 to align the exception types across readers",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-051",
+    "channel": "#dev",
+    "ts": "2022-08-05T11:51:00",
+    "user": "laila",
+    "text": "sounds good, thanks for fixing!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-052",
+    "channel": "#help",
+    "ts": "2022-08-04T11:18:00",
+    "user": "omar",
+    "text": "hey, has anyone noticed nullSafe wrapping behaving weirdly when called multiple times?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-052",
+    "channel": "#help",
+    "ts": "2022-08-04T11:24:00",
+    "user": "rana",
+    "text": "in what way?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-052",
+    "channel": "#help",
+    "ts": "2022-08-04T11:33:00",
+    "user": "omar",
+    "text": "if an adapter is already null-safe and you call nullSafe on it, or if it handles nulls internally, it delegates improperly or creates unnecessary wrappers",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-052",
+    "channel": "#help",
+    "ts": "2022-08-04T11:50:00",
+    "user": "rana",
+    "text": "yeah, there were cases where nullSafe was applied redundantly or did not check if the adapter already handled nulls, leading to wrong delegation behavior",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-052",
+    "channel": "#help",
+    "ts": "2022-08-04T12:10:00",
+    "user": "omar",
+    "text": "that is tracked in issue #1553 i think",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-052",
+    "channel": "#help",
+    "ts": "2022-08-04T12:24:00",
+    "user": "rana",
+    "text": "let me grab that and make sure nullSafe is idempotent and handles existing null-safety properly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-053",
+    "channel": "#backend",
+    "ts": "2022-08-02T12:13:00",
+    "user": "rana",
+    "text": "hey, is anyone seeing weird output when serializing objects lately?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-053",
+    "channel": "#backend",
+    "ts": "2022-08-02T12:35:00",
+    "user": "omar",
+    "text": "yeah, getting some unexpected results with CharSequence types. it's totally breaking our api responses.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-053",
+    "channel": "#backend",
+    "ts": "2022-08-02T12:56:00",
+    "user": "salma",
+    "text": "checked the repo, looks like issue #1702 covers exactly this behavior.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-053",
+    "channel": "#backend",
+    "ts": "2022-08-02T13:08:00",
+    "user": "rana",
+    "text": "oh wow, good catch. looks like it's failing to call the string representation correctly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-053",
+    "channel": "#backend",
+    "ts": "2022-08-02T13:23:00",
+    "user": "omar",
+    "text": "i see it now. i'll take a look and get a patch ready.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-054",
+    "channel": "#dev",
+    "ts": "2022-07-18T16:08:00",
+    "user": "youssef",
+    "text": "anyone else having trouble with polymorphic serialization?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-054",
+    "channel": "#dev",
+    "ts": "2022-07-18T16:16:00",
+    "user": "laila",
+    "text": "yes! the output format is completely wrong for our nested objects.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-054",
+    "channel": "#dev",
+    "ts": "2022-07-18T16:19:00",
+    "user": "karim",
+    "text": "i think the issue is inside RuntimeTypeAdapterFactory, it seems to be dropping the type labels.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-054",
+    "channel": "#dev",
+    "ts": "2022-07-18T16:30:00",
+    "user": "youssef",
+    "text": "that explains it. i'll dig into that logic and see why it's misbehaving.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-054",
+    "channel": "#dev",
+    "ts": "2022-07-18T16:31:00",
+    "user": "laila",
+    "text": "let me know if you need help testing the fix.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-055",
+    "channel": "#bugs",
+    "ts": "2022-06-13T12:01:00",
+    "user": "mona",
+    "text": "hey guys, why is the date parser failing on valid inputs?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-055",
+    "channel": "#bugs",
+    "ts": "2022-06-13T12:04:00",
+    "user": "hassan",
+    "text": "not sure, what does the stack trace say?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-055",
+    "channel": "#bugs",
+    "ts": "2022-06-13T12:27:00",
+    "user": "mona",
+    "text": "it seems like ISO8601Utils is rejecting some of our standard date strings now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-055",
+    "channel": "#bugs",
+    "ts": "2022-06-13T12:48:00",
+    "user": "hassan",
+    "text": "ah, that might be a regression in the validation logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-055",
+    "channel": "#bugs",
+    "ts": "2022-06-13T12:50:00",
+    "user": "mona",
+    "text": "i'm on it, i'll prepare a fix for the parsing error.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-057",
+    "channel": "#dev",
+    "ts": "2022-01-26T10:11:00",
+    "user": "rana",
+    "text": "getting an infinite loop in the parser, anyone else?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-057",
+    "channel": "#dev",
+    "ts": "2022-01-26T10:14:00",
+    "user": "omar",
+    "text": "yeah, looks like hasNext is returning true even when the document is empty.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-057",
+    "channel": "#dev",
+    "ts": "2022-01-26T10:31:00",
+    "user": "salma",
+    "text": "i think it's related to how JsonTreeReader handles the end of the stream.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-057",
+    "channel": "#dev",
+    "ts": "2022-01-26T10:39:00",
+    "user": "rana",
+    "text": "that makes sense. i'll double check the termination condition.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-057",
+    "channel": "#dev",
+    "ts": "2022-01-26T10:48:00",
+    "user": "omar",
+    "text": "great, i'll review your pr once you push it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-058",
+    "channel": "#bugs",
+    "ts": "2021-11-08T16:18:00",
+    "user": "youssef",
+    "text": "hey, the app is dying with a weird index error when processing lists.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-058",
+    "channel": "#bugs",
+    "ts": "2021-11-08T16:23:00",
+    "user": "laila",
+    "text": "i saw that too, it seems to happen whenever the list is empty.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-058",
+    "channel": "#bugs",
+    "ts": "2021-11-08T16:47:00",
+    "user": "karim",
+    "text": "it looks like we are trying to access a position that doesn't exist.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-058",
+    "channel": "#bugs",
+    "ts": "2021-11-08T17:06:00",
+    "user": "youssef",
+    "text": "exactly, the bounds check is definitely missing.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-058",
+    "channel": "#bugs",
+    "ts": "2021-11-08T17:25:00",
+    "user": "karim",
+    "text": "i'll go ahead and add a proper check to prevent that crash.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-059",
+    "channel": "#help",
+    "ts": "2021-11-07T12:14:00",
+    "user": "mona",
+    "text": "our backend keeps crashing when trying to serialize private data structures.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-059",
+    "channel": "#help",
+    "ts": "2021-11-07T12:21:00",
+    "user": "hassan",
+    "text": "is it failing because of the constructor visibility?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-059",
+    "channel": "#help",
+    "ts": "2021-11-07T12:25:00",
+    "user": "mona",
+    "text": "yeah, it seems to throw a hard error instead of trying to work around it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-059",
+    "channel": "#help",
+    "ts": "2021-11-07T12:29:00",
+    "user": "hassan",
+    "text": "that's annoying. i'll look into adding a fallback for inaccessible constructors.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-059",
+    "channel": "#help",
+    "ts": "2021-11-07T12:51:00",
+    "user": "mona",
+    "text": "thanks, that would save us a lot of trouble.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-061",
+    "channel": "#help",
+    "ts": "2021-10-30T14:14:00",
+    "user": "rana",
+    "text": "is anyone else noticing that the writer settings are being ignored?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-061",
+    "channel": "#help",
+    "ts": "2021-10-30T14:29:00",
+    "user": "omar",
+    "text": "yeah, specifically the lenient and html-safe flags.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-061",
+    "channel": "#help",
+    "ts": "2021-10-30T14:53:00",
+    "user": "salma",
+    "text": "i was just looking at PR #1989 and it seems like the configuration isn't propagating correctly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-061",
+    "channel": "#help",
+    "ts": "2021-10-30T14:55:00",
+    "user": "rana",
+    "text": "good find. i'll try to fix the propagation logic this afternoon.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-061",
+    "channel": "#help",
+    "ts": "2021-10-30T15:17:00",
+    "user": "omar",
+    "text": "sounds good, let me know if you need eyes on the change.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-063",
+    "channel": "#dev",
+    "ts": "2021-10-29T10:13:00",
+    "user": "youssef",
+    "text": "hey, the field naming policy is acting super weird with special characters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-063",
+    "channel": "#dev",
+    "ts": "2021-10-29T10:37:00",
+    "user": "laila",
+    "text": "yeah, it's uppercasing things that aren't even letters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-063",
+    "channel": "#dev",
+    "ts": "2021-10-29T10:48:00",
+    "user": "karim",
+    "text": "i saw this mentioned in PR #2004 earlier today.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-063",
+    "channel": "#dev",
+    "ts": "2021-10-29T10:52:00",
+    "user": "youssef",
+    "text": "oh, i missed that. i'll check the logic to make sure we only target actual letters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-063",
+    "channel": "#dev",
+    "ts": "2021-10-29T11:00:00",
+    "user": "laila",
+    "text": "perfect, thanks for handling that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-064",
+    "channel": "#help",
+    "ts": "2021-10-24T12:05:00",
+    "user": "rana",
+    "text": "hey, seeing some random index out of bounds crashes in the reader during deep nesting",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-064",
+    "channel": "#help",
+    "ts": "2021-10-24T12:19:00",
+    "user": "omar",
+    "text": "oh that sounds like the getPath method isn't checking bounds properly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-064",
+    "channel": "#help",
+    "ts": "2021-10-24T12:25:00",
+    "user": "rana",
+    "text": "yeah, looks like it's trying to access an index that doesn't exist when the tree is deep",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-064",
+    "channel": "#help",
+    "ts": "2021-10-24T12:34:00",
+    "user": "omar",
+    "text": "i think i have a fix for that, check out PR #2001 when you get a chance",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-064",
+    "channel": "#help",
+    "ts": "2021-10-24T12:49:00",
+    "user": "rana",
+    "text": "nice, that looks exactly like what we need, thanks",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-065",
+    "channel": "#help",
+    "ts": "2021-10-12T10:18:00",
+    "user": "salma",
+    "text": "security scan flagged a potential deserialization vulnerability in our internal classes",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-065",
+    "channel": "#help",
+    "ts": "2021-10-12T10:22:00",
+    "user": "youssef",
+    "text": "that's not good, which part of the stack is triggering it?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-065",
+    "channel": "#help",
+    "ts": "2021-10-12T10:24:00",
+    "user": "salma",
+    "text": "looks like the way we handle LazilyParsedNumber is being exploited",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-065",
+    "channel": "#help",
+    "ts": "2021-10-12T10:45:00",
+    "user": "youssef",
+    "text": "ah, we should restrict that to prevent arbitrary class loading",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-065",
+    "channel": "#help",
+    "ts": "2021-10-12T11:03:00",
+    "user": "salma",
+    "text": "agreed, i'll put together a patch to block those classes during deserialization",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-066",
+    "channel": "#bugs",
+    "ts": "2021-10-10T10:06:00",
+    "user": "laila",
+    "text": "anyone notice our output format for longs is inconsistent lately?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-066",
+    "channel": "#bugs",
+    "ts": "2021-10-10T10:20:00",
+    "user": "karim",
+    "text": "yeah, it seems like the LongSerializationPolicy is behaving weirdly compared to the legacy version",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-066",
+    "channel": "#bugs",
+    "ts": "2021-10-10T10:36:00",
+    "user": "laila",
+    "text": "exactly, it's ignoring nulls in some cases where it shouldn't",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-066",
+    "channel": "#bugs",
+    "ts": "2021-10-10T10:52:00",
+    "user": "karim",
+    "text": "i'll take a look at the serialization logic and see why it deviates",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-066",
+    "channel": "#bugs",
+    "ts": "2021-10-10T10:59:00",
+    "user": "laila",
+    "text": "thanks, appreciate it",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-068",
+    "channel": "#bugs",
+    "ts": "2020-05-24T09:13:00",
+    "user": "mona",
+    "text": "we are seeing crashes when running on restricted environments",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-068",
+    "channel": "#bugs",
+    "ts": "2020-05-24T09:14:00",
+    "user": "hassan",
+    "text": "is it failing to reflect into private fields?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-068",
+    "channel": "#bugs",
+    "ts": "2020-05-24T09:27:00",
+    "user": "mona",
+    "text": "yeah, the UnsafeReflectionAccessor is throwing exceptions when it can't get access",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-068",
+    "channel": "#bugs",
+    "ts": "2020-05-24T09:36:00",
+    "user": "hassan",
+    "text": "that makes sense, we probably need a better fallback for when the security manager gets in the way",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-068",
+    "channel": "#bugs",
+    "ts": "2020-05-24T09:51:00",
+    "user": "mona",
+    "text": "i'll look into a more robust fallback strategy today",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-071",
+    "channel": "#help",
+    "ts": "2018-09-23T15:05:00",
+    "user": "rana",
+    "text": "getting incorrect types back when dealing with recursive generics",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-071",
+    "channel": "#help",
+    "ts": "2018-09-23T15:12:00",
+    "user": "omar",
+    "text": "is the type resolution getting stuck in a loop?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-071",
+    "channel": "#help",
+    "ts": "2018-09-23T15:22:00",
+    "user": "rana",
+    "text": "looks like it, the way $Gson$Types handles those variables seems to be failing",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-071",
+    "channel": "#help",
+    "ts": "2018-09-23T15:29:00",
+    "user": "omar",
+    "text": "we definitely need to add some protection against infinite recursion there",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-071",
+    "channel": "#help",
+    "ts": "2018-09-23T15:31:00",
+    "user": "rana",
+    "text": "i'm on it, will push a fix shortly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-073",
+    "channel": "#backend",
+    "ts": "2018-05-06T09:02:00",
+    "user": "salma",
+    "text": "getting reports about crashes when parsing specific date formats",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-073",
+    "channel": "#backend",
+    "ts": "2018-05-06T09:04:00",
+    "user": "youssef",
+    "text": "is it related to the DefaultDateTypeAdapter?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-073",
+    "channel": "#backend",
+    "ts": "2018-05-06T09:23:00",
+    "user": "salma",
+    "text": "yeah, it seems to trip up on some edge case inputs",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-073",
+    "channel": "#backend",
+    "ts": "2018-05-06T09:39:00",
+    "user": "youssef",
+    "text": "i think i know the issue, it isn't handling nulls or empty strings gracefully there",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-073",
+    "channel": "#backend",
+    "ts": "2018-05-06T09:56:00",
+    "user": "salma",
+    "text": "cool, let me know if you want me to help verify the fix",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-075",
+    "channel": "#dev",
+    "ts": "2017-12-27T11:17:00",
+    "user": "laila",
+    "text": "date parsing is completely broken since we updated the runtime",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-075",
+    "channel": "#dev",
+    "ts": "2017-12-27T11:20:00",
+    "user": "karim",
+    "text": "is it failing to recognize the format?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-075",
+    "channel": "#dev",
+    "ts": "2017-12-27T11:26:00",
+    "user": "laila",
+    "text": "yep, it just throws an exception instead of parsing the string",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-075",
+    "channel": "#dev",
+    "ts": "2017-12-27T11:29:00",
+    "user": "karim",
+    "text": "sounds like the standard library changed how it formats dates",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-075",
+    "channel": "#dev",
+    "ts": "2017-12-27T11:49:00",
+    "user": "laila",
+    "text": "i'll dig into the parsing logic and try to adjust for the new behavior",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-078",
+    "channel": "#help",
+    "ts": "2017-09-20T12:04:00",
+    "user": "mona",
+    "text": "i am getting the wrong type back when deserializing a collection with wildcards",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-078",
+    "channel": "#help",
+    "ts": "2017-09-20T12:23:00",
+    "user": "hassan",
+    "text": "is it returning an object instead of the specific type?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-078",
+    "channel": "#help",
+    "ts": "2017-09-20T12:31:00",
+    "user": "mona",
+    "text": "exactly, it's losing the element type information",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-078",
+    "channel": "#help",
+    "ts": "2017-09-20T12:50:00",
+    "user": "hassan",
+    "text": "seems like the resolver isn't correctly unwrapping the wildcard",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-078",
+    "channel": "#help",
+    "ts": "2017-09-20T13:10:00",
+    "user": "mona",
+    "text": "i'll start working on a patch for the resolver",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-079",
+    "channel": "#help",
+    "ts": "2017-09-16T10:22:00",
+    "user": "rana",
+    "text": "hey, seeing a weird crash in the date adapter, getting nulls where i don't expect them.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-079",
+    "channel": "#help",
+    "ts": "2017-09-16T10:41:00",
+    "user": "omar",
+    "text": "is it happening for all date formats or just the default one?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-079",
+    "channel": "#help",
+    "ts": "2017-09-16T11:00:00",
+    "user": "rana",
+    "text": "looks like it's the default type adapter failing to handle primitives correctly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-079",
+    "channel": "#help",
+    "ts": "2017-09-16T11:17:00",
+    "user": "salma",
+    "text": "ah i think i see the issue, i'm opening PR #1100 to address the contract mismatch.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-079",
+    "channel": "#help",
+    "ts": "2017-09-16T11:28:00",
+    "user": "rana",
+    "text": "awesome, thanks salma!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-080",
+    "channel": "#backend",
+    "ts": "2017-07-29T12:08:00",
+    "user": "youssef",
+    "text": "anyone else getting a stackoverflow error during type resolution?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-080",
+    "channel": "#backend",
+    "ts": "2017-07-29T12:17:00",
+    "user": "laila",
+    "text": "yeah, i saw that earlier. it seems to happen when there's recursion in the type variables.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-080",
+    "channel": "#backend",
+    "ts": "2017-07-29T12:30:00",
+    "user": "youssef",
+    "text": "exactly, the resolver just spins forever.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-080",
+    "channel": "#backend",
+    "ts": "2017-07-29T12:35:00",
+    "user": "karim",
+    "text": "i've got a fix ready in PR #1128, should stop the infinite loop.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-080",
+    "channel": "#backend",
+    "ts": "2017-07-29T12:57:00",
+    "user": "youssef",
+    "text": "sweet, let me know when it's merged.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-082",
+    "channel": "#help",
+    "ts": "2017-06-16T13:11:00",
+    "user": "mona",
+    "text": "getting a random npe in the post construct adapter factory, anyone know why?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-082",
+    "channel": "#help",
+    "ts": "2017-06-16T13:36:00",
+    "user": "hassan",
+    "text": "that sounds like the factory isn't handling null instances properly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-082",
+    "channel": "#help",
+    "ts": "2017-06-16T13:39:00",
+    "user": "mona",
+    "text": "yeah, it's blowing up when the instance is null during reflection.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-082",
+    "channel": "#help",
+    "ts": "2017-06-16T13:40:00",
+    "user": "hassan",
+    "text": "i'll put up PR #1103 to add a null check there.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-082",
+    "channel": "#help",
+    "ts": "2017-06-16T13:55:00",
+    "user": "mona",
+    "text": "thanks hassan, appreciate it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-083",
+    "channel": "#dev",
+    "ts": "2017-05-27T10:18:00",
+    "user": "rana",
+    "text": "hey, we have a major crash on recursive types, hitting a stack overflow.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-083",
+    "channel": "#dev",
+    "ts": "2017-05-27T10:25:00",
+    "user": "omar",
+    "text": "is this related to the issues we saw in issue #440?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-083",
+    "channel": "#dev",
+    "ts": "2017-05-27T10:42:00",
+    "user": "rana",
+    "text": "yeah, the type bounds are creating a loop.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-083",
+    "channel": "#dev",
+    "ts": "2017-05-27T10:51:00",
+    "user": "salma",
+    "text": "i'm going to collapse those chains and submit PR #1075 to fix it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-083",
+    "channel": "#dev",
+    "ts": "2017-05-27T10:56:00",
+    "user": "rana",
+    "text": "perfect, thanks salma.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-084",
+    "channel": "#bugs",
+    "ts": "2017-04-17T10:12:00",
+    "user": "youssef",
+    "text": "we are having issues parsing negative zero values in the library.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-084",
+    "channel": "#bugs",
+    "ts": "2017-04-17T10:22:00",
+    "user": "laila",
+    "text": "is it failing during the read operation?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-084",
+    "channel": "#bugs",
+    "ts": "2017-04-17T10:28:00",
+    "user": "youssef",
+    "text": "yeah, the JsonReader treats it as an invalid token sometimes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-084",
+    "channel": "#bugs",
+    "ts": "2017-04-17T10:43:00",
+    "user": "karim",
+    "text": "i see the logic error, i'll take care of the fix today.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-084",
+    "channel": "#bugs",
+    "ts": "2017-04-17T11:01:00",
+    "user": "laila",
+    "text": "sounds good, thanks karim.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-086",
+    "channel": "#dev",
+    "ts": "2017-02-12T13:22:00",
+    "user": "mona",
+    "text": "getting an array index out of bounds exception when skipping values.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-086",
+    "channel": "#dev",
+    "ts": "2017-02-12T13:40:00",
+    "user": "hassan",
+    "text": "are you using the JsonTreeReader for that?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-086",
+    "channel": "#dev",
+    "ts": "2017-02-12T13:50:00",
+    "user": "mona",
+    "text": "yep, it seems to be miscalculating the index on nested nodes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-086",
+    "channel": "#dev",
+    "ts": "2017-02-12T14:12:00",
+    "user": "hassan",
+    "text": "i'll look into it and push a fix for the skipping logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-086",
+    "channel": "#dev",
+    "ts": "2017-02-12T14:16:00",
+    "user": "mona",
+    "text": "thanks, let me know when it's ready.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-088",
+    "channel": "#dev",
+    "ts": "2016-05-22T13:04:00",
+    "user": "rana",
+    "text": "we're failing to handle explicit nulls in the json stream.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-088",
+    "channel": "#dev",
+    "ts": "2016-05-22T13:28:00",
+    "user": "omar",
+    "text": "is it breaking the ProtoTypeAdapter?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-088",
+    "channel": "#dev",
+    "ts": "2016-05-22T13:46:00",
+    "user": "rana",
+    "text": "yes, it just ignores the null instead of setting the field.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-088",
+    "channel": "#dev",
+    "ts": "2016-05-22T13:51:00",
+    "user": "omar",
+    "text": "got it, i'll write a patch to handle those properly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-088",
+    "channel": "#dev",
+    "ts": "2016-05-22T14:00:00",
+    "user": "rana",
+    "text": "cool, thanks omar.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-089",
+    "channel": "#backend",
+    "ts": "2016-04-18T12:07:00",
+    "user": "youssef",
+    "text": "getting crashes when trying to instantiate specific classes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-089",
+    "channel": "#backend",
+    "ts": "2016-04-18T12:29:00",
+    "user": "laila",
+    "text": "what kind of classes? maybe the UnsafeAllocator is failing?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-089",
+    "channel": "#backend",
+    "ts": "2016-04-18T12:50:00",
+    "user": "youssef",
+    "text": "exactly, the modifiers aren't being checked before allocation.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-089",
+    "channel": "#backend",
+    "ts": "2016-04-18T12:59:00",
+    "user": "laila",
+    "text": "i'll add a check to throw an unsupported operation exception instead.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-089",
+    "channel": "#backend",
+    "ts": "2016-04-18T13:16:00",
+    "user": "youssef",
+    "text": "that would be a big help, thanks.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-090",
+    "channel": "#dev",
+    "ts": "2016-04-13T13:03:00",
+    "user": "rana",
+    "text": "hey, the service is blowing up with unhandled exceptions during serialization",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-090",
+    "channel": "#dev",
+    "ts": "2016-04-13T13:24:00",
+    "user": "omar",
+    "text": "is it happening on all requests?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-090",
+    "channel": "#dev",
+    "ts": "2016-04-13T13:38:00",
+    "user": "rana",
+    "text": "no, just when the stream is interrupted unexpectedly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-090",
+    "channel": "#dev",
+    "ts": "2016-04-13T13:47:00",
+    "user": "hassan",
+    "text": "looks like we are throwing the wrong exception type so the handler doesn't catch it",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-090",
+    "channel": "#dev",
+    "ts": "2016-04-13T13:49:00",
+    "user": "omar",
+    "text": "ah, good catch. i will swap it out for the correct exception type now",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-091",
+    "channel": "#bugs",
+    "ts": "2016-02-24T14:21:00",
+    "user": "salma",
+    "text": "we are seeing a sudden spike in crashes after the latest update",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-091",
+    "channel": "#bugs",
+    "ts": "2016-02-24T14:30:00",
+    "user": "youssef",
+    "text": "any stack trace?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-091",
+    "channel": "#bugs",
+    "ts": "2016-02-24T14:36:00",
+    "user": "salma",
+    "text": "it seems like we are hitting a null value where an object was expected during initialization",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-091",
+    "channel": "#bugs",
+    "ts": "2016-02-24T15:00:00",
+    "user": "laila",
+    "text": "i think i found it, the factory is returning nothing instead of an instance",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-091",
+    "channel": "#bugs",
+    "ts": "2016-02-24T15:15:00",
+    "user": "youssef",
+    "text": "that explains the crash. i'll patch it to handle the empty return value",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-093",
+    "channel": "#dev",
+    "ts": "2015-10-18T15:04:00",
+    "user": "karim",
+    "text": "hey, the output from the api is completely wrong for the nested structures",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-093",
+    "channel": "#dev",
+    "ts": "2015-10-18T15:07:00",
+    "user": "mona",
+    "text": "are the custom TypeAdapters configured correctly?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-093",
+    "channel": "#dev",
+    "ts": "2015-10-18T15:30:00",
+    "user": "karim",
+    "text": "they seem fine, but the hierarchy isn't being resolved as expected",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-093",
+    "channel": "#dev",
+    "ts": "2015-10-18T15:35:00",
+    "user": "hassan",
+    "text": "i suspect we are missing a runtime check on the hierarchy",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-093",
+    "channel": "#dev",
+    "ts": "2015-10-18T15:53:00",
+    "user": "mona",
+    "text": "that makes sense. i'll implement the check and push the fix",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-094",
+    "channel": "#bugs",
+    "ts": "2015-09-25T14:14:00",
+    "user": "rana",
+    "text": "our tests are failing because equality checks are returning false for identical numbers",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-094",
+    "channel": "#bugs",
+    "ts": "2015-09-25T14:19:00",
+    "user": "omar",
+    "text": "that sounds like an issue with LazilyParsedNumber",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-094",
+    "channel": "#bugs",
+    "ts": "2015-09-25T14:21:00",
+    "user": "rana",
+    "text": "exactly, the object comparison is failing even when the values are the same",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-094",
+    "channel": "#bugs",
+    "ts": "2015-09-25T14:31:00",
+    "user": "omar",
+    "text": "i'll add the missing comparison methods to fix the logic",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-094",
+    "channel": "#bugs",
+    "ts": "2015-09-25T14:43:00",
+    "user": "rana",
+    "text": "thanks, that should clear up the test failures",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-095",
+    "channel": "#bugs",
+    "ts": "2015-08-04T14:22:00",
+    "user": "salma",
+    "text": "the app is crashing whenever a null value hits our polymorphic setup",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-095",
+    "channel": "#bugs",
+    "ts": "2015-08-04T14:30:00",
+    "user": "youssef",
+    "text": "is this related to issue #680?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-095",
+    "channel": "#bugs",
+    "ts": "2015-08-04T14:52:00",
+    "user": "salma",
+    "text": "yes, it seems so",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-095",
+    "channel": "#bugs",
+    "ts": "2015-08-04T14:56:00",
+    "user": "laila",
+    "text": "i'll take a look at making the factory null-safe to prevent the crash",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-095",
+    "channel": "#bugs",
+    "ts": "2015-08-04T15:08:00",
+    "user": "youssef",
+    "text": "awesome, let me know when you have a pr ready",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-096",
+    "channel": "#bugs",
+    "ts": "2015-07-20T15:08:00",
+    "user": "karim",
+    "text": "i'm seeing duplicate nulls in the output array",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-096",
+    "channel": "#bugs",
+    "ts": "2015-07-20T15:14:00",
+    "user": "mona",
+    "text": "are you sure it's not just how you're constructing the JsonArray?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-096",
+    "channel": "#bugs",
+    "ts": "2015-07-20T15:20:00",
+    "user": "karim",
+    "text": "pretty sure, it happens consistently during serialization",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-096",
+    "channel": "#bugs",
+    "ts": "2015-07-20T15:34:00",
+    "user": "hassan",
+    "text": "i think i see the problem in the loop logic",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-096",
+    "channel": "#bugs",
+    "ts": "2015-07-20T15:35:00",
+    "user": "mona",
+    "text": "cool, i'll let you handle the fix then",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-097",
+    "channel": "#help",
+    "ts": "2014-12-04T14:22:00",
+    "user": "rana",
+    "text": "our date serialization is stripping out nulls instead of keeping them",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-097",
+    "channel": "#help",
+    "ts": "2014-12-04T14:46:00",
+    "user": "omar",
+    "text": "are you using the UtcDateTypeAdapter?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-097",
+    "channel": "#help",
+    "ts": "2014-12-04T14:54:00",
+    "user": "rana",
+    "text": "yeah, it seems to ignore nulls entirely",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-097",
+    "channel": "#help",
+    "ts": "2014-12-04T15:03:00",
+    "user": "hassan",
+    "text": "i can fix the logic so it preserves the null values correctly",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-097",
+    "channel": "#help",
+    "ts": "2014-12-04T15:09:00",
+    "user": "omar",
+    "text": "please do, thanks",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-099",
+    "channel": "#help",
+    "ts": "2014-11-13T10:02:00",
+    "user": "salma",
+    "text": "we are getting stack overflows when logging errors in Gson",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-099",
+    "channel": "#help",
+    "ts": "2014-11-13T10:18:00",
+    "user": "youssef",
+    "text": "is there a circular reference?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-099",
+    "channel": "#help",
+    "ts": "2014-11-13T10:26:00",
+    "user": "salma",
+    "text": "yes, the cause points back to the exception itself",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-099",
+    "channel": "#help",
+    "ts": "2014-11-13T10:33:00",
+    "user": "laila",
+    "text": "i'll add a factory to handle self-referencing throwables",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-099",
+    "channel": "#help",
+    "ts": "2014-11-13T10:48:00",
+    "user": "youssef",
+    "text": "that should solve it, thanks",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-100",
+    "channel": "#bugs",
+    "ts": "2014-11-09T13:08:00",
+    "user": "rana",
+    "text": "hey, is anyone else seeing weird output when parsing arrays of objects?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-100",
+    "channel": "#bugs",
+    "ts": "2014-11-09T13:09:00",
+    "user": "omar",
+    "text": "yeah, i noticed it too. it seems like the nesting level is getting messed up.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-100",
+    "channel": "#bugs",
+    "ts": "2014-11-09T13:31:00",
+    "user": "salma",
+    "text": "i think the issue is inside the JsonReader logic. it struggles when it hits an array of arrays.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-100",
+    "channel": "#bugs",
+    "ts": "2014-11-09T13:38:00",
+    "user": "rana",
+    "text": "that makes sense. i'll take a look at the traversal logic there.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-100",
+    "channel": "#bugs",
+    "ts": "2014-11-09T13:51:00",
+    "user": "salma",
+    "text": "thanks rana, let me know if you need help debugging that flow.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-105",
+    "channel": "#dev",
+    "ts": "2014-03-07T13:25:00",
+    "user": "youssef",
+    "text": "anyone seeing intermittent weirdness with typeadapters in parallel requests?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-105",
+    "channel": "#dev",
+    "ts": "2014-03-07T13:34:00",
+    "user": "laila",
+    "text": "wait, are we seeing cross-talk between requests?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-105",
+    "channel": "#dev",
+    "ts": "2014-03-07T13:46:00",
+    "user": "youssef",
+    "text": "yeah, it looks like generated adapters are leaking into the next call. it's definitely a concurrency issue in Gson.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-105",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:07:00",
+    "user": "karim",
+    "text": "that sounds like we need a threadsafe adapter invocation. i'll jump on that today.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-105",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:24:00",
+    "user": "youssef",
+    "text": "awesome, thanks karim.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-106",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:04:00",
+    "user": "mona",
+    "text": "hey, i'm seeing that the field-level annotation is being ignored in favor of the class-level one.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-106",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:13:00",
+    "user": "hassan",
+    "text": "that's definitely not right. it should prioritize the field.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-106",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:19:00",
+    "user": "mona",
+    "text": "exactly. the tests are failing because of this override issue.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-106",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:38:00",
+    "user": "hassan",
+    "text": "i'll dig into the mapping logic and get it sorted out.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-106",
+    "channel": "#dev",
+    "ts": "2014-03-07T14:47:00",
+    "user": "mona",
+    "text": "thanks, let me know when you have a patch.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-107",
+    "channel": "#help",
+    "ts": "2014-03-07T10:12:00",
+    "user": "rana",
+    "text": "the app is crashing whenever i try to deserialize these inner static classes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-107",
+    "channel": "#help",
+    "ts": "2014-03-07T10:36:00",
+    "user": "omar",
+    "text": "i see the same thing. it seems like the system thinks they are non-static.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-107",
+    "channel": "#help",
+    "ts": "2014-03-07T10:47:00",
+    "user": "salma",
+    "text": "yeah, it breaks during the type creation phase.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-107",
+    "channel": "#help",
+    "ts": "2014-03-07T11:01:00",
+    "user": "rana",
+    "text": "i'll check the reflection logic. i'll fix it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-107",
+    "channel": "#help",
+    "ts": "2014-03-07T11:21:00",
+    "user": "omar",
+    "text": "great, thanks rana.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-108",
+    "channel": "#help",
+    "ts": "2013-05-11T10:19:00",
+    "user": "youssef",
+    "text": "has anyone noticed data loss in our maps?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-108",
+    "channel": "#help",
+    "ts": "2013-05-11T10:26:00",
+    "user": "laila",
+    "text": "yeah, it looks like elements are just disappearing from the LinkedHashTreeMap.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-108",
+    "channel": "#help",
+    "ts": "2013-05-11T10:35:00",
+    "user": "youssef",
+    "text": "this is pretty bad. i suspect some pointers are getting dropped during rebalancing.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-108",
+    "channel": "#help",
+    "ts": "2013-05-11T10:37:00",
+    "user": "karim",
+    "text": "i'll investigate the LinkedHashTreeMap implementation right now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-108",
+    "channel": "#help",
+    "ts": "2013-05-11T11:00:00",
+    "user": "youssef",
+    "text": "thanks karim, please keep us posted.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-112",
+    "channel": "#bugs",
+    "ts": "2013-04-02T09:12:00",
+    "user": "mona",
+    "text": "hey, why is the app crashing on EnumSet deserialization?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-112",
+    "channel": "#bugs",
+    "ts": "2013-04-02T09:26:00",
+    "user": "hassan",
+    "text": "looks like we don't have a way to instantiate those collections.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-112",
+    "channel": "#bugs",
+    "ts": "2013-04-02T09:29:00",
+    "user": "mona",
+    "text": "the ConstructorConstructor doesn't seem to know how to handle them.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-112",
+    "channel": "#bugs",
+    "ts": "2013-04-02T09:51:00",
+    "user": "hassan",
+    "text": "i see. i'll add the construction logic for them today.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-112",
+    "channel": "#bugs",
+    "ts": "2013-04-02T10:02:00",
+    "user": "mona",
+    "text": "thanks hassan!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-114",
+    "channel": "#dev",
+    "ts": "2013-01-11T14:24:00",
+    "user": "rana",
+    "text": "is anyone else seeing memory pressure in Gson?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-114",
+    "channel": "#dev",
+    "ts": "2013-01-11T14:34:00",
+    "user": "omar",
+    "text": "oh yeah, i think we have an object leak in the thread locals.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-114",
+    "channel": "#dev",
+    "ts": "2013-01-11T14:51:00",
+    "user": "salma",
+    "text": "that would explain the heap growth. are we not cleaning them up?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-114",
+    "channel": "#dev",
+    "ts": "2013-01-11T15:01:00",
+    "user": "rana",
+    "text": "looks like it. i'll refactor the cleanup and push a fix.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-114",
+    "channel": "#dev",
+    "ts": "2013-01-11T15:23:00",
+    "user": "omar",
+    "text": "sounds good, thanks rana.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-116",
+    "channel": "#help",
+    "ts": "2012-09-15T14:23:00",
+    "user": "youssef",
+    "text": "the order of elements in our maps is coming out totally wrong.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-116",
+    "channel": "#help",
+    "ts": "2012-09-15T14:33:00",
+    "user": "laila",
+    "text": "i've noticed that too. the LinkedHashTreeMap seems to be corrupted.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-116",
+    "channel": "#help",
+    "ts": "2012-09-15T14:51:00",
+    "user": "youssef",
+    "text": "i'll take a look at the logic. it needs some optimization anyway.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-116",
+    "channel": "#help",
+    "ts": "2012-09-15T14:56:00",
+    "user": "karim",
+    "text": "cool, let me know if you need a second pair of eyes on that LinkedHashTreeMap code.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-116",
+    "channel": "#help",
+    "ts": "2012-09-15T15:03:00",
+    "user": "youssef",
+    "text": "will do!",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-117",
+    "channel": "#bugs",
+    "ts": "2012-09-10T15:20:00",
+    "user": "rana",
+    "text": "hey, anyone seeing weird structure issues in the graph? some nodes are disappearing.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-117",
+    "channel": "#bugs",
+    "ts": "2012-09-10T15:39:00",
+    "user": "omar",
+    "text": "i saw that too. looks like we are unlinking stuff that should stay connected.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-117",
+    "channel": "#bugs",
+    "ts": "2012-09-10T15:49:00",
+    "user": "salma",
+    "text": "could it be the logic inside LinkedTreeMap? i remember touching that area last week.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-117",
+    "channel": "#bugs",
+    "ts": "2012-09-10T16:02:00",
+    "user": "omar",
+    "text": "oh good catch, let me check the pointers there.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-117",
+    "channel": "#bugs",
+    "ts": "2012-09-10T16:20:00",
+    "user": "rana",
+    "text": "yep, looks like an accidental removal during the rebalance.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-117",
+    "channel": "#bugs",
+    "ts": "2012-09-10T16:21:00",
+    "user": "omar",
+    "text": "got it, i'll push a fix for that now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-119",
+    "channel": "#bugs",
+    "ts": "2012-08-26T13:14:00",
+    "user": "youssef",
+    "text": "is anyone else having trouble parsing files with a BOM?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-119",
+    "channel": "#bugs",
+    "ts": "2012-08-26T13:33:00",
+    "user": "laila",
+    "text": "yeah, it seems like the JsonReader is skipping over the byte order mark incorrectly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-119",
+    "channel": "#bugs",
+    "ts": "2012-08-26T13:53:00",
+    "user": "youssef",
+    "text": "it feels like we aren't reading enough characters at the start.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-119",
+    "channel": "#bugs",
+    "ts": "2012-08-26T14:14:00",
+    "user": "laila",
+    "text": "i'll take a look at how we handle the buffer initialization.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-119",
+    "channel": "#bugs",
+    "ts": "2012-08-26T14:25:00",
+    "user": "youssef",
+    "text": "thanks, let me know if you need help.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-120",
+    "channel": "#help",
+    "ts": "2012-08-25T16:22:00",
+    "user": "karim",
+    "text": "hey, the parser is throwing exceptions on valid numbers.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-120",
+    "channel": "#help",
+    "ts": "2012-08-25T16:29:00",
+    "user": "mona",
+    "text": "really? which part?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-120",
+    "channel": "#help",
+    "ts": "2012-08-25T16:46:00",
+    "user": "karim",
+    "text": "it seems like JsonReader is failing on some edge cases.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-120",
+    "channel": "#help",
+    "ts": "2012-08-25T17:02:00",
+    "user": "mona",
+    "text": "i think i see the issue, the logic for number parsing is a bit too strict.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-120",
+    "channel": "#help",
+    "ts": "2012-08-25T17:26:00",
+    "user": "karim",
+    "text": "can you take a look? i'm stuck on this.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-120",
+    "channel": "#help",
+    "ts": "2012-08-25T17:32:00",
+    "user": "mona",
+    "text": "sure, i'll submit a fix today.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-121",
+    "channel": "#backend",
+    "ts": "2012-08-24T10:17:00",
+    "user": "hassan",
+    "text": "is our integer parsing broken?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-121",
+    "channel": "#backend",
+    "ts": "2012-08-24T10:39:00",
+    "user": "rana",
+    "text": "what makes you say that?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-121",
+    "channel": "#backend",
+    "ts": "2012-08-24T11:00:00",
+    "user": "hassan",
+    "text": "some values are coming back as null or crashing the JsonReader.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-121",
+    "channel": "#backend",
+    "ts": "2012-08-24T11:20:00",
+    "user": "rana",
+    "text": "ah, let me check the integer logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-121",
+    "channel": "#backend",
+    "ts": "2012-08-24T11:31:00",
+    "user": "hassan",
+    "text": "found it, it's definitely in the parsing method.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-121",
+    "channel": "#backend",
+    "ts": "2012-08-24T11:34:00",
+    "user": "rana",
+    "text": "alright, i'll get that fixed up.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-122",
+    "channel": "#bugs",
+    "ts": "2012-08-25T13:07:00",
+    "user": "omar",
+    "text": "hey, the parser is getting stuck in a bad state after a failed conversion.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-122",
+    "channel": "#bugs",
+    "ts": "2012-08-25T13:12:00",
+    "user": "salma",
+    "text": "yeah, i noticed it doesn't recover properly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-122",
+    "channel": "#bugs",
+    "ts": "2012-08-25T13:13:00",
+    "user": "omar",
+    "text": "it just keeps failing for every subsequent read, it's super annoying.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-122",
+    "channel": "#bugs",
+    "ts": "2012-08-25T13:15:00",
+    "user": "salma",
+    "text": "i think we need to hold onto the raw string before trying to parse it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-122",
+    "channel": "#bugs",
+    "ts": "2012-08-25T13:23:00",
+    "user": "omar",
+    "text": "agreed, i'll work on that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-124",
+    "channel": "#help",
+    "ts": "2012-06-30T10:14:00",
+    "user": "laila",
+    "text": "getting unexpected crashes when the content ends abruptly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-124",
+    "channel": "#help",
+    "ts": "2012-06-30T10:35:00",
+    "user": "youssef",
+    "text": "i'm seeing that too, it just dies instead of throwing a clean exception.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-124",
+    "channel": "#help",
+    "ts": "2012-06-30T10:54:00",
+    "user": "laila",
+    "text": "exactly, the app just shuts down.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-124",
+    "channel": "#help",
+    "ts": "2012-06-30T11:01:00",
+    "user": "youssef",
+    "text": "i'll add a check to throw a proper exception when the end is reached too early.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-125",
+    "channel": "#help",
+    "ts": "2012-06-27T15:13:00",
+    "user": "karim",
+    "text": "anyone working on issue #443?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-125",
+    "channel": "#help",
+    "ts": "2012-06-27T15:21:00",
+    "user": "mona",
+    "text": "not yet, what's the deal?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-125",
+    "channel": "#help",
+    "ts": "2012-06-27T15:26:00",
+    "user": "karim",
+    "text": "empty docs are failing to parse correctly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-125",
+    "channel": "#help",
+    "ts": "2012-06-27T15:47:00",
+    "user": "mona",
+    "text": "ah, i see, it should probably just return a null object.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-125",
+    "channel": "#help",
+    "ts": "2012-06-27T16:10:00",
+    "user": "karim",
+    "text": "exactly, i'll fix it now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-128",
+    "channel": "#help",
+    "ts": "2012-02-15T10:08:00",
+    "user": "hassan",
+    "text": "the parser is failing on strings ending with a slash.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-128",
+    "channel": "#help",
+    "ts": "2012-02-15T10:14:00",
+    "user": "rana",
+    "text": "did you check the JsonReader logic?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-128",
+    "channel": "#help",
+    "ts": "2012-02-15T10:37:00",
+    "user": "hassan",
+    "text": "yeah, the whitespace check seems to be off by one.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-128",
+    "channel": "#help",
+    "ts": "2012-02-15T10:54:00",
+    "user": "rana",
+    "text": "classic off-by-one, good catch.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-128",
+    "channel": "#help",
+    "ts": "2012-02-15T11:09:00",
+    "user": "hassan",
+    "text": "i'll update it to point to the correct position.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-129",
+    "channel": "#dev",
+    "ts": "2012-02-11T12:15:00",
+    "user": "rana",
+    "text": "hey, is anyone else seeing a crash when trying to write multiple objects to the stream?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-129",
+    "channel": "#dev",
+    "ts": "2012-02-11T12:20:00",
+    "user": "omar",
+    "text": "yeah, i hit that too. looks like issue #397 might be related.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-129",
+    "channel": "#dev",
+    "ts": "2012-02-11T12:35:00",
+    "user": "rana",
+    "text": "ah, good catch. it seems like it's choking when the writer is already closed too.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-129",
+    "channel": "#dev",
+    "ts": "2012-02-11T12:57:00",
+    "user": "omar",
+    "text": "yeah, the state checking is definitely off there. i'll take a look at the lenient mode logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-130",
+    "channel": "#help",
+    "ts": "2012-02-08T14:20:00",
+    "user": "salma",
+    "text": "hey, the parsing logic is acting weird with some prefixes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-130",
+    "channel": "#help",
+    "ts": "2012-02-08T14:44:00",
+    "user": "youssef",
+    "text": "what kind of weird? are you using JsonReader?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-130",
+    "channel": "#help",
+    "ts": "2012-02-08T15:01:00",
+    "user": "salma",
+    "text": "yeah, the nonexecute prefix is causing some unexpected behavior during tokenization.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-130",
+    "channel": "#help",
+    "ts": "2012-02-08T15:15:00",
+    "user": "youssef",
+    "text": "i see. it's probably missing some coverage. i'll dig into the code and add some tests.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-135",
+    "channel": "#bugs",
+    "ts": "2011-12-13T16:24:00",
+    "user": "laila",
+    "text": "heads up, a bunch of tests are failing after the latest merge.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-135",
+    "channel": "#bugs",
+    "ts": "2011-12-13T16:40:00",
+    "user": "karim",
+    "text": "oh no, is it the TypeAdapters stuff again?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-135",
+    "channel": "#bugs",
+    "ts": "2011-12-13T16:55:00",
+    "user": "laila",
+    "text": "looks like it. everything seems to be returning the wrong values.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-135",
+    "channel": "#bugs",
+    "ts": "2011-12-13T17:04:00",
+    "user": "karim",
+    "text": "got it. i'll check the recent commits and get those tests passing again.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-139",
+    "channel": "#help",
+    "ts": "2011-12-05T13:21:00",
+    "user": "mona",
+    "text": "hey, i'm getting a stack overflow in the serialization layer.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-139",
+    "channel": "#help",
+    "ts": "2011-12-05T13:29:00",
+    "user": "hassan",
+    "text": "that sounds like an infinite loop. are you using a custom TypeAdapter?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-139",
+    "channel": "#help",
+    "ts": "2011-12-05T13:38:00",
+    "user": "mona",
+    "text": "yeah, it seems to happen when calling nullSafe on non-null inputs.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-139",
+    "channel": "#help",
+    "ts": "2011-12-05T13:53:00",
+    "user": "hassan",
+    "text": "yikes, that shouldn't be recursing like that. i'll fix the logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-140",
+    "channel": "#bugs",
+    "ts": "2011-12-05T13:09:00",
+    "user": "rana",
+    "text": "anyone else seeing a crash when registering multiple type hierarchy adapters?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-140",
+    "channel": "#bugs",
+    "ts": "2011-12-05T13:20:00",
+    "user": "omar",
+    "text": "are you configuring them through GsonBuilder?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-140",
+    "channel": "#bugs",
+    "ts": "2011-12-05T13:31:00",
+    "user": "rana",
+    "text": "exactly. it blows up as soon as i try to use them together.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-140",
+    "channel": "#bugs",
+    "ts": "2011-12-05T13:49:00",
+    "user": "omar",
+    "text": "that's definitely a bug. i'll look into the registration logic and fix the test.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-141",
+    "channel": "#bugs",
+    "ts": "2011-12-05T11:08:00",
+    "user": "salma",
+    "text": "why is the wrong adapter being picked up? i registered the correct one last.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-141",
+    "channel": "#bugs",
+    "ts": "2011-12-05T11:21:00",
+    "user": "youssef",
+    "text": "are you adding them via GsonBuilder?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-141",
+    "channel": "#bugs",
+    "ts": "2011-12-05T11:44:00",
+    "user": "salma",
+    "text": "yes, but it's completely ignoring the precedence rules.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-141",
+    "channel": "#bugs",
+    "ts": "2011-12-05T11:49:00",
+    "user": "youssef",
+    "text": "i suspect the precedence logic is flipped. i'll check it out.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-145",
+    "channel": "#dev",
+    "ts": "2011-11-20T12:14:00",
+    "user": "laila",
+    "text": "hey, i'm seeing some weird behavior with generic types.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-145",
+    "channel": "#dev",
+    "ts": "2011-11-20T12:28:00",
+    "user": "karim",
+    "text": "what's happening? is it not matching the right implementation?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-145",
+    "channel": "#dev",
+    "ts": "2011-11-20T12:39:00",
+    "user": "laila",
+    "text": "exactly. if i register a raw type, it's failing to recognize the parameterized versions.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-145",
+    "channel": "#dev",
+    "ts": "2011-11-20T12:57:00",
+    "user": "karim",
+    "text": "that makes sense. i think i broke the matching logic in the latest update. i'll patch it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-147",
+    "channel": "#dev",
+    "ts": "2011-10-22T15:07:00",
+    "user": "mona",
+    "text": "hey, the app is crashing when it gets an unexpected data format.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-147",
+    "channel": "#dev",
+    "ts": "2011-10-22T15:21:00",
+    "user": "hassan",
+    "text": "is it throwing a generic exception instead of something we can catch?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-147",
+    "channel": "#dev",
+    "ts": "2011-10-22T15:34:00",
+    "user": "mona",
+    "text": "yeah, it's basically dying on type mismatches during binding.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-147",
+    "channel": "#dev",
+    "ts": "2011-10-22T15:59:00",
+    "user": "hassan",
+    "text": "i'll update it to throw a proper parsing exception so we can handle it gracefully.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-151",
+    "channel": "#help",
+    "ts": "2011-09-25T09:16:00",
+    "user": "rana",
+    "text": "hey, has anyone noticed that our dates are shifting by a few hours in the staging environment?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-151",
+    "channel": "#help",
+    "ts": "2011-09-25T09:17:00",
+    "user": "omar",
+    "text": "yeah, i saw that. looks like it depends on the server timezone.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-151",
+    "channel": "#help",
+    "ts": "2011-09-25T09:29:00",
+    "user": "salma",
+    "text": "are we using the standard date adapters? maybe gson is doing something weird with the local time zone settings.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-151",
+    "channel": "#help",
+    "ts": "2011-09-25T09:39:00",
+    "user": "rana",
+    "text": "i think so. it seems to be ignoring utc and applying local offsets.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-151",
+    "channel": "#help",
+    "ts": "2011-09-25T10:04:00",
+    "user": "salma",
+    "text": "found it. the adapters are assuming the default zone. i'll patch them to be timezone agnostic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-152",
+    "channel": "#bugs",
+    "ts": "2011-09-25T15:16:00",
+    "user": "youssef",
+    "text": "the map serialization is failing when i use subclasses in the values.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-152",
+    "channel": "#bugs",
+    "ts": "2011-09-25T15:24:00",
+    "user": "laila",
+    "text": "interesting. are you checking the test cases for map types?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-152",
+    "channel": "#bugs",
+    "ts": "2011-09-25T15:33:00",
+    "user": "youssef",
+    "text": "yeah, testMapOfSubclassFields is definitely broken right now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-152",
+    "channel": "#bugs",
+    "ts": "2011-09-25T15:47:00",
+    "user": "laila",
+    "text": "looks like MapTypeAdapterFactory isn't handling the runtime type properly for the values.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-152",
+    "channel": "#bugs",
+    "ts": "2011-09-25T16:03:00",
+    "user": "youssef",
+    "text": "good catch. i'll update the factory to handle that logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-156",
+    "channel": "#backend",
+    "ts": "2011-09-15T15:22:00",
+    "user": "karim",
+    "text": "the build is crashing on the older ci agent.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-156",
+    "channel": "#backend",
+    "ts": "2011-09-15T15:44:00",
+    "user": "mona",
+    "text": "what error are you seeing?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-156",
+    "channel": "#backend",
+    "ts": "2011-09-15T15:57:00",
+    "user": "karim",
+    "text": "looks like a method not found exception, seems like a java version issue.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-156",
+    "channel": "#backend",
+    "ts": "2011-09-15T16:21:00",
+    "user": "mona",
+    "text": "maybe something in DefaultTypeAdapters is using a newer api call?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-156",
+    "channel": "#backend",
+    "ts": "2011-09-15T16:27:00",
+    "user": "karim",
+    "text": "yep, found one call that is definitely 1.7 only. i'll swap it out.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-158",
+    "channel": "#dev",
+    "ts": "2011-09-07T11:13:00",
+    "user": "hassan",
+    "text": "getting random crashes during deserialization when the types don't match up.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-158",
+    "channel": "#dev",
+    "ts": "2011-09-07T11:32:00",
+    "user": "rana",
+    "text": "is it just returning null or actually blowing up?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-158",
+    "channel": "#dev",
+    "ts": "2011-09-07T11:51:00",
+    "user": "hassan",
+    "text": "it's throwing a raw exception, not caught.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-158",
+    "channel": "#dev",
+    "ts": "2011-09-07T12:13:00",
+    "user": "rana",
+    "text": "check the ReflectiveTypeAdapter, it might be missing a proper validation check.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-158",
+    "channel": "#dev",
+    "ts": "2011-09-07T12:14:00",
+    "user": "hassan",
+    "text": "you're right, it needs to throw a proper JsonSyntaxException. i'm on it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-161",
+    "channel": "#bugs",
+    "ts": "2011-09-08T15:15:00",
+    "user": "salma",
+    "text": "why are we getting generic exceptions when parsing numbers?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-161",
+    "channel": "#bugs",
+    "ts": "2011-09-08T15:21:00",
+    "user": "omar",
+    "text": "not sure, which part of the parser?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-161",
+    "channel": "#bugs",
+    "ts": "2011-09-08T15:23:00",
+    "user": "salma",
+    "text": "it's failing inside the BigDecimalTypeAdapter when the input is garbage.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-161",
+    "channel": "#bugs",
+    "ts": "2011-09-08T15:32:00",
+    "user": "omar",
+    "text": "ah, it's probably swallowing the specific error. we should throw something more descriptive.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-161",
+    "channel": "#bugs",
+    "ts": "2011-09-08T15:45:00",
+    "user": "salma",
+    "text": "agreed, i'll fix the exception handling there.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-163",
+    "channel": "#help",
+    "ts": "2011-08-10T12:11:00",
+    "user": "laila",
+    "text": "our custom serializers are being ignored when dealing with base classes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-163",
+    "channel": "#help",
+    "ts": "2011-08-10T12:22:00",
+    "user": "youssef",
+    "text": "is it using the runtime type instead?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-163",
+    "channel": "#help",
+    "ts": "2011-08-10T12:47:00",
+    "user": "laila",
+    "text": "exactly. testBaseClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances is failing.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-163",
+    "channel": "#help",
+    "ts": "2011-08-10T13:00:00",
+    "user": "youssef",
+    "text": "check TypeAdapterRuntimeTypeWrapper, it might be overriding the preference.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-163",
+    "channel": "#help",
+    "ts": "2011-08-10T13:09:00",
+    "user": "laila",
+    "text": "good call, found the logic error. i'll restore the expected behavior.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-166",
+    "channel": "#dev",
+    "ts": "2011-07-20T13:16:00",
+    "user": "karim",
+    "text": "the parser is acting up when reading character by character.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-166",
+    "channel": "#dev",
+    "ts": "2011-07-20T13:17:00",
+    "user": "mona",
+    "text": "that sounds like an off-by-one error in the buffer handling.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-166",
+    "channel": "#dev",
+    "ts": "2011-07-20T13:41:00",
+    "user": "karim",
+    "text": "yeah, i've been looking at the JsonReader implementation.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-166",
+    "channel": "#dev",
+    "ts": "2011-07-20T13:59:00",
+    "user": "mona",
+    "text": "did you check the boundary conditions?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-166",
+    "channel": "#dev",
+    "ts": "2011-07-20T14:01:00",
+    "user": "karim",
+    "text": "found a couple of spots where the index is off. fixing it now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-169",
+    "channel": "#dev",
+    "ts": "2011-07-13T12:25:00",
+    "user": "hassan",
+    "text": "the integration tests are failing after the latest benchmark refactor.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-169",
+    "channel": "#dev",
+    "ts": "2011-07-13T12:46:00",
+    "user": "rana",
+    "text": "did we change any of the core serialization logic?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-169",
+    "channel": "#dev",
+    "ts": "2011-07-13T12:48:00",
+    "user": "hassan",
+    "text": "not really, just some performance tweaks in MiniGson.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-169",
+    "channel": "#dev",
+    "ts": "2011-07-13T13:13:00",
+    "user": "rana",
+    "text": "maybe check if those changes affected the default behavior.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-169",
+    "channel": "#dev",
+    "ts": "2011-07-13T13:14:00",
+    "user": "hassan",
+    "text": "good idea, i'll trace the changes and fix the tests.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-170",
+    "channel": "#dev",
+    "ts": "2011-07-11T12:20:00",
+    "user": "rana",
+    "text": "hey, the app keeps blowing up whenever i try to serialize some of our complex objects.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-170",
+    "channel": "#dev",
+    "ts": "2011-07-11T12:25:00",
+    "user": "omar",
+    "text": "that sounds bad. is it happening consistently?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-170",
+    "channel": "#dev",
+    "ts": "2011-07-11T12:33:00",
+    "user": "rana",
+    "text": "yeah, every time it hits a recursive structure it just dies.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-170",
+    "channel": "#dev",
+    "ts": "2011-07-11T12:38:00",
+    "user": "salma",
+    "text": "i think i see why, it hits an infinite loop trying to resolve the structure.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-170",
+    "channel": "#dev",
+    "ts": "2011-07-11T12:54:00",
+    "user": "rana",
+    "text": "ah, that makes sense. can you handle that?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-170",
+    "channel": "#dev",
+    "ts": "2011-07-11T13:16:00",
+    "user": "salma",
+    "text": "on it, i'll patch the serialization logic now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-171",
+    "channel": "#help",
+    "ts": "2011-06-06T12:23:00",
+    "user": "youssef",
+    "text": "anyone else seeing weird state inconsistencies during heavy load?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-171",
+    "channel": "#help",
+    "ts": "2011-06-06T12:32:00",
+    "user": "laila",
+    "text": "yeah, i noticed some values getting overwritten unexpectedly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-171",
+    "channel": "#help",
+    "ts": "2011-06-06T12:57:00",
+    "user": "youssef",
+    "text": "looks like a race condition, it's totally non-deterministic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-171",
+    "channel": "#help",
+    "ts": "2011-06-06T13:09:00",
+    "user": "karim",
+    "text": "found it, multiple threads are accessing that shared method without protection.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-171",
+    "channel": "#help",
+    "ts": "2011-06-06T13:15:00",
+    "user": "youssef",
+    "text": "good catch, should we just sync the method?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-171",
+    "channel": "#help",
+    "ts": "2011-06-06T13:35:00",
+    "user": "karim",
+    "text": "yeah, that should stop the bleeding for now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-175",
+    "channel": "#bugs",
+    "ts": "2011-04-17T10:10:00",
+    "user": "mona",
+    "text": "the output format for our entities is completely wrong again.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-175",
+    "channel": "#bugs",
+    "ts": "2011-04-17T10:14:00",
+    "user": "hassan",
+    "text": "is it related to issue #205?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-175",
+    "channel": "#bugs",
+    "ts": "2011-04-17T10:33:00",
+    "user": "mona",
+    "text": "exactly, the type information is being stripped out.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-175",
+    "channel": "#bugs",
+    "ts": "2011-04-17T10:34:00",
+    "user": "hassan",
+    "text": "i see a few other spots where that's happening too.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-175",
+    "channel": "#bugs",
+    "ts": "2011-04-17T10:44:00",
+    "user": "mona",
+    "text": "can you take a look? it's breaking the consumer side.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-175",
+    "channel": "#bugs",
+    "ts": "2011-04-17T11:03:00",
+    "user": "hassan",
+    "text": "working on it now, i'll push a fix for all those cases.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-180",
+    "channel": "#help",
+    "ts": "2011-03-11T15:23:00",
+    "user": "rana",
+    "text": "our service is crashing hard during type mapping.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-180",
+    "channel": "#help",
+    "ts": "2011-03-11T15:30:00",
+    "user": "omar",
+    "text": "any stack trace info?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-180",
+    "channel": "#help",
+    "ts": "2011-03-11T15:33:00",
+    "user": "rana",
+    "text": "it seems like ParameterizedTypeHandlerMap is failing when we have nested class hierarchies.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-180",
+    "channel": "#help",
+    "ts": "2011-03-11T15:52:00",
+    "user": "salma",
+    "text": "oh i think i know why, it's not handling the copy operation correctly for those base types.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-180",
+    "channel": "#help",
+    "ts": "2011-03-11T16:15:00",
+    "user": "rana",
+    "text": "can you confirm?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-180",
+    "channel": "#help",
+    "ts": "2011-03-11T16:36:00",
+    "user": "salma",
+    "text": "yep, verified. i'll get a fix out in ten minutes.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-182",
+    "channel": "#backend",
+    "ts": "2011-03-10T10:22:00",
+    "user": "youssef",
+    "text": "getting frequent crashes on the android build.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-182",
+    "channel": "#backend",
+    "ts": "2011-03-10T10:42:00",
+    "user": "laila",
+    "text": "is it related to the memory allocation?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-182",
+    "channel": "#backend",
+    "ts": "2011-03-10T10:46:00",
+    "user": "youssef",
+    "text": "looks like it, MappedObjectConstructor is throwing an exception in some environments.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-182",
+    "channel": "#backend",
+    "ts": "2011-03-10T11:05:00",
+    "user": "karim",
+    "text": "that's an unsafe allocation pattern, we should change how we're doing that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-182",
+    "channel": "#backend",
+    "ts": "2011-03-10T11:07:00",
+    "user": "youssef",
+    "text": "agreed, can you handle the refactor?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-182",
+    "channel": "#backend",
+    "ts": "2011-03-10T11:19:00",
+    "user": "karim",
+    "text": "doing it right now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-185",
+    "channel": "#backend",
+    "ts": "2010-11-08T15:03:00",
+    "user": "mona",
+    "text": "the api response is returning empty for valid requests.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-185",
+    "channel": "#backend",
+    "ts": "2010-11-08T15:20:00",
+    "user": "hassan",
+    "text": "are you sure the path is correct?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-185",
+    "channel": "#backend",
+    "ts": "2010-11-08T15:41:00",
+    "user": "mona",
+    "text": "yeah, the ResourceQueryClient is just failing to parse the body if it's a list.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-185",
+    "channel": "#backend",
+    "ts": "2010-11-08T15:52:00",
+    "user": "hassan",
+    "text": "ah, it probably expects a single object only.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-185",
+    "channel": "#backend",
+    "ts": "2010-11-08T15:53:00",
+    "user": "mona",
+    "text": "can we make it more flexible?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-185",
+    "channel": "#backend",
+    "ts": "2010-11-08T16:07:00",
+    "user": "hassan",
+    "text": "yeah, i'll update the spec to handle lists.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-186",
+    "channel": "#help",
+    "ts": "2010-11-08T10:12:00",
+    "user": "rana",
+    "text": "we have a regression in our data parsing logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-186",
+    "channel": "#help",
+    "ts": "2010-11-08T10:33:00",
+    "user": "omar",
+    "text": "what changed?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-186",
+    "channel": "#help",
+    "ts": "2010-11-08T10:48:00",
+    "user": "rana",
+    "text": "it's handling unquoted strings differently than it used to in Gson.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-186",
+    "channel": "#help",
+    "ts": "2010-11-08T11:11:00",
+    "user": "salma",
+    "text": "that might be intentional, but it's throwing the wrong exception type.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-186",
+    "channel": "#help",
+    "ts": "2010-11-08T11:16:00",
+    "user": "rana",
+    "text": "can we make it throw the specific one we need?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-186",
+    "channel": "#help",
+    "ts": "2010-11-08T11:30:00",
+    "user": "salma",
+    "text": "sure, i'll adjust the parser.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-187",
+    "channel": "#help",
+    "ts": "2010-11-07T13:15:00",
+    "user": "youssef",
+    "text": "the parser is returning null on unexpected end of file.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-187",
+    "channel": "#help",
+    "ts": "2010-11-07T13:29:00",
+    "user": "laila",
+    "text": "that's breaking our downstream logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-187",
+    "channel": "#help",
+    "ts": "2010-11-07T13:53:00",
+    "user": "youssef",
+    "text": "yeah, it's happening inside the Streams implementation.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-187",
+    "channel": "#help",
+    "ts": "2010-11-07T14:12:00",
+    "user": "karim",
+    "text": "we should check if the document is actually empty before returning null.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-187",
+    "channel": "#help",
+    "ts": "2010-11-07T14:21:00",
+    "user": "youssef",
+    "text": "exactly, that would restore the old behavior.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-187",
+    "channel": "#help",
+    "ts": "2010-11-07T14:32:00",
+    "user": "karim",
+    "text": "i'll push the fix shortly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-190",
+    "channel": "#backend",
+    "ts": "2010-11-01T10:15:00",
+    "user": "omar",
+    "text": "hey, the service is crashing whenever we try to deserialize the new payload.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-190",
+    "channel": "#backend",
+    "ts": "2010-11-01T10:23:00",
+    "user": "salma",
+    "text": "is it throwing a null pointer?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-190",
+    "channel": "#backend",
+    "ts": "2010-11-01T10:48:00",
+    "user": "omar",
+    "text": "yeah, looks like it's happening inside TypeInfoFactory during the reflection phase.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-190",
+    "channel": "#backend",
+    "ts": "2010-11-01T11:03:00",
+    "user": "laila",
+    "text": "ah, i think i see why, the factory isn't handling the new generic types correctly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-190",
+    "channel": "#backend",
+    "ts": "2010-11-01T11:22:00",
+    "user": "laila",
+    "text": "i'll take a look and get a fix pushed out.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-192",
+    "channel": "#backend",
+    "ts": "2010-10-29T15:01:00",
+    "user": "hassan",
+    "text": "anyone else seeing crashes with long fields in Gson?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-192",
+    "channel": "#backend",
+    "ts": "2010-10-29T15:17:00",
+    "user": "rana",
+    "text": "what kind of crash?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-192",
+    "channel": "#backend",
+    "ts": "2010-10-29T15:28:00",
+    "user": "hassan",
+    "text": "it seems to be failing when it hits a primitive long vs the wrapper class.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-192",
+    "channel": "#backend",
+    "ts": "2010-10-29T15:34:00",
+    "user": "youssef",
+    "text": "oh, i see what's happening. it's treating them as the same adapter but they have different requirements.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-192",
+    "channel": "#backend",
+    "ts": "2010-10-29T15:50:00",
+    "user": "youssef",
+    "text": "i'll throw together a patch to keep them separate for now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-193",
+    "channel": "#backend",
+    "ts": "2010-10-31T14:11:00",
+    "user": "mona",
+    "text": "hey team, everything is blowing up when we try to cast these objects.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-193",
+    "channel": "#backend",
+    "ts": "2010-10-31T14:20:00",
+    "user": "karim",
+    "text": "is it happening on the client side or backend?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-193",
+    "channel": "#backend",
+    "ts": "2010-10-31T14:40:00",
+    "user": "mona",
+    "text": "backend, getting a hard crash on startup.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-193",
+    "channel": "#backend",
+    "ts": "2010-10-31T15:03:00",
+    "user": "karim",
+    "text": "it looks like the primitive values aren't wrapping correctly before the cast.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-193",
+    "channel": "#backend",
+    "ts": "2010-10-31T15:12:00",
+    "user": "mona",
+    "text": "good catch, can you handle that?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-193",
+    "channel": "#backend",
+    "ts": "2010-10-31T15:30:00",
+    "user": "karim",
+    "text": "yup, on it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-197",
+    "channel": "#dev",
+    "ts": "2010-09-27T12:08:00",
+    "user": "salma",
+    "text": "hey, the output stream is being closed prematurely.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-197",
+    "channel": "#dev",
+    "ts": "2010-09-27T12:32:00",
+    "user": "laila",
+    "text": "are you sure? it should be keeping the streams open based on the flags.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-197",
+    "channel": "#dev",
+    "ts": "2010-09-27T12:46:00",
+    "user": "salma",
+    "text": "it's definitely closing them even when i tell it not to.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-197",
+    "channel": "#dev",
+    "ts": "2010-09-27T13:02:00",
+    "user": "laila",
+    "text": "that's weird. let me check the logic where we handle the stream copying.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-197",
+    "channel": "#dev",
+    "ts": "2010-09-27T13:20:00",
+    "user": "laila",
+    "text": "found it, the flag isn't propagating correctly. i'll fix it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-199",
+    "channel": "#help",
+    "ts": "2010-08-26T16:15:00",
+    "user": "omar",
+    "text": "why are my enum constants missing from the output?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-199",
+    "channel": "#help",
+    "ts": "2010-08-26T16:16:00",
+    "user": "youssef",
+    "text": "are they anonymous enums?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-199",
+    "channel": "#help",
+    "ts": "2010-08-26T16:19:00",
+    "user": "omar",
+    "text": "yeah, they are.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-199",
+    "channel": "#help",
+    "ts": "2010-08-26T16:29:00",
+    "user": "youssef",
+    "text": "that's a known issue #226 that we haven't touched yet.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-199",
+    "channel": "#help",
+    "ts": "2010-08-26T16:37:00",
+    "user": "omar",
+    "text": "can we prioritize it? it's breaking the frontend.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-199",
+    "channel": "#help",
+    "ts": "2010-08-26T16:50:00",
+    "user": "youssef",
+    "text": "fine, i'll patch it today.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-200",
+    "channel": "#backend",
+    "ts": "2010-08-18T12:22:00",
+    "user": "rana",
+    "text": "the data format is completely wrong for the latest API response.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-200",
+    "channel": "#backend",
+    "ts": "2010-08-18T12:41:00",
+    "user": "hassan",
+    "text": "is it missing fields?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-200",
+    "channel": "#backend",
+    "ts": "2010-08-18T12:53:00",
+    "user": "rana",
+    "text": "no, it's just serializing the wrong types for some reason.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-200",
+    "channel": "#backend",
+    "ts": "2010-08-18T13:09:00",
+    "user": "hassan",
+    "text": "oh, that sounds like issue #178.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-200",
+    "channel": "#backend",
+    "ts": "2010-08-18T13:27:00",
+    "user": "rana",
+    "text": "can you verify? we need this fixed asap.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-200",
+    "channel": "#backend",
+    "ts": "2010-08-18T13:44:00",
+    "user": "hassan",
+    "text": "checking now, i'll get it sorted.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-202",
+    "channel": "#backend",
+    "ts": "2010-06-22T15:12:00",
+    "user": "karim",
+    "text": "the type adapter priority seems completely messed up in the latest build.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-202",
+    "channel": "#backend",
+    "ts": "2010-06-22T15:35:00",
+    "user": "mona",
+    "text": "what do you mean?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-202",
+    "channel": "#backend",
+    "ts": "2010-06-22T15:50:00",
+    "user": "karim",
+    "text": "it's registering the DefaultTypeAdapters in the wrong order, so the wrong one is being used.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-202",
+    "channel": "#backend",
+    "ts": "2010-06-22T15:59:00",
+    "user": "mona",
+    "text": "that explains why the serialization tests are failing.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-202",
+    "channel": "#backend",
+    "ts": "2010-06-22T16:09:00",
+    "user": "karim",
+    "text": "yep, i'm going to fix the registration logic now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-204",
+    "channel": "#dev",
+    "ts": "2010-01-24T12:24:00",
+    "user": "laila",
+    "text": "the requests are failing because the content-length header is missing when there's no body.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-204",
+    "channel": "#dev",
+    "ts": "2010-01-24T12:31:00",
+    "user": "salma",
+    "text": "did you check the Preconditions logic?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-204",
+    "channel": "#dev",
+    "ts": "2010-01-24T12:42:00",
+    "user": "laila",
+    "text": "i did, it looks like it's blocking the header set even if the length is zero.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-204",
+    "channel": "#dev",
+    "ts": "2010-01-24T12:46:00",
+    "user": "salma",
+    "text": "that sounds like a bug, it should allow zero.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-204",
+    "channel": "#dev",
+    "ts": "2010-01-24T13:10:00",
+    "user": "laila",
+    "text": "agreed, i'll submit a fix for that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-207",
+    "channel": "#bugs",
+    "ts": "2009-12-01T11:07:00",
+    "user": "rana",
+    "text": "hey, is anyone else seeing weird data in the db dumps?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-207",
+    "channel": "#bugs",
+    "ts": "2009-12-01T11:31:00",
+    "user": "omar",
+    "text": "what kind of weird?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-207",
+    "channel": "#bugs",
+    "ts": "2009-12-01T11:47:00",
+    "user": "rana",
+    "text": "the sql date objects are including time components during serialization, it's messing up the format.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-207",
+    "channel": "#bugs",
+    "ts": "2009-12-01T11:56:00",
+    "user": "salma",
+    "text": "ah, i think that's happening in DefaultTypeAdapters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-207",
+    "channel": "#bugs",
+    "ts": "2009-12-01T12:20:00",
+    "user": "omar",
+    "text": "good catch, let me take a look at those adapters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-207",
+    "channel": "#bugs",
+    "ts": "2009-12-01T12:39:00",
+    "user": "rana",
+    "text": "thanks, let me know if you need help testing the fix.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-210",
+    "channel": "#dev",
+    "ts": "2009-10-06T13:07:00",
+    "user": "youssef",
+    "text": "why is this object getting default values instead of null?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-210",
+    "channel": "#dev",
+    "ts": "2009-10-06T13:17:00",
+    "user": "laila",
+    "text": "what do you mean?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-210",
+    "channel": "#dev",
+    "ts": "2009-10-06T13:25:00",
+    "user": "youssef",
+    "text": "my custom deserializer is explicitly setting it to null, but it's ignored.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-210",
+    "channel": "#dev",
+    "ts": "2009-10-06T13:37:00",
+    "user": "laila",
+    "text": "that sounds like an issue with the JsonDeserializationVisitor logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-210",
+    "channel": "#dev",
+    "ts": "2009-10-06T13:43:00",
+    "user": "youssef",
+    "text": "yeah, i'll dig into that visitor and see why it's overriding the nulls.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-210",
+    "channel": "#dev",
+    "ts": "2009-10-06T13:53:00",
+    "user": "laila",
+    "text": "sounds good, let me know what you find.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-212",
+    "channel": "#backend",
+    "ts": "2009-10-08T11:02:00",
+    "user": "karim",
+    "text": "my custom serializer is returning null but it's causing an error downstream.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-212",
+    "channel": "#backend",
+    "ts": "2009-10-08T11:04:00",
+    "user": "mona",
+    "text": "is it crashing or just outputting wrong data?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-212",
+    "channel": "#backend",
+    "ts": "2009-10-08T11:22:00",
+    "user": "karim",
+    "text": "it's outputting some garbage instead of just skipping it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-212",
+    "channel": "#backend",
+    "ts": "2009-10-08T11:32:00",
+    "user": "mona",
+    "text": "check the JsonSerializationVisitor, it might not be handling the null return gracefully.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-212",
+    "channel": "#backend",
+    "ts": "2009-10-08T11:55:00",
+    "user": "karim",
+    "text": "oh you're right, it's definitely missing a null check there.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-212",
+    "channel": "#backend",
+    "ts": "2009-10-08T12:00:00",
+    "user": "mona",
+    "text": "i'll patch it up real quick.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-213",
+    "channel": "#dev",
+    "ts": "2009-10-03T16:01:00",
+    "user": "hassan",
+    "text": "the app is throwing a null pointer exception when parsing nested json objects.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-213",
+    "channel": "#dev",
+    "ts": "2009-10-03T16:20:00",
+    "user": "rana",
+    "text": "is it happening during the tree traversal?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-213",
+    "channel": "#dev",
+    "ts": "2009-10-03T16:30:00",
+    "user": "hassan",
+    "text": "yeah, looks like it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-213",
+    "channel": "#dev",
+    "ts": "2009-10-03T16:46:00",
+    "user": "rana",
+    "text": "check if the JsonDeserializationVisitor is trying to visit a custom handler incorrectly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-213",
+    "channel": "#dev",
+    "ts": "2009-10-03T17:02:00",
+    "user": "hassan",
+    "text": "that looks like the culprit, it shouldn't be hitting that node.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-213",
+    "channel": "#dev",
+    "ts": "2009-10-03T17:17:00",
+    "user": "rana",
+    "text": "i'll fix the visitor logic to skip those.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-214",
+    "channel": "#dev",
+    "ts": "2009-09-27T11:09:00",
+    "user": "omar",
+    "text": "anyone notice the output formatting is broken on nested lists?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-214",
+    "channel": "#dev",
+    "ts": "2009-09-27T11:25:00",
+    "user": "salma",
+    "text": "yeah, the separators are all over the place.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-214",
+    "channel": "#dev",
+    "ts": "2009-09-27T11:29:00",
+    "user": "omar",
+    "text": "it seems like we are losing track of which element is the first one in the list.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-214",
+    "channel": "#dev",
+    "ts": "2009-09-27T11:32:00",
+    "user": "salma",
+    "text": "it definitely feels like a state tracking issue.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-214",
+    "channel": "#dev",
+    "ts": "2009-09-27T11:45:00",
+    "user": "omar",
+    "text": "i'll implement a stack to keep track of the hierarchy, that should clean it up.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-216",
+    "channel": "#dev",
+    "ts": "2009-09-23T10:05:00",
+    "user": "youssef",
+    "text": "we are getting random corrupted dates in the logs under heavy load.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-216",
+    "channel": "#dev",
+    "ts": "2009-09-23T10:10:00",
+    "user": "laila",
+    "text": "that sounds like a race condition.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-216",
+    "channel": "#dev",
+    "ts": "2009-09-23T10:29:00",
+    "user": "youssef",
+    "text": "exactly, the date formatter seems to be shared across threads.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-216",
+    "channel": "#dev",
+    "ts": "2009-09-23T10:39:00",
+    "user": "laila",
+    "text": "yikes, let's make sure those adapters are properly synchronized.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-216",
+    "channel": "#dev",
+    "ts": "2009-09-23T10:42:00",
+    "user": "youssef",
+    "text": "on it, i'll add the synchronization locks now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-217",
+    "channel": "#help",
+    "ts": "2009-09-22T10:20:00",
+    "user": "karim",
+    "text": "hey, is there a fix for issue #147 yet?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-217",
+    "channel": "#help",
+    "ts": "2009-09-22T10:40:00",
+    "user": "mona",
+    "text": "not yet, why?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-217",
+    "channel": "#help",
+    "ts": "2009-09-22T11:00:00",
+    "user": "karim",
+    "text": "my unit tests are failing because longs and ints aren't being compared correctly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-217",
+    "channel": "#help",
+    "ts": "2009-09-22T11:08:00",
+    "user": "mona",
+    "text": "oh, right, the numeric types are not comparable to each other currently.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-217",
+    "channel": "#help",
+    "ts": "2009-09-22T11:33:00",
+    "user": "karim",
+    "text": "exactly, it's driving me crazy.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-217",
+    "channel": "#help",
+    "ts": "2009-09-22T11:50:00",
+    "user": "mona",
+    "text": "i'll fix the comparison logic so they treat types consistently.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-218",
+    "channel": "#help",
+    "ts": "2009-09-21T16:10:00",
+    "user": "hassan",
+    "text": "i'm seeing a stack overflow when parsing recursive structures in Gson.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-218",
+    "channel": "#help",
+    "ts": "2009-09-21T16:29:00",
+    "user": "rana",
+    "text": "is it deep nesting?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-218",
+    "channel": "#help",
+    "ts": "2009-09-21T16:43:00",
+    "user": "hassan",
+    "text": "not even that deep, just standard recursive objects.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-218",
+    "channel": "#help",
+    "ts": "2009-09-21T16:53:00",
+    "user": "rana",
+    "text": "that's weird, i'll take a look at the traversal code.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-218",
+    "channel": "#help",
+    "ts": "2009-09-21T17:12:00",
+    "user": "hassan",
+    "text": "thanks, it's blocking the build for now.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-218",
+    "channel": "#help",
+    "ts": "2009-09-21T17:32:00",
+    "user": "rana",
+    "text": "got it, i'll push a fix shortly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-221",
+    "channel": "#bugs",
+    "ts": "2009-06-01T10:21:00",
+    "user": "rana",
+    "text": "hey, is anyone else getting a stack overflow when serializing objects with transient fields?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-221",
+    "channel": "#bugs",
+    "ts": "2009-06-01T10:28:00",
+    "user": "omar",
+    "text": "oh, yeah, i saw that earlier. looks like it's trying to do type deduction on fields it shouldn't be touching.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-221",
+    "channel": "#bugs",
+    "ts": "2009-06-01T10:37:00",
+    "user": "hassan",
+    "text": "is this related to issue #126?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-221",
+    "channel": "#bugs",
+    "ts": "2009-06-01T10:59:00",
+    "user": "rana",
+    "text": "exactly, it's definitely hitting the logic we touched there.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-221",
+    "channel": "#bugs",
+    "ts": "2009-06-01T11:02:00",
+    "user": "omar",
+    "text": "i'll look into skipping the deduction for transient fields and get a fix out.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-225",
+    "channel": "#bugs",
+    "ts": "2009-03-26T12:18:00",
+    "user": "salma",
+    "text": "we've got a crash in production where a classcastexception is bubbling all the way up to the client.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-225",
+    "channel": "#bugs",
+    "ts": "2009-03-26T12:21:00",
+    "user": "youssef",
+    "text": "that's weird, i thought we caught those inside our core logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-225",
+    "channel": "#bugs",
+    "ts": "2009-03-26T12:27:00",
+    "user": "laila",
+    "text": "it seems like the gson integration layer is leaking it before we can wrap it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-225",
+    "channel": "#bugs",
+    "ts": "2009-03-26T12:28:00",
+    "user": "salma",
+    "text": "yeah, it's crashing the user's process completely.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-225",
+    "channel": "#bugs",
+    "ts": "2009-03-26T12:42:00",
+    "user": "youssef",
+    "text": "i see the issue. i'll add a catch block to handle those exceptions properly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-227",
+    "channel": "#backend",
+    "ts": "2009-03-10T16:02:00",
+    "user": "karim",
+    "text": "the main build is failing again, the set tests are failing with a cast error.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-227",
+    "channel": "#backend",
+    "ts": "2009-03-10T16:10:00",
+    "user": "mona",
+    "text": "did that happen after the fix for issue #100?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-227",
+    "channel": "#backend",
+    "ts": "2009-03-10T16:20:00",
+    "user": "hassan",
+    "text": "yeah, it looks like we changed the underlying collection type and the test expectation is now wrong.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-227",
+    "channel": "#backend",
+    "ts": "2009-03-10T16:43:00",
+    "user": "karim",
+    "text": "i'll update the test to handle both treese and hashset properly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-227",
+    "channel": "#backend",
+    "ts": "2009-03-10T16:53:00",
+    "user": "mona",
+    "text": "thanks, that should stabilize the suite.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-228",
+    "channel": "#dev",
+    "ts": "2009-03-09T16:22:00",
+    "user": "rana",
+    "text": "getting crashes when deserializing lists of custom objects that don't implement comparable.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-228",
+    "channel": "#dev",
+    "ts": "2009-03-09T16:30:00",
+    "user": "omar",
+    "text": "ah, that might be a limitation in how DefaultTypeAdapters handles collections.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-228",
+    "channel": "#dev",
+    "ts": "2009-03-09T16:39:00",
+    "user": "salma",
+    "text": "can we make it more flexible?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-228",
+    "channel": "#dev",
+    "ts": "2009-03-09T17:00:00",
+    "user": "rana",
+    "text": "i think so, i'll look into relaxing the requirement for comparable elements.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-228",
+    "channel": "#dev",
+    "ts": "2009-03-09T17:19:00",
+    "user": "omar",
+    "text": "sounds good, let me know if you need a hand with the logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-233",
+    "channel": "#help",
+    "ts": "2009-01-08T12:04:00",
+    "user": "youssef",
+    "text": "the output from the pretty printer looks really broken for nested objects.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-233",
+    "channel": "#help",
+    "ts": "2009-01-08T12:22:00",
+    "user": "laila",
+    "text": "are you seeing extra newlines or just bad indentation?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-233",
+    "channel": "#help",
+    "ts": "2009-01-08T12:30:00",
+    "user": "youssef",
+    "text": "it's missing indentation entirely for deeper levels.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-233",
+    "channel": "#help",
+    "ts": "2009-01-08T12:51:00",
+    "user": "karim",
+    "text": "i think the JsonPrintFormatter state is getting desynced.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-233",
+    "channel": "#help",
+    "ts": "2009-01-08T12:56:00",
+    "user": "youssef",
+    "text": "yeah, that makes sense. i'll take a look and patch it.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-236",
+    "channel": "#dev",
+    "ts": "2008-12-26T11:02:00",
+    "user": "hassan",
+    "text": "we're seeing unhandled exceptions when parsing malformed uuids.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-236",
+    "channel": "#dev",
+    "ts": "2008-12-26T11:08:00",
+    "user": "mona",
+    "text": "do they crash the whole thread?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-236",
+    "channel": "#dev",
+    "ts": "2008-12-26T11:18:00",
+    "user": "hassan",
+    "text": "yes, it seems inconsistent compared to how we handle other types in DefaultTypeAdapters.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-236",
+    "channel": "#dev",
+    "ts": "2008-12-26T11:38:00",
+    "user": "rana",
+    "text": "we should definitely wrap that in our standard exception handler.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-236",
+    "channel": "#dev",
+    "ts": "2008-12-26T12:02:00",
+    "user": "hassan",
+    "text": "agreed, i'll submit a fix for that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-237",
+    "channel": "#help",
+    "ts": "2008-12-24T13:04:00",
+    "user": "salma",
+    "text": "why is the output showing empty object structures when we have arrays of primitives?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-237",
+    "channel": "#help",
+    "ts": "2008-12-24T13:19:00",
+    "user": "youssef",
+    "text": "i noticed that too, it looks like it's trying to instantiate objects that shouldn't exist.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-237",
+    "channel": "#help",
+    "ts": "2008-12-24T13:42:00",
+    "user": "laila",
+    "text": "it's definitely firing during the array processing loop.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-237",
+    "channel": "#help",
+    "ts": "2008-12-24T13:52:00",
+    "user": "salma",
+    "text": "i'll remove those redundant instantiation calls and see if the output cleans up.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-237",
+    "channel": "#help",
+    "ts": "2008-12-24T14:15:00",
+    "user": "youssef",
+    "text": "that should fix it, thanks.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-244",
+    "channel": "#help",
+    "ts": "2008-11-16T13:15:00",
+    "user": "karim",
+    "text": "the parser is throwing an error on numbers like 1e5.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-244",
+    "channel": "#help",
+    "ts": "2008-11-16T13:18:00",
+    "user": "mona",
+    "text": "wait, is it failing because there is no decimal point?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-244",
+    "channel": "#help",
+    "ts": "2008-11-16T13:38:00",
+    "user": "karim",
+    "text": "yeah, it seems to expect a fraction part if it sees an exponent.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-244",
+    "channel": "#help",
+    "ts": "2008-11-16T13:40:00",
+    "user": "hassan",
+    "text": "that's definitely a bug in our number detection logic.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-244",
+    "channel": "#help",
+    "ts": "2008-11-16T13:54:00",
+    "user": "karim",
+    "text": "i'll fix the regex to handle scientific notation without decimals.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-247",
+    "channel": "#backend",
+    "ts": "2008-10-26T14:01:00",
+    "user": "rana",
+    "text": "hey, is anyone else having trouble with forward slashes in the json parser?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-247",
+    "channel": "#backend",
+    "ts": "2008-10-26T14:04:00",
+    "user": "omar",
+    "text": "what kind of trouble? like getting an error during parsing?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-247",
+    "channel": "#backend",
+    "ts": "2008-10-26T14:12:00",
+    "user": "rana",
+    "text": "yeah, it seems escaped slashes are failing. i think this is related to issue #66.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-247",
+    "channel": "#backend",
+    "ts": "2008-10-26T14:34:00",
+    "user": "salma",
+    "text": "ah, good catch. i think we need to update the gson version to 1.2.3 to handle that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-247",
+    "channel": "#backend",
+    "ts": "2008-10-26T14:53:00",
+    "user": "rana",
+    "text": "cool, i'll bump the version and see if that clears it up.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-248",
+    "channel": "#backend",
+    "ts": "2008-10-17T09:19:00",
+    "user": "youssef",
+    "text": "seeing some weird memory errors in prod, looks like state is leaking between threads.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-248",
+    "channel": "#backend",
+    "ts": "2008-10-17T09:21:00",
+    "user": "laila",
+    "text": "oh no, is it failing consistently?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-248",
+    "channel": "#backend",
+    "ts": "2008-10-17T09:46:00",
+    "user": "youssef",
+    "text": "yeah, it looks like issue #63, the internal stack is being shared when it shouldn't be.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-248",
+    "channel": "#backend",
+    "ts": "2008-10-17T10:11:00",
+    "user": "laila",
+    "text": "that makes sense, we probably need to stop reusing the factory object.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-248",
+    "channel": "#backend",
+    "ts": "2008-10-17T10:17:00",
+    "user": "karim",
+    "text": "i'll look into creating a new factory for each call to keep it thread-safe.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-249",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:06:00",
+    "user": "mona",
+    "text": "hey, the output for some fields is showing the wrong type, it's casting things incorrectly.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-249",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:25:00",
+    "user": "hassan",
+    "text": "are you seeing this for all fields or just specific ones?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-249",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:39:00",
+    "user": "mona",
+    "text": "looks like it's trying to use the actual type of the field value too aggressively. it's issue #58.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-249",
+    "channel": "#backend",
+    "ts": "2008-10-12T17:00:00",
+    "user": "hassan",
+    "text": "ah, i see. we should probably only do that when it's explicitly marked as an object.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-249",
+    "channel": "#backend",
+    "ts": "2008-10-12T17:16:00",
+    "user": "mona",
+    "text": "agreed, i'll submit a patch to restrict that behavior.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-251",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:14:00",
+    "user": "rana",
+    "text": "dates are not serializing correctly, they keep coming out empty or wrong.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-251",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:25:00",
+    "user": "salma",
+    "text": "are you using the default date instances?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-251",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:36:00",
+    "user": "rana",
+    "text": "yeah, it's definitely issue #53.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-251",
+    "channel": "#backend",
+    "ts": "2008-10-12T16:58:00",
+    "user": "salma",
+    "text": "we might be missing the time style support in the formatter.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-251",
+    "channel": "#backend",
+    "ts": "2008-10-12T17:02:00",
+    "user": "rana",
+    "text": "i'll add support for the default formatter to handle that.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-252",
+    "channel": "#help",
+    "ts": "2008-10-09T14:23:00",
+    "user": "omar",
+    "text": "why are null fields missing in the output even when serializeNulls is on?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-252",
+    "channel": "#help",
+    "ts": "2008-10-09T14:39:00",
+    "user": "youssef",
+    "text": "that sounds like a bug in JsonSerializationVisitor.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-252",
+    "channel": "#help",
+    "ts": "2008-10-09T14:49:00",
+    "user": "omar",
+    "text": "yeah, it seems to be skipping strings and collections specifically.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-252",
+    "channel": "#help",
+    "ts": "2008-10-09T15:11:00",
+    "user": "youssef",
+    "text": "i'll check the logic in that class and see why it's ignoring the flag.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-252",
+    "channel": "#help",
+    "ts": "2008-10-09T15:24:00",
+    "user": "omar",
+    "text": "thanks, let me know if you need help testing the fix.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-255",
+    "channel": "#help",
+    "ts": "2008-09-24T09:03:00",
+    "user": "laila",
+    "text": "the pretty printing is totally breaking when arrays and objects are nested together.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-255",
+    "channel": "#help",
+    "ts": "2008-09-24T09:14:00",
+    "user": "karim",
+    "text": "is the indentation getting messed up?",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-255",
+    "channel": "#help",
+    "ts": "2008-09-24T09:23:00",
+    "user": "laila",
+    "text": "yeah, the interlacing is all wrong. it looks like an issue inside JsonPrintFormatter.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-255",
+    "channel": "#help",
+    "ts": "2008-09-24T09:34:00",
+    "user": "karim",
+    "text": "i'll take a look at the formatting logic, it probably loses track of the depth.",
+    "synthetic": true
+  },
+  {
+    "thread_id": "T-255",
+    "channel": "#help",
+    "ts": "2008-09-24T09:38:00",
+    "user": "laila",
+    "text": "sounds good, let me know when you have a fix.",
+    "synthetic": true
+  }
+]

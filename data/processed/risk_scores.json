@@ -1,0 +1,2072 @@
+[
+  {
+    "path": "gson/src/main/java/com/google/gson/stream/JsonReader.java",
+    "score": 89,
+    "color": "red",
+    "likelihood": 0.879,
+    "impact": 0.923,
+    "bugs": 15,
+    "commits": 113,
+    "chats": 12,
+    "branches": 351,
+    "knowledge": 0.345,
+    "used_by": 39,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 39 files (70 through chains)",
+      "351 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/TypeAdapter.java",
+    "score": 86,
+    "color": "red",
+    "likelihood": 0.822,
+    "impact": 0.919,
+    "bugs": 3,
+    "commits": 45,
+    "chats": 2,
+    "branches": 6,
+    "knowledge": 0.467,
+    "used_by": 34,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 34 files (70 through chains)",
+      "45 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/Streams.java",
+    "score": 85,
+    "color": "red",
+    "likelihood": 0.853,
+    "impact": 0.84,
+    "bugs": 7,
+    "commits": 36,
+    "chats": 4,
+    "branches": 8,
+    "knowledge": 0.472,
+    "used_by": 7,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 7 files (70 through chains)",
+      "7 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+    "score": 84,
+    "color": "red",
+    "likelihood": 0.882,
+    "impact": 0.772,
+    "bugs": 5,
+    "commits": 27,
+    "chats": 5,
+    "branches": 64,
+    "knowledge": 0.444,
+    "used_by": 4,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 4 files (70 through chains)",
+      "5 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/stream/JsonWriter.java",
+    "score": 84,
+    "color": "red",
+    "likelihood": 0.797,
+    "impact": 0.912,
+    "bugs": 2,
+    "commits": 50,
+    "chats": 1,
+    "branches": 63,
+    "knowledge": 0.36,
+    "used_by": 33,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 33 files (70 through chains)",
+      "63 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/Gson.java",
+    "score": 82,
+    "color": "red",
+    "likelihood": 0.876,
+    "impact": 0.706,
+    "bugs": 21,
+    "commits": 245,
+    "chats": 13,
+    "branches": 48,
+    "knowledge": 0.351,
+    "used_by": 33,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 33 files (42 through chains)",
+      "21 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonPrimitive.java",
+    "score": 80,
+    "color": "red",
+    "likelihood": 0.754,
+    "impact": 0.875,
+    "bugs": 3,
+    "commits": 56,
+    "chats": 2,
+    "branches": 28,
+    "knowledge": 0.268,
+    "used_by": 11,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 11 files (70 through chains)",
+      "56 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java",
+    "score": 77,
+    "color": "red",
+    "likelihood": 0.746,
+    "impact": 0.822,
+    "bugs": 2,
+    "commits": 16,
+    "chats": 2,
+    "branches": 5,
+    "knowledge": 0.438,
+    "used_by": 4,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 4 files (71 through chains)",
+      "2 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/GsonBuilder.java",
+    "score": 75,
+    "color": "red",
+    "likelihood": 0.796,
+    "impact": 0.66,
+    "bugs": 6,
+    "commits": 146,
+    "chats": 5,
+    "branches": 35,
+    "knowledge": 0.267,
+    "used_by": 9,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 9 files (42 through chains)",
+      "146 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java",
+    "score": 75,
+    "color": "red",
+    "likelihood": 0.828,
+    "impact": 0.592,
+    "bugs": 10,
+    "commits": 95,
+    "chats": 5,
+    "branches": 87,
+    "knowledge": 0.295,
+    "used_by": 5,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 5 files (42 through chains)",
+      "10 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonArray.java",
+    "score": 72,
+    "color": "red",
+    "likelihood": 0.646,
+    "impact": 0.857,
+    "bugs": 1,
+    "commits": 47,
+    "chats": 1,
+    "branches": 6,
+    "knowledge": 0.277,
+    "used_by": 8,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 8 files (70 through chains)",
+      "47 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonObject.java",
+    "score": 71,
+    "color": "red",
+    "likelihood": 0.638,
+    "impact": 0.84,
+    "bugs": 1,
+    "commits": 59,
+    "chats": 1,
+    "branches": 3,
+    "knowledge": 0.288,
+    "used_by": 7,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 7 files (70 through chains)",
+      "59 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+    "score": 71,
+    "color": "red",
+    "likelihood": 0.757,
+    "impact": 0.634,
+    "bugs": 3,
+    "commits": 40,
+    "chats": 1,
+    "branches": 47,
+    "knowledge": 0.325,
+    "used_by": 7,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 7 files (42 through chains)",
+      "47 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/JsonTreeWriter.java",
+    "score": 70,
+    "color": "red",
+    "likelihood": 0.723,
+    "impact": 0.669,
+    "bugs": 1,
+    "commits": 12,
+    "chats": 1,
+    "branches": 28,
+    "knowledge": 0.417,
+    "used_by": 2,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 2 files (70 through chains)",
+      "28 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java",
+    "score": 69,
+    "color": "orange",
+    "likelihood": 0.735,
+    "impact": 0.612,
+    "bugs": 3,
+    "commits": 25,
+    "chats": 1,
+    "branches": 56,
+    "knowledge": 0.32,
+    "used_by": 1,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 1 files (71 through chains)",
+      "56 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java",
+    "score": 68,
+    "color": "orange",
+    "likelihood": 0.801,
+    "impact": 0.463,
+    "bugs": 5,
+    "commits": 22,
+    "chats": 4,
+    "branches": 9,
+    "knowledge": 0.409,
+    "used_by": 2,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 2 files (42 through chains)",
+      "4 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/JsonElementTypeAdapter.java",
+    "score": 68,
+    "color": "orange",
+    "likelihood": 0.681,
+    "impact": 0.669,
+    "bugs": 1,
+    "commits": 3,
+    "chats": 1,
+    "branches": 25,
+    "knowledge": 0.667,
+    "used_by": 2,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 2 files (70 through chains)",
+      "67% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+    "score": 67,
+    "color": "orange",
+    "likelihood": 0.752,
+    "impact": 0.524,
+    "bugs": 5,
+    "commits": 25,
+    "chats": 1,
+    "branches": 14,
+    "knowledge": 0.36,
+    "used_by": 3,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 3 files (42 through chains)",
+      "5 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java",
+    "score": 67,
+    "color": "orange",
+    "likelihood": 0.843,
+    "impact": 0.355,
+    "bugs": 3,
+    "commits": 33,
+    "chats": 2,
+    "branches": 21,
+    "knowledge": 0.455,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "2 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonParser.java",
+    "score": 66,
+    "color": "orange",
+    "likelihood": 0.809,
+    "impact": 0.386,
+    "bugs": 4,
+    "commits": 42,
+    "chats": 2,
+    "branches": 6,
+    "knowledge": 0.429,
+    "used_by": 2,
+    "used_by_chain": 2,
+    "top_factors": [
+      "used by 2 files (2 through chains)",
+      "4 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java",
+    "score": 64,
+    "color": "orange",
+    "likelihood": 0.729,
+    "impact": 0.463,
+    "bugs": 4,
+    "commits": 30,
+    "chats": 2,
+    "branches": 11,
+    "knowledge": 0.3,
+    "used_by": 2,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 2 files (42 through chains)",
+      "4 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java",
+    "score": 64,
+    "color": "orange",
+    "likelihood": 0.674,
+    "impact": 0.566,
+    "bugs": 2,
+    "commits": 17,
+    "chats": 2,
+    "branches": 9,
+    "knowledge": 0.294,
+    "used_by": 4,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 4 files (42 through chains)",
+      "2 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonElement.java",
+    "score": 62,
+    "color": "orange",
+    "likelihood": 0.465,
+    "impact": 0.899,
+    "bugs": 1,
+    "commits": 34,
+    "chats": 0,
+    "branches": 5,
+    "knowledge": 0.265,
+    "used_by": 25,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 25 files (70 through chains)",
+      "34 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonSyntaxException.java",
+    "score": 59,
+    "color": "orange",
+    "likelihood": 0.407,
+    "impact": 0.93,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 1,
+    "branches": 0,
+    "knowledge": 0.5,
+    "used_by": 13,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 13 files (71 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/FieldNamingPolicy.java",
+    "score": 58,
+    "color": "orange",
+    "likelihood": 0.596,
+    "impact": 0.546,
+    "bugs": 1,
+    "commits": 21,
+    "chats": 1,
+    "branches": 7,
+    "knowledge": 0.19,
+    "used_by": 2,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 2 files (43 through chains)",
+      "1 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/reflect/ReflectionHelper.java",
+    "score": 58,
+    "color": "orange",
+    "likelihood": 0.616,
+    "impact": 0.524,
+    "bugs": 1,
+    "commits": 15,
+    "chats": 0,
+    "branches": 22,
+    "knowledge": 0.533,
+    "used_by": 3,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 3 files (42 through chains)",
+      "53% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/reflect/TypeToken.java",
+    "score": 58,
+    "color": "orange",
+    "likelihood": 0.45,
+    "impact": 0.825,
+    "bugs": 0,
+    "commits": 31,
+    "chats": 0,
+    "branches": 48,
+    "knowledge": 0.355,
+    "used_by": 30,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 30 files (44 through chains)",
+      "48 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/GsonTypes.java",
+    "score": 57,
+    "color": "orange",
+    "likelihood": 0.472,
+    "impact": 0.748,
+    "bugs": 0,
+    "commits": 7,
+    "chats": 0,
+    "branches": 81,
+    "knowledge": 0.571,
+    "used_by": 5,
+    "used_by_chain": 45,
+    "top_factors": [
+      "used by 5 files (45 through chains)",
+      "81 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+    "score": 57,
+    "color": "orange",
+    "likelihood": 0.64,
+    "impact": 0.439,
+    "bugs": 2,
+    "commits": 5,
+    "chats": 1,
+    "branches": 8,
+    "knowledge": 0.4,
+    "used_by": 1,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 1 files (43 through chains)",
+      "2 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+    "score": 56,
+    "color": "orange",
+    "likelihood": 0.615,
+    "impact": 0.463,
+    "bugs": 6,
+    "commits": 62,
+    "chats": 0,
+    "branches": 66,
+    "knowledge": 0.274,
+    "used_by": 2,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 2 files (42 through chains)",
+      "62 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java",
+    "score": 56,
+    "color": "orange",
+    "likelihood": 0.626,
+    "impact": 0.439,
+    "bugs": 1,
+    "commits": 13,
+    "chats": 1,
+    "branches": 41,
+    "knowledge": 0.231,
+    "used_by": 1,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 1 files (43 through chains)",
+      "41 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/JavaVersion.java",
+    "score": 54,
+    "color": "orange",
+    "likelihood": 0.505,
+    "impact": 0.618,
+    "bugs": 1,
+    "commits": 7,
+    "chats": 0,
+    "branches": 8,
+    "knowledge": 0.429,
+    "used_by": 2,
+    "used_by_chain": 45,
+    "top_factors": [
+      "used by 2 files (45 through chains)",
+      "1 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/EnumTypeAdapter.java",
+    "score": 53,
+    "color": "orange",
+    "likelihood": 0.625,
+    "impact": 0.355,
+    "bugs": 1,
+    "commits": 5,
+    "chats": 1,
+    "branches": 10,
+    "knowledge": 0.4,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "1 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonSerializer.java",
+    "score": 52,
+    "color": "orange",
+    "likelihood": 0.411,
+    "impact": 0.737,
+    "bugs": 1,
+    "commits": 11,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.455,
+    "used_by": 6,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 6 files (44 through chains)",
+      "45% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java",
+    "score": 52,
+    "color": "orange",
+    "likelihood": 0.604,
+    "impact": 0.355,
+    "bugs": 2,
+    "commits": 16,
+    "chats": 1,
+    "branches": 5,
+    "knowledge": 0.25,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "2 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/FieldAttributes.java",
+    "score": 50,
+    "color": "orange",
+    "likelihood": 0.449,
+    "impact": 0.588,
+    "bugs": 1,
+    "commits": 39,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.41,
+    "used_by": 2,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 2 files (44 through chains)",
+      "39 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonParseException.java",
+    "score": 50,
+    "color": "orange",
+    "likelihood": 0.25,
+    "impact": 0.963,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.5,
+    "used_by": 15,
+    "used_by_chain": 73,
+    "top_factors": [
+      "used by 15 files (73 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/LongSerializationPolicy.java",
+    "score": 50,
+    "color": "orange",
+    "likelihood": 0.527,
+    "impact": 0.463,
+    "bugs": 1,
+    "commits": 8,
+    "chats": 1,
+    "branches": 2,
+    "knowledge": 0.25,
+    "used_by": 2,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 2 files (42 through chains)",
+      "1 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/ToNumberPolicy.java",
+    "score": 49,
+    "color": "orange",
+    "likelihood": 0.421,
+    "impact": 0.607,
+    "bugs": 0,
+    "commits": 8,
+    "chats": 0,
+    "branches": 7,
+    "knowledge": 0.625,
+    "used_by": 3,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 3 files (43 through chains)",
+      "62% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/CollectionTypeAdapterFactory.java",
+    "score": 49,
+    "color": "orange",
+    "likelihood": 0.563,
+    "impact": 0.355,
+    "bugs": 1,
+    "commits": 19,
+    "chats": 0,
+    "branches": 5,
+    "knowledge": 0.474,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "47% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/sql/SqlDateTypeAdapter.java",
+    "score": 49,
+    "color": "orange",
+    "likelihood": 0.565,
+    "impact": 0.355,
+    "bugs": 2,
+    "commits": 12,
+    "chats": 0,
+    "branches": 3,
+    "knowledge": 0.5,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java",
+    "score": 47,
+    "color": "orange",
+    "likelihood": 0.725,
+    "impact": 0.0,
+    "bugs": 2,
+    "commits": 28,
+    "chats": 2,
+    "branches": 16,
+    "knowledge": 0.321,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "2 problem chats",
+      "28 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/FormattingStyle.java",
+    "score": 47,
+    "color": "orange",
+    "likelihood": 0.331,
+    "impact": 0.73,
+    "bugs": 0,
+    "commits": 7,
+    "chats": 0,
+    "branches": 2,
+    "knowledge": 0.429,
+    "used_by": 3,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 3 files (70 through chains)",
+      "43% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonDeserializer.java",
+    "score": 47,
+    "color": "orange",
+    "likelihood": 0.32,
+    "impact": 0.737,
+    "bugs": 1,
+    "commits": 13,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.308,
+    "used_by": 6,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 6 files (44 through chains)",
+      "1 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/SerializationDelegatingTypeAdapter.java",
+    "score": 47,
+    "color": "orange",
+    "likelihood": 0.398,
+    "impact": 0.607,
+    "bugs": 1,
+    "commits": 3,
+    "chats": 1,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 3,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 3 files (43 through chains)",
+      "1 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/stream/JsonToken.java",
+    "score": 47,
+    "color": "orange",
+    "likelihood": 0.216,
+    "impact": 0.943,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.5,
+    "used_by": 23,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 23 files (71 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/InstanceCreator.java",
+    "score": 46,
+    "color": "orange",
+    "likelihood": 0.295,
+    "impact": 0.768,
+    "bugs": 1,
+    "commits": 6,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 6,
+    "used_by_chain": 45,
+    "top_factors": [
+      "used by 6 files (45 through chains)",
+      "1 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/ReflectionAccessFilterHelper.java",
+    "score": 46,
+    "color": "orange",
+    "likelihood": 0.357,
+    "impact": 0.649,
+    "bugs": 0,
+    "commits": 8,
+    "chats": 0,
+    "branches": 12,
+    "knowledge": 0.375,
+    "used_by": 3,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 3 files (44 through chains)",
+      "12 branches (complex)"
+    ]
+  },
+  {
+    "path": "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java",
+    "score": 46,
+    "color": "orange",
+    "likelihood": 0.701,
+    "impact": 0.0,
+    "bugs": 2,
+    "commits": 26,
+    "chats": 1,
+    "branches": 27,
+    "knowledge": 0.308,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "2 bug fixes",
+      "27 branches (complex)"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/typeadapters/UtcDateTypeAdapter.java",
+    "score": 45,
+    "color": "orange",
+    "likelihood": 0.69,
+    "impact": 0.0,
+    "bugs": 1,
+    "commits": 11,
+    "chats": 1,
+    "branches": 30,
+    "knowledge": 0.364,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "30 branches (complex)",
+      "1 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonNull.java",
+    "score": 45,
+    "color": "orange",
+    "likelihood": 0.224,
+    "impact": 0.871,
+    "bugs": 0,
+    "commits": 28,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.321,
+    "used_by": 10,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 10 files (70 through chains)",
+      "28 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/annotations/SerializedName.java",
+    "score": 45,
+    "color": "orange",
+    "likelihood": 0.234,
+    "impact": 0.849,
+    "bugs": 0,
+    "commits": 10,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.4,
+    "used_by": 15,
+    "used_by_chain": 53,
+    "top_factors": [
+      "used by 15 files (53 through chains)",
+      "40% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/Excluder.java",
+    "score": 45,
+    "color": "orange",
+    "likelihood": 0.414,
+    "impact": 0.524,
+    "bugs": 0,
+    "commits": 20,
+    "chats": 0,
+    "branches": 33,
+    "knowledge": 0.35,
+    "used_by": 3,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 3 files (42 through chains)",
+      "33 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/NonNullElementWrapperList.java",
+    "score": 45,
+    "color": "orange",
+    "likelihood": 0.362,
+    "impact": 0.612,
+    "bugs": 0,
+    "commits": 8,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.5,
+    "used_by": 1,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 1 files (71 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonIOException.java",
+    "score": 44,
+    "color": "orange",
+    "likelihood": 0.183,
+    "impact": 0.908,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.4,
+    "used_by": 8,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 8 files (71 through chains)",
+      "40% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/Strictness.java",
+    "score": 44,
+    "color": "orange",
+    "likelihood": 0.216,
+    "impact": 0.857,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.5,
+    "used_by": 8,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 8 files (70 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonDeserializationContext.java",
+    "score": 43,
+    "color": "orange",
+    "likelihood": 0.27,
+    "impact": 0.721,
+    "bugs": 0,
+    "commits": 14,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.429,
+    "used_by": 4,
+    "used_by_chain": 45,
+    "top_factors": [
+      "used by 4 files (45 through chains)",
+      "43% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonSerializationContext.java",
+    "score": 43,
+    "color": "orange",
+    "likelihood": 0.27,
+    "impact": 0.721,
+    "bugs": 0,
+    "commits": 11,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.455,
+    "used_by": 4,
+    "used_by_chain": 45,
+    "top_factors": [
+      "used by 4 files (45 through chains)",
+      "45% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/NumberLimits.java",
+    "score": 43,
+    "color": "orange",
+    "likelihood": 0.201,
+    "impact": 0.842,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 2,
+    "knowledge": 0.333,
+    "used_by": 4,
+    "used_by_chain": 72,
+    "top_factors": [
+      "used by 4 files (72 through chains)",
+      "2 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/stream/MalformedJsonException.java",
+    "score": 43,
+    "color": "orange",
+    "likelihood": 0.208,
+    "impact": 0.84,
+    "bugs": 0,
+    "commits": 8,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.375,
+    "used_by": 7,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 7 files (70 through chains)",
+      "8 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/ReflectionAccessFilter.java",
+    "score": 42,
+    "color": "orange",
+    "likelihood": 0.251,
+    "impact": 0.737,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.6,
+    "used_by": 6,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 6 files (44 through chains)",
+      "60% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/TypeAdapterFactory.java",
+    "score": 42,
+    "color": "orange",
+    "likelihood": 0.273,
+    "impact": 0.693,
+    "bugs": 0,
+    "commits": 8,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.5,
+    "used_by": 25,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 25 files (42 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/annotations/Expose.java",
+    "score": 42,
+    "color": "orange",
+    "likelihood": 0.293,
+    "impact": 0.649,
+    "bugs": 0,
+    "commits": 9,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.556,
+    "used_by": 3,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 3 files (44 through chains)",
+      "56% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/Primitives.java",
+    "score": 42,
+    "color": "orange",
+    "likelihood": 0.346,
+    "impact": 0.546,
+    "bugs": 0,
+    "commits": 13,
+    "chats": 0,
+    "branches": 27,
+    "knowledge": 0.308,
+    "used_by": 2,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 2 files (43 through chains)",
+      "27 branches (complex)"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/typeadapters/PostConstructAdapterFactory.java",
+    "score": 40,
+    "color": "orange",
+    "likelihood": 0.615,
+    "impact": 0.0,
+    "bugs": 1,
+    "commits": 5,
+    "chats": 1,
+    "branches": 8,
+    "knowledge": 0.4,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "1 problem chats",
+      "1 bug fixes"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/FieldNamingStrategy.java",
+    "score": 40,
+    "color": "orange",
+    "likelihood": 0.236,
+    "impact": 0.717,
+    "bugs": 0,
+    "commits": 13,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.385,
+    "used_by": 5,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 5 files (44 through chains)",
+      "13 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/ObjectTypeAdapter.java",
+    "score": 40,
+    "color": "orange",
+    "likelihood": 0.423,
+    "impact": 0.355,
+    "bugs": 0,
+    "commits": 23,
+    "chats": 0,
+    "branches": 19,
+    "knowledge": 0.391,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "19 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/sql/SqlTimeTypeAdapter.java",
+    "score": 40,
+    "color": "orange",
+    "likelihood": 0.431,
+    "impact": 0.355,
+    "bugs": 1,
+    "commits": 5,
+    "chats": 0,
+    "branches": 3,
+    "knowledge": 0.4,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "1 bug fixes"
+    ]
+  },
+  {
+    "path": "metrics/src/main/java/com/google/gson/metrics/BagOfPrimitives.java",
+    "score": 40,
+    "color": "orange",
+    "likelihood": 0.368,
+    "impact": 0.456,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 0,
+    "branches": 5,
+    "knowledge": 0.5,
+    "used_by": 3,
+    "used_by_chain": 3,
+    "top_factors": [
+      "used by 3 files (3 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/ExclusionStrategy.java",
+    "score": 39,
+    "color": "yellow",
+    "likelihood": 0.313,
+    "impact": 0.546,
+    "bugs": 0,
+    "commits": 18,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.5,
+    "used_by": 2,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 2 files (43 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/ArrayTypeAdapter.java",
+    "score": 39,
+    "color": "yellow",
+    "likelihood": 0.402,
+    "impact": 0.355,
+    "bugs": 0,
+    "commits": 28,
+    "chats": 0,
+    "branches": 9,
+    "knowledge": 0.357,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "28 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/annotations/JsonAdapter.java",
+    "score": 38,
+    "color": "yellow",
+    "likelihood": 0.242,
+    "impact": 0.634,
+    "bugs": 0,
+    "commits": 16,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.375,
+    "used_by": 7,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 7 files (42 through chains)",
+      "16 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/ToNumberStrategy.java",
+    "score": 37,
+    "color": "yellow",
+    "likelihood": 0.183,
+    "impact": 0.717,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.4,
+    "used_by": 5,
+    "used_by_chain": 44,
+    "top_factors": [
+      "used by 5 files (44 through chains)",
+      "40% of commits by one author"
+    ]
+  },
+  {
+    "path": "metrics/src/main/java/com/google/gson/metrics/NonUploadingCaliperRunner.java",
+    "score": 37,
+    "color": "yellow",
+    "likelihood": 0.305,
+    "impact": 0.502,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.5,
+    "used_by": 4,
+    "used_by_chain": 4,
+    "top_factors": [
+      "used by 4 files (4 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/TroubleshootingGuide.java",
+    "score": 36,
+    "color": "yellow",
+    "likelihood": 0.073,
+    "impact": 0.888,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.25,
+    "used_by": 6,
+    "used_by_chain": 72,
+    "top_factors": [
+      "used by 6 files (72 through chains)",
+      "4 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/TestExecutor.java",
+    "score": 35,
+    "color": "yellow",
+    "likelihood": 0.333,
+    "impact": 0.386,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.75,
+    "used_by": 2,
+    "used_by_chain": 2,
+    "top_factors": [
+      "used by 2 files (2 through chains)",
+      "75% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/NumberTypeAdapter.java",
+    "score": 34,
+    "color": "yellow",
+    "likelihood": 0.327,
+    "impact": 0.355,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 4,
+    "knowledge": 0.5,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "50% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/stream/JsonScope.java",
+    "score": 34,
+    "color": "yellow",
+    "likelihood": 0.134,
+    "impact": 0.719,
+    "bugs": 0,
+    "commits": 7,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.286,
+    "used_by": 2,
+    "used_by_chain": 71,
+    "top_factors": [
+      "used by 2 files (71 through chains)",
+      "7 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/annotations/Since.java",
+    "score": 33,
+    "color": "yellow",
+    "likelihood": 0.231,
+    "impact": 0.524,
+    "bugs": 0,
+    "commits": 7,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.429,
+    "used_by": 3,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 3 files (42 through chains)",
+      "43% of commits by one author"
+    ]
+  },
+  {
+    "path": "proto/src/main/java/com/google/gson/protobuf/LegacyProtoTypeAdapterFactory.java",
+    "score": 33,
+    "color": "yellow",
+    "likelihood": 0.506,
+    "impact": 0.0,
+    "bugs": 1,
+    "commits": 2,
+    "chats": 1,
+    "branches": 99,
+    "knowledge": 0.0,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "99 branches (complex)",
+      "1 problem chats"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/sql/SqlTypesSupport.java",
+    "score": 31,
+    "color": "yellow",
+    "likelihood": 0.283,
+    "impact": 0.355,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 2,
+    "knowledge": 0.4,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "40% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/annotations/Until.java",
+    "score": 30,
+    "color": "yellow",
+    "likelihood": 0.185,
+    "impact": 0.524,
+    "bugs": 0,
+    "commits": 9,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 3,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 3 files (42 through chains)",
+      "9 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/JsonReaderInternalAccess.java",
+    "score": 30,
+    "color": "yellow",
+    "likelihood": 0.101,
+    "impact": 0.669,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 2,
+    "used_by_chain": 70,
+    "top_factors": [
+      "used by 2 files (70 through chains)",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "metrics/src/main/java/com/google/gson/metrics/ParseBenchmark.java",
+    "score": 30,
+    "color": "yellow",
+    "likelihood": 0.461,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 18,
+    "chats": 0,
+    "branches": 28,
+    "knowledge": 0.444,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "28 branches (complex)",
+      "44% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/sql/SqlTimestampTypeAdapter.java",
+    "score": 28,
+    "color": "yellow",
+    "likelihood": 0.244,
+    "impact": 0.355,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.333,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "1 branches (complex)"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/ObjectConstructor.java",
+    "score": 27,
+    "color": "yellow",
+    "likelihood": 0.073,
+    "impact": 0.649,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.25,
+    "used_by": 4,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 4 files (43 through chains)",
+      "4 commits"
+    ]
+  },
+  {
+    "path": "metrics/src/main/java/com/google/gson/metrics/CollectionsDeserializationBenchmark.java",
+    "score": 27,
+    "color": "yellow",
+    "likelihood": 0.414,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 9,
+    "chats": 0,
+    "branches": 18,
+    "knowledge": 0.444,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "18 branches (complex)",
+      "44% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java-templates/com/google/gson/internal/GsonBuildConfig.java",
+    "score": 26,
+    "color": "yellow",
+    "likelihood": 0.101,
+    "impact": 0.546,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 2,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 2 files (43 through chains)",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/JavaTimeTypeAdapters.java",
+    "score": 25,
+    "color": "yellow",
+    "likelihood": 0.189,
+    "impact": 0.355,
+    "bugs": 0,
+    "commits": 2,
+    "chats": 0,
+    "branches": 36,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 42,
+    "top_factors": [
+      "used by 1 files (42 through chains)",
+      "36 branches (complex)"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithJsonAdapterAnnotation.java",
+    "score": 25,
+    "color": "yellow",
+    "likelihood": 0.263,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.8,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "80% of commits by one author",
+      "used by 1 files (1 through chains)"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/Main.java",
+    "score": 24,
+    "color": "yellow",
+    "likelihood": 0.367,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 7,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.571,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "57% of commits by one author",
+      "7 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/JsonStreamParser.java",
+    "score": 23,
+    "color": "yellow",
+    "likelihood": 0.35,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 20,
+    "chats": 0,
+    "branches": 4,
+    "knowledge": 0.35,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "20 commits",
+      "4 branches (complex)"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithExposeAnnotation.java",
+    "score": 23,
+    "color": "yellow",
+    "likelihood": 0.22,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.667,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "67% of commits by one author",
+      "used by 1 files (1 through chains)"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithVersionAnnotations.java",
+    "score": 23,
+    "color": "yellow",
+    "likelihood": 0.22,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.667,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "67% of commits by one author",
+      "used by 1 files (1 through chains)"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/GenericClasses.java",
+    "score": 23,
+    "color": "yellow",
+    "likelihood": 0.228,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 1.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "100% of commits by one author",
+      "used by 1 files (1 through chains)"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/interceptors/Intercept.java",
+    "score": 20,
+    "color": "yellow",
+    "likelihood": 0.183,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.4,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "40% of commits by one author"
+    ]
+  },
+  {
+    "path": "metrics/src/main/java/com/google/gson/metrics/BagOfPrimitivesDeserializationBenchmark.java",
+    "score": 20,
+    "color": "yellow",
+    "likelihood": 0.307,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 0,
+    "branches": 15,
+    "knowledge": 0.333,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "15 branches (complex)",
+      "6 commits"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/interceptors/JsonPostDeserializer.java",
+    "score": 18,
+    "color": "yellow",
+    "likelihood": 0.073,
+    "impact": 0.386,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.25,
+    "used_by": 2,
+    "used_by_chain": 2,
+    "top_factors": [
+      "used by 2 files (2 through chains)",
+      "4 commits"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/interceptors/InterceptorFactory.java",
+    "score": 17,
+    "color": "yellow",
+    "likelihood": 0.254,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 0,
+    "branches": 2,
+    "knowledge": 0.333,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "2 branches (complex)",
+      "6 commits"
+    ]
+  },
+  {
+    "path": "gson/src/main/java/com/google/gson/internal/bind/IgnoreJRERequirement.java",
+    "score": 15,
+    "color": "yellow",
+    "likelihood": 0.002,
+    "impact": 0.439,
+    "bugs": 0,
+    "commits": 1,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 43,
+    "top_factors": [
+      "used by 1 files (43 through chains)",
+      "1 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithAdapter.java",
+    "score": 15,
+    "color": "yellow",
+    "likelihood": 0.1,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 2,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "1 branches (complex)"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithHasArgsConstructor.java",
+    "score": 15,
+    "color": "yellow",
+    "likelihood": 0.101,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithNoArgsConstructor.java",
+    "score": 15,
+    "color": "yellow",
+    "likelihood": 0.101,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithUnreferencedHasArgsConstructor.java",
+    "score": 15,
+    "color": "yellow",
+    "likelihood": 0.101,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithUnreferencedNoArgsConstructor.java",
+    "score": 15,
+    "color": "yellow",
+    "likelihood": 0.101,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/UnusedClass.java",
+    "score": 14,
+    "color": "green",
+    "likelihood": 0.22,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 3,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.667,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "67% of commits by one author",
+      "3 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/NoSerializedNameMain.java",
+    "score": 12,
+    "color": "green",
+    "likelihood": 0.183,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 5,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.4,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "40% of commits by one author",
+      "5 commits"
+    ]
+  },
+  {
+    "path": "metrics/src/main/java/com/google/gson/metrics/SerializationBenchmark.java",
+    "score": 11,
+    "color": "green",
+    "likelihood": 0.162,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 4,
+    "chats": 0,
+    "branches": 1,
+    "knowledge": 0.25,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "1 branches (complex)",
+      "4 commits"
+    ]
+  },
+  {
+    "path": "extras/src/main/java/com/google/gson/extras/examples/rawcollections/RawCollectionsExample.java",
+    "score": 10,
+    "color": "green",
+    "likelihood": 0.154,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 6,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.333,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "6 commits",
+      "33% of commits by one author"
+    ]
+  },
+  {
+    "path": "proto/src/main/java/com/google/gson/protobuf/StructTypeAdapter.java",
+    "score": 10,
+    "color": "green",
+    "likelihood": 0.148,
+    "impact": 0.0,
+    "bugs": 0,
+    "commits": 1,
+    "chats": 0,
+    "branches": 11,
+    "knowledge": 0.0,
+    "used_by": 0,
+    "used_by_chain": 0,
+    "top_factors": [
+      "11 branches (complex)",
+      "1 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithNamedFields.java",
+    "score": 9,
+    "color": "green",
+    "likelihood": 0.011,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 2,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "2 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/ClassWithSerializedName.java",
+    "score": 9,
+    "color": "green",
+    "likelihood": 0.011,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 2,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "2 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/EnumClass.java",
+    "score": 9,
+    "color": "green",
+    "likelihood": 0.011,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 2,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "2 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/EnumClassWithSerializedName.java",
+    "score": 9,
+    "color": "green",
+    "likelihood": 0.011,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 2,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "2 commits"
+    ]
+  },
+  {
+    "path": "test-shrinker/src/main/java/com/example/InterfaceWithImplementation.java",
+    "score": 8,
+    "color": "green",
+    "likelihood": 0.002,
+    "impact": 0.239,
+    "bugs": 0,
+    "commits": 1,
+    "chats": 0,
+    "branches": 0,
+    "knowledge": 0.0,
+    "used_by": 1,
+    "used_by_chain": 1,
+    "top_factors": [
+      "used by 1 files (1 through chains)",
+      "1 commits"
+    ]
+  }
+]

@@ -1,0 +1,2174 @@
+[
+  {
+    "id": "BUG-002",
+    "commit": "8b4b55051489132190cb8d1c61eb9dc7f5381295",
+    "date": "2026-09-09",
+    "author": "RKS",
+    "title": "fix: reject unpaired surrogates in strict JSON (#3116)",
+    "description": "* fix: reject unpaired surrogates in strict JSON\n\n* fix: cover direct unpaired surrogates in strict mode",
+    "pr_number": 3116,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "JsonReader in strict mode allowed unpaired Unicode surrogates instead of rejecting them as invalid JSON.",
+    "_id": "BUG-002"
+  },
+  {
+    "id": "BUG-004",
+    "commit": "b9c70acc46c0b950bba2571406b94d00bca4d208",
+    "date": "2026-07-24",
+    "author": "Bowang",
+    "title": "Reject non-ASCII digits in JsonTreeReader.nextInt/nextLong (#3063)",
+    "description": "* Reject non-ASCII digits in JsonTreeReader.nextInt/nextLong\n\nThe streaming JsonReader.nextInt() and nextLong() reject non-ASCII digit\nvariants (e.g. full-width U+FF10-FF19) since #2995, but JsonTreeReader\n(the tree-based counterpart used by fromJson(JsonElement, ...)) still\nsilently coerces them via Integer.parseInt/Long.parseLong, which accept\nany Unicode decimal digit. Add the same validateAscii check on the\nstring-token path so both readers behave consistently.\n\nFixes the tree-based counterpart of #2994.\n\n* Apply spotless formatting to new tests\n\n* Extract isAllAscii to reduce duplication with JsonReader\n\n---------\n\nCo-authored-by: Éamonn McManus <emcmanus@google.com>",
+    "pr_number": 3063,
+    "issue_numbers": [
+      2994,
+      2995
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "JsonTreeReader accepted non-ASCII Unicode digits for integers and longs instead of rejecting them like JsonReader does.",
+    "_id": "BUG-004"
+  },
+  {
+    "id": "BUG-005",
+    "commit": "5e277e42786ab6441b7dd6b1a8c34d545d132307",
+    "date": "2026-07-23",
+    "author": "Burt Matthews",
+    "title": "Fix JsonPrimitive.hashCode to honor the equals/hashCode contract (#992) (#3059)",
+    "description": "* Fix JsonPrimitive.hashCode to honor the equals/hashCode contract (#992)\n\n* Add regression test for JsonPrimitive equals/hashCode contract (#992)\n\n* Restructure hashCode to parallel equals (review feedback)",
+    "pr_number": 3059,
+    "issue_numbers": [
+      992
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "JsonPrimitive produced differing hash codes for equivalent instances, violating the Java equals and hashCode contract.",
+    "_id": "BUG-005"
+  },
+  {
+    "id": "BUG-006",
+    "commit": "961517decce0aa907c285c19d8b93d5c746ecdcb",
+    "date": "2026-07-23",
+    "author": "anish",
+    "title": "Fix URI type adapter to preserve identity for non-ASCII URIs (#3067)",
+    "description": "* Fix URI type adapter to preserve identity for non-ASCII URIs\n\nThe URI type adapter was calling `URI.toASCIIString()` in its `write()` method, which percent-encodes non-ASCII characters and applies Unicode normalization. The `read()` method does not reverse this percent-encoding, causing URIs with international characters to lose their original identity during round-trip serialization. For example, `s3://bucket/path/Kankyō.png` would fail an equality check after being serialized and deserialized.\n\nSigned-off-by: anish <anishesg@users.noreply.github.com>\n\n* address review feedback: use toString() for consistency in testUriDeserialization\n\nSigned-off-by: anish <anishesg@users.noreply.github.com>\n\n---------\n\nSigned-off-by: anish <anishesg@users.noreply.github.com>\nCo-authored-by: anish <anishesg@users.noreply.github.com>\nCo-authored-by: Éamonn McManus <emcmanus@google.com>",
+    "pr_number": 3067,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "The URI adapter percent-encoded non-ASCII characters on serialization without decoding on read, corrupting international URIs.",
+    "_id": "BUG-006"
+  },
+  {
+    "id": "BUG-007",
+    "commit": "e4f54f78c93dae0507fcac5be81253974bc9042d",
+    "date": "2026-06-22",
+    "author": "Vasiliy Mikhailov",
+    "title": "Throw JsonSyntaxException instead of NPE for a null AtomicLongArray element (#3038)",
+    "description": "Deserializing a JSON array with a null element into AtomicLongArray\n(e.g. [1,null,3]) called longValue() on the null returned by the element\nadapter, throwing a NullPointerException. Throw a JsonSyntaxException for the\nnull element, consistent with how the Long adapter reports malformed numbers.\nAdds a regression test.",
+    "pr_number": 3038,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Deserializing a JSON array containing null into an AtomicLongArray threw a NullPointerException instead of a JsonSyntaxException.",
+    "_id": "BUG-007"
+  },
+  {
+    "id": "BUG-008",
+    "commit": "004e7a4949e08b430e3c8996998ee5a17ff9423a",
+    "date": "2026-06-04",
+    "author": "Oleg Golberg",
+    "title": "Fix: peekNumber rejects some numerals like 2^64 + \"0\" (#3034)",
+    "description": "* Fix: peekNumber rejects some numerals like 2^64 + \"0\"\n\nIssue: the \"leading zero\" logic in peekNumber, which tries to reject octal representations,\ndoes not account for long overflows. This results in valid numeric literals\nlike \"184467440737095516160\" (2^64 + \"0\") being rejected in STRICT parsing mode.\n\nThe easiest way to reproduce this is to serialize and deserialize a BigInteger with the\nvalue above.\n\nThis is a minimal fix which adds an overflow check to the leading zero condition.\n\n* strict",
+    "pr_number": 3034,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "JsonReader rejected valid large numeric literals in strict mode due to long overflow in the leading-zero check.",
+    "_id": "BUG-008"
+  },
+  {
+    "id": "BUG-009",
+    "commit": "df53d2f1f50b1c3abb2937e7675867e3f284eb1a",
+    "date": "2026-05-28",
+    "author": "Adil Burak Şen",
+    "title": "fix(proto): cap bitFieldXXX_ index to prevent OOM in LegacyProtoTypeAdapterFactory (#3027)",
+    "description": "* fix(proto): cap bitFieldXXX_ index to prevent OOM in LegacyProtoTypeAdapterFactory\n\nLegacyProtoTypeAdapterFactory.buildPresenceMaskFromBitFields() reads\nbitField<N>_ fields from the JSON stream. If an attacker-supplied JSON\ncontains an extremely large index (e.g. bitField67108863_), calling\nBigInteger.shiftLeft(N * 32) allocates N/8 bytes of heap, making it\ntrivial to OOM the JVM from a small input.\n\nFix: compute maxGroupIndex = ceil(fieldWithPresenceToBitIndex.size() / 32)\nand skip any bitField group whose index exceeds that bound, since groups\nbeyond that range cannot affect any presence bit checked by the adapter.\n\nAdds a regression test that verifies a crafted oversized index is silently\nignored while valid fields in the same message are still deserialized.\n\n* fix: add try-catch for NumberFormatException in bitField parsing\n\nThe BIT_FIELD_PATTERN regex already restricts the captured group to\n\\d{1,9} (1-9 decimal digits), which guarantees Integer.parseInt succeeds.\nAdding an explicit try-catch satisfies static-analysis tools (CodeQL)\nthat cannot infer the regex-based invariant.\n\n* fix(proto): simplify OOM fix — tighten BIT_FIELD_PATTERN to \\d{1,4}\n\nReplace the dynamic maxGroupIndex guard with the simpler regex approach\nsuggested in review: limit the captured index to 4 digits (max 9999).\nAny real proto message has far fewer than 9999 bitField groups, so the\nnarrower pattern is a clean fix without added runtime logic.\n\nAlso update the test comment to reflect the new mechanism.",
+    "pr_number": 3027,
+    "issue_numbers": [],
+    "files": [
+      "proto/src/main/java/com/google/gson/protobuf/LegacyProtoTypeAdapterFactory.java"
+    ],
+    "bug_type": "security",
+    "summary": "Uncapped bitField indices in LegacyProtoTypeAdapterFactory allowed untrusted JSON to allocate excessive heap and cause an OutOfMemoryError.",
+    "_id": "BUG-009"
+  },
+  {
+    "id": "BUG-011",
+    "commit": "f4d371d29c04066dbe7fdb31f642831f9c7f40cd",
+    "date": "2026-04-05",
+    "author": "Andrew Stellman",
+    "title": "Fix duplicate key detection when first value is null (#3006)",
+    "description": "* Fix duplicate key detection when first value is null\n\nMapTypeAdapterFactory detected duplicate map keys by checking the\nreturn value of Map.put(): `if (replaced != null)`. This missed\nduplicates where the first value was null, because Map.put() returns\nnull (the previous value) which passed the != null check.\n\nFor example, {\"a\":null,\"a\":1} was silently accepted as {a=1} instead\nof throwing JsonSyntaxException(\"duplicate key: a\").\n\nFix: check Map.containsKey() before put() instead of relying on the\nreturn value of put(). This correctly detects duplicates regardless\nof whether the first value is null.\n\nFixes both the object form and the array-of-entries form\n(enableComplexMapKeySerialization).\n\n* Apply spotless formatting",
+    "pr_number": 3006,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Duplicate map keys were not detected when the previous value was null because Map.put returns null in that case.",
+    "_id": "BUG-011"
+  },
+  {
+    "id": "BUG-018",
+    "commit": "2549ba93fc48f4c29f1a5c82553ce666712f183a",
+    "date": "2025-03-19",
+    "author": "Marcono1234",
+    "title": "Fix ConstructorConstructor creating mismatching Collection and Map instances (#2068)",
+    "description": "* Fix ConstructorConstructor creating mismatching Collection instances\n\n* Support EnumMap deserialization\n\n* Use LinkedTreeMap for maps with String supertype as key\n\n* Fix test method name typo\n\n* Fix `ProtoTypeAdapter` being unable to deserialize certain repeated fields\n\nFor example a `List<Long>` Protobuf field might internally have the\nProtobuf-internal `LongList` interface type.\nPreviously Gson's ConstructorConstructor was nonetheless creating an\nArrayList for this, which is wrong but worked. Now with the changes in\nConstructorConstructor Gson will fail to create an instance, so this commit\ntries to solve this properly in ProtoTypeAdapter.\n\n* Adjust tests\n\n* Don't use LinkedTreeMap for String supertypes as key & small test fix\n\nThis reverts a previous commit of this pull request, and matches the\noriginal behavior again.\n\n* Fix typo in exception message\n\n* Adjust ConstructorConstructor for Java 8\n\n* Use lambdas to make it more explicit which constructor overloads are used\n\n* Don't use Unsafe to create Collection and Map instances",
+    "pr_number": 2068,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+      "gson/src/main/java/com/google/gson/internal/bind/CollectionTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "ConstructorConstructor could instantiate incompatible Collection or Map types such as EnumMap or Protobuf repeated fields.",
+    "_id": "BUG-018"
+  },
+  {
+    "id": "BUG-019",
+    "commit": "c395dd1fdf2590c575965208f1b479dd76a6c926",
+    "date": "2025-02-21",
+    "author": "Marcono1234",
+    "title": "Fix `GraphAdapterBuilder#addType(Type)` delegating to previous creator (#2811)",
+    "description": "* Fix `GraphAdapterBuilder#addType(Type)` delegating to previous creator\n\nWhen `addType(Type, InstanceCreator)` is used, it adds the creator to the\n`instanceCreators` map. However, previously that map was also used by\nthe `constructorConstructor`.\nSo when `addType(Type)` was used afterwards, instead of actually obtaining\nthe default creator, it obtained the previously registered creator.\n\n* Use lambdas\n\n* Fix GraphAdapterBuilder reuse affecting previous adapters",
+    "pr_number": 2811,
+    "issue_numbers": [],
+    "files": [
+      "extras/src/main/java/com/google/gson/graph/GraphAdapterBuilder.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "GraphAdapterBuilder reused custom InstanceCreators registered by addType(Type, InstanceCreator) when addType(Type) was called.",
+    "_id": "BUG-019"
+  },
+  {
+    "id": "BUG-021",
+    "commit": "61609323da441e057e711362f93bc748f340f6cc",
+    "date": "2024-09-16",
+    "author": "Éamonn McManus",
+    "title": "Fix a class loading deadlock involving `TypeAdapters`. (#2740)",
+    "description": "* Fix a class loading deadlock involving `TypeAdapters`.\n\nFixes #2739.\n\n* Remove deprecation of internal fields.\n\nThe idea was to discourage people from using these, but they have been there for\na long time and the deprecation isn't going to have much effect. Meanwhile the\ndeprecation required `@SuppressWarnings`, which was annoying.\n\nAlso move `JsonElementTypeFactory.ADAPTER` back into `TypeAdapters` so there is\nno further circular dependency between the two classes. I think it was harmless\nbut it's easy enough to avoid.\n\n* Omit unnecessary type qualificiation.",
+    "pr_number": 2740,
+    "issue_numbers": [
+      2739
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/Streams.java",
+      "gson/src/main/java/com/google/gson/internal/bind/EnumTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonElementTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "concurrency",
+    "summary": "Resolves a circular class-initialization dependency in TypeAdapters that could cause a class-loading deadlock.",
+    "_id": "BUG-021"
+  },
+  {
+    "id": "BUG-023",
+    "commit": "e8cdabf296cd4c2c1550ed76cf27a1a8e0c4ec59",
+    "date": "2024-06-27",
+    "author": "Lukas Rieger",
+    "title": "Fix typeArguments array not being cloned when resolving ParameterizedType with changed owner (#2706)",
+    "description": "",
+    "pr_number": 2706,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Clones the typeArguments array when resolving a ParameterizedType with a changed owner type to prevent sharing mutable array references.",
+    "_id": "BUG-023"
+  },
+  {
+    "id": "BUG-026",
+    "commit": "13be1d104d5a5d39a93ff8202de4e75adbfc40f6",
+    "date": "2024-03-01",
+    "author": "Marcono1234",
+    "title": "Fix `GsonBuilder.setDateFormat` ignoring partial DEFAULT; deprecate `setDateFormat(int)` (#2556)",
+    "description": "* Fix `GsonBuilder.setDateFormat` ignoring partial DEFAULT; deprecate `setDateFormat(int)`\n\n* Remove date format methods not used by main code\n\n* Adjust example",
+    "pr_number": 2556,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java",
+      "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes GsonBuilder.setDateFormat improperly ignoring DateFormat.DEFAULT when used as a date or time style.",
+    "_id": "BUG-026"
+  },
+  {
+    "id": "BUG-027",
+    "commit": "11b273241250c3103a6ec52b45f792328f50479c",
+    "date": "2024-01-30",
+    "author": "William",
+    "title": "Fix $Gson$Types equals method for TypeVariable when its generic declaration is not a Class (#2599)",
+    "description": "* Fix $Gson$Types equals method for TypeVariable when its generic declaration is not a Class\n\n* Test $Gson$Types equals method with TypeVariable when its generic declaration is not a Class\n\n* Add @SuppressWarnings in GsonTypesTest.java",
+    "pr_number": 2599,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes equality checks on TypeVariable instances whose generic declaration is a Method or Constructor rather than a Class.",
+    "_id": "BUG-027"
+  },
+  {
+    "id": "BUG-029",
+    "commit": "58d1a9f0eb396ff64a622532e2ba5c5c726165e6",
+    "date": "2023-12-05",
+    "author": "Carpe-Wang",
+    "title": "Fix DateFormat time zone is not restored and add Test. (#2549)",
+    "description": "* Fix DateFormat time zone is not restored and add Test.\n\n* delete the test and make sure mvn clean test -X can be SUCCESS\n\n* delete the test and make sure mvn clean test -X can be SUCCESS\n\n* add test\n\n* restore the DateFormat time zone in SqlDateTypeAdapter and SqlTimeTypeAdapter\n\n* Adjust the code according to the code review feedback.\n\n* Adjust the code according to the code review feedback.\n\n* Adjust the code according to the code review feedback.\n\n* Adjust the Test\n\n* fix Werror error\n\n* Adjust the DefaultDateTypeAdapterTest according to the code review feedback.\n\n---------\n\nCo-authored-by: Carpe-Wang <wangcarpe@126.com>",
+    "pr_number": 2549,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/sql/SqlDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/sql/SqlTimeTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Ensures the original time zone of DateFormat instances is restored after parsing/formatting to avoid unintended side effects.",
+    "_id": "BUG-029"
+  },
+  {
+    "id": "BUG-032",
+    "commit": "70bda4b9c9eb8d0b567f8715a67dbada00b02216",
+    "date": "2023-08-29",
+    "author": "Marcono1234",
+    "title": "Throw exception when calling `JsonWriter.name` outside JSON object (#2476)",
+    "description": "Previous fix in 392cc65ff3004689e03b219d9b00979072f9c9d0 only covered writing\nname as top level value, but not when trying to write name inside JSON array.\n\nRemoved `stackSize == 0` check from `JsonWriter.name` because that is done\nalready by `peek()` call.",
+    "pr_number": 2476,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeWriter.java",
+      "gson/src/main/java/com/google/gson/stream/JsonWriter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes JsonWriter allowing name() to be called inside a JSON array, which violated the state contract and produced malformed JSON.",
+    "_id": "BUG-032"
+  },
+  {
+    "id": "BUG-033",
+    "commit": "7ee5ad6cd1640d957f3a73d89a271ee2ef9c7956",
+    "date": "2023-08-22",
+    "author": "Marcono1234",
+    "title": "Fix `Gson.getDelegateAdapter` not working properly for `JsonAdapter` (#2435)",
+    "description": "* Fix `Gson.getDelegateAdapter` not working properly for `JsonAdapter`\n\n* Address review feedback and add comments regarding thread-safety\n\n* Revert InstanceCreator instance validation\n\n* Disallow `null` as `skipPast`\n\n* Avoid `equals` usage in `getDelegateAdapter` & minor other changes\n\nPreviously `getDelegateAdapter` called `factories.contains(skipPast)`,\nbut unlike the other comparisons which check for reference equality,\nthat would have used the `equals` method.\nThis could lead to spurious \"GSON cannot serialize ...\" exceptions\nif two factory instances compared equal, but the one provided as\n`skipPast` had not been registered yet.",
+    "pr_number": 2435,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/InstanceCreator.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes Gson.getDelegateAdapter failing to find the proper delegate adapter when invoked from an adapter created via @JsonAdapter.",
+    "_id": "BUG-033"
+  },
+  {
+    "id": "BUG-038",
+    "commit": "85ebaf7c3553a5d5c058fd6067824a7c5258d07f",
+    "date": "2023-03-06",
+    "author": "Maicol",
+    "title": "Fix #2334 (#2337)",
+    "description": "* Fix #2334\n\nThis commit replaces the `NumberFormatException` with `MalformedJsonException` in the `JsonReader#readEscapeCharacter()` and also fixes the tests.\n\n* Removes white-space",
+    "pr_number": 2337,
+    "issue_numbers": [
+      2334
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Throws MalformedJsonException instead of an unexpected NumberFormatException when parsing invalid Unicode escape sequences.",
+    "_id": "BUG-038"
+  },
+  {
+    "id": "BUG-043",
+    "commit": "af2179843601c73aa96062208d8f324a45243e47",
+    "date": "2023-02-06",
+    "author": "Maicol",
+    "title": "Fix the `equals` method of `JsonPrimitive` to work with `BigInteger` (#2311)",
+    "description": "* Fix the `equals` method of `JsonPrimitive` to work with BigInteger\n\n* Improve the `equals` & `getAsBigInteger` methods in `JsonPrimitive`",
+    "pr_number": 2311,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes JsonPrimitive.equals to correctly compare instances containing BigInteger values.",
+    "_id": "BUG-043"
+  },
+  {
+    "id": "BUG-044",
+    "commit": "e4c3b653a6bdac992d64822796af95ff8e74a625",
+    "date": "2022-12-05",
+    "author": "Marcono1234",
+    "title": "Fix non-threadsafe creation of adapter for type with cyclic dependency (#1832)",
+    "description": "* Fix non-threadsafe creation of adapter for type with cyclic dependency\n\n* Improve handling of broken adapters during Gson.getAdapter(...) call\n\n* Improve test\n\n* Slightly improve implementation and extend tests\n\n* Simplify getAdapter implementation\n\n* Convert GsonTest to JUnit 4 test\n\n* Clarify getAdapter concurrency behavior",
+    "pr_number": 1832,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializer.java",
+      "gson/src/main/java/com/google/gson/JsonSerializer.java",
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "bug_type": "concurrency",
+    "summary": "Fixes thread-safety issues in Gson.getAdapter when resolving type adapters for types with cyclic dependencies.",
+    "_id": "BUG-044"
+  },
+  {
+    "id": "BUG-047",
+    "commit": "8451c1fa63f5198daf38498869836e85c85bdd08",
+    "date": "2022-10-10",
+    "author": "Marcono1234",
+    "title": "Fix TypeAdapterRuntimeTypeWrapper not detecting reflective TreeTypeAdapter and FutureTypeAdapter (#1787)",
+    "description": "* Fix TypeAdapterRuntimeTypeWrapper not detecting reflective TreeTypeAdapter\n\nPreviously on serialization TypeAdapterRuntimeTypeWrapper preferred a\nTreeTypeAdapter without `serializer` which falls back to the reflective\nadapter. This behavior was incorrect because it caused the reflective\nadapter for a Base class to be used for serialization (indirectly as\nTreeTypeAdapter delegate) instead of using the reflective adapter for\na Subclass extending Base.\n\n* Address review feedback\n\n* Convert TypeAdapterRuntimeTypeWrapperTest to JUnit 4 test\n\n* Prefer wrapped reflective adapter for serialization of subclass\n\n* Detect reflective adapter used as delegate for Gson.FutureTypeAdapter\n\n* Tiny style tweak.\n\nCo-authored-by: Éamonn McManus <emcmanus@google.com>",
+    "pr_number": 1787,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/SerializationDelegatingTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes TypeAdapterRuntimeTypeWrapper to properly detect delegating TreeTypeAdapter and FutureTypeAdapter instances so that runtime types are not incorrectly serialized with base reflective adapters.",
+    "_id": "BUG-047"
+  },
+  {
+    "id": "BUG-050",
+    "commit": "6fc1c8f7f17a949b4dd743603df88f1935db7907",
+    "date": "2022-08-08",
+    "author": "Marcono1234",
+    "title": "Fix `TypeAdapter.toJson` throwing AssertionError for custom IOException (#2172)",
+    "description": "* Fix TypeAdapter.toJson throwing AssertionError for custom IOException\n\n* Add throws javadoc tag for TypeAdapter methods",
+    "pr_number": 2172,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes TypeAdapter.toJson to rethrow custom IOExceptions as JsonIOException instead of incorrectly wrapping them in an AssertionError.",
+    "_id": "BUG-050"
+  },
+  {
+    "id": "BUG-051",
+    "commit": "a4bc6c17d71fffe62cd8e478a2e68305df825d40",
+    "date": "2022-08-08",
+    "author": "Marcono1234",
+    "title": "Fix JsonTreeReader throwing wrong exception type for non-finite doubles (#1782)",
+    "description": "Follow-up for #1767",
+    "pr_number": 1782,
+    "issue_numbers": [
+      1767
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "bug_type": "crash",
+    "summary": "JsonTreeReader threw the wrong exception type (IllegalArgumentException instead of NumberFormatException/MalformedJsonException) when encountering non-finite doubles.",
+    "_id": "BUG-051"
+  },
+  {
+    "id": "BUG-052",
+    "commit": "46b97bf15633929e7db6c43007a6b03e852e2aee",
+    "date": "2022-08-05",
+    "author": "bufistov",
+    "title": "Fixed nullSafe usage. (#1555)",
+    "description": "The JsonSerializer/Deserializer adapters used to ignore this attribute\nwhich result in inconsistent behaviour for annotated adapters.\n\nFixes #1553\n\nSigned-off-by: Dmitry Bufistov <dmitry@midokura.com>\n\nCo-authored-by: Dmitry Bufistov <dmitry@midokura.com>",
+    "pr_number": 1555,
+    "issue_numbers": [
+      1553
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "The nullSafe attribute on @JsonAdapter was ignored for JsonSerializer and JsonDeserializer, causing unexpected null handling behavior.",
+    "_id": "BUG-052"
+  },
+  {
+    "id": "BUG-053",
+    "commit": "a1d2ebc8b51a3a0df8b15c98f47d5ac95cf7f7b0",
+    "date": "2022-08-03",
+    "author": "Marcono1234",
+    "title": "Fix #1702: Gson.toJson creates CharSequence which does not implement toString (#1703)",
+    "description": "* Gson.toJson creates CharSequence which does not implement toString\n\n* Improve Streams.AppendableWriter.CurrentWrite test\n\n* Make setChars package-private",
+    "pr_number": 1703,
+    "issue_numbers": [
+      1702
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Streams.AppendableWriter created a CharSequence implementation that failed to implement toString(), leading to unexpected string conversions.",
+    "_id": "BUG-053"
+  },
+  {
+    "id": "BUG-054",
+    "commit": "2eb37589b53d0d2c292a2187bc87a0967686ac29",
+    "date": "2022-07-21",
+    "author": "Thomas Oster",
+    "title": "Fix RuntimeTypeAdapterFactory (#2139)",
+    "description": "* Change the RuntimeTypeAdapterFactoryTest, so it fails because of #712\n\n* Fix RuntimeTypeAdapterFactory\n\nTrying to use this class as is results in the type-property not being serialized into the JSON, thus it is not present on deserialization.\nThe fix from https://github.com/google/gson/issues/712#issuecomment-148955110 works. No idea why this is not merged yet.",
+    "pr_number": 2139,
+    "issue_numbers": [
+      712
+    ],
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "RuntimeTypeAdapterFactory failed to serialize the type label into the JSON object, breaking polymorphic deserialization.",
+    "_id": "BUG-054"
+  },
+  {
+    "id": "BUG-055",
+    "commit": "57225c6741ff14db049ebe793ff3d423f2950ac7",
+    "date": "2022-06-16",
+    "author": "Marcono1234",
+    "title": "Fail when parsing invalid local date (#2134)",
+    "description": "* Fail when parsing invalid local date\n\n* Improve invalid date tests",
+    "pr_number": 2134,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "ISO8601Utils accepted invalid local dates without throwing an exception instead of failing parsing.",
+    "_id": "BUG-055"
+  },
+  {
+    "id": "BUG-057",
+    "commit": "710a76c8b8835e36935c62024001ba6b91ceee01",
+    "date": "2022-01-27",
+    "author": "Marcono1234",
+    "title": "Fix JsonReader.hasNext() returning true at end of document (#2061)",
+    "description": "",
+    "pr_number": 2061,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "JsonReader and JsonTreeReader hasNext() incorrectly returned true when at the end of the JSON document.",
+    "_id": "BUG-057"
+  },
+  {
+    "id": "BUG-058",
+    "commit": "6e06bf0d89ad71f317c920cdaf9981a0508446d3",
+    "date": "2021-11-11",
+    "author": "Éamonn McManus",
+    "title": "Fix for an ArrayIndexOutOfBoundsException.",
+    "description": "The `fillBuffer` method changes `pos`, so it is incorrect to cache\nits previous value.",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "crash",
+    "summary": "JsonReader cached the buffer position before calling fillBuffer, resulting in an ArrayIndexOutOfBoundsException.",
+    "_id": "BUG-058"
+  },
+  {
+    "id": "BUG-059",
+    "commit": "b0595c595bd2c052cd05e0283bb37b67c02bd06f",
+    "date": "2021-11-09",
+    "author": "Marcono1234",
+    "title": "Fix failing to serialize Collection or Map with inaccessible constructor (#1902)",
+    "description": "* Remove UnsafeReflectionAccessor\n\nRevert #1218\n\nUsage of sun.misc.Unsafe to change internal AccessibleObject.override field\nto suppress JPMS warnings goes against the intentions of the JPMS and does not\nwork anymore in newer versions, see #1540.\nTherefore remove it and instead create a descriptive exception when making a\nmember accessible fails. If necessary users can also still use `java` command\nline flags to open external modules.\n\n* Fix failing to serialize Collection or Map with inaccessible constructor\n\nAlso remove tests which rely on Java implementation details.\n\n* Don't keep reference to access exception of ConstructorConstructor\n\nThis also avoids a confusing stack trace, since the previously caught\nexception might have had a complete unrelated stack trace.\n\n* Remove Maven toolchain requirement\n\n* Address review feedback\n\n* Add back test for Security Manager",
+    "pr_number": 1902,
+    "issue_numbers": [
+      1218,
+      1540
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/PreJava9ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionHelper.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/UnsafeReflectionAccessor.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Serialization of Collection or Map instances failed when their constructors were inaccessible on modular Java versions.",
+    "_id": "BUG-059"
+  },
+  {
+    "id": "BUG-061",
+    "commit": "deaa3a6cd9f4676e0c826eadadd2f3d6dc857096",
+    "date": "2021-11-01",
+    "author": "Marcono1234",
+    "title": "Fix `Gson.newJsonWriter` ignoring lenient and HTML-safe setting (#1989)",
+    "description": "* Improve Gson newJsonWriter and newJsonReader documentation\n\n* Consider lenient and HTML-safe setting for Gson.newJsonWriter\n\n* Remove empty line between imports",
+    "pr_number": 1989,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes `Gson.newJsonWriter` to respect the configured lenient and HTML-safe settings instead of ignoring them.",
+    "_id": "BUG-061"
+  },
+  {
+    "id": "BUG-063",
+    "commit": "b3188c113205bb41a980b09917b7f6b242cd32fc",
+    "date": "2021-11-01",
+    "author": "Marcono1234",
+    "title": "Fix `FieldNamingPolicy.upperCaseFirstLetter` uppercasing non-letter (#2004)",
+    "description": "",
+    "pr_number": 2004,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/FieldNamingPolicy.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes `FieldNamingPolicy.upperCaseFirstLetter` incorrectly attempting to modify non-letter characters.",
+    "_id": "BUG-063"
+  },
+  {
+    "id": "BUG-064",
+    "commit": "ba96d53bad35f7466073f14cb3d89d09383e1a2d",
+    "date": "2021-10-25",
+    "author": "Marcono1234",
+    "title": "Fix missing bounds checks for JsonTreeReader.getPath() (#2001)",
+    "description": "There are situations where the stack of JsonTreeReader contains a JsonArray\nor JsonObject without a subsequent Iterator, for example after calling peek()\nor nextName().\nWhen JsonTreeReader.getPath() is called afterwards it therefore must not\nassume that a JsonArray or JsonObject is always followed by an Iterator.\n\nThe only reason why this never caused an ArrayIndexOutOfBoundsException in\nthe past is because the stack has an even default size (32) so it would just\nhave read the next `null`.\nHowever, if the stack had for example the default size 31, a user created a\nJsonTreeReader for 16 JSON arrays nested inside each other, then called 15\ntimes beginArray(), followed by peek() and getPath() the exception would\noccur.",
+    "pr_number": 2001,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes potential `ArrayIndexOutOfBoundsException` crashes in `JsonTreeReader.getPath()` when handling arrays or objects on the stack without following iterators.",
+    "_id": "BUG-064"
+  },
+  {
+    "id": "BUG-065",
+    "commit": "e6fae590cf2a758c47cd5a17f9bf3780ce62c986",
+    "date": "2021-10-13",
+    "author": "Marcono1234",
+    "title": "Prevent Java deserialization of internal classes (#1991)",
+    "description": "Adversaries might be able to forge data which can be abused for DoS attacks.\nThese classes are already writing a replacement JDK object during serialization\nfor a long time, so this change should not cause any issues.",
+    "pr_number": 1991,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "bug_type": "security",
+    "summary": "Prevents standard Java deserialization of internal classes to protect against potential denial-of-service attacks.",
+    "_id": "BUG-065"
+  },
+  {
+    "id": "BUG-066",
+    "commit": "cd748df7122ea4260d35dfe90cfab0c079a1504d",
+    "date": "2021-10-11",
+    "author": "Marcono1234",
+    "title": "Fix LongSerializationPolicy null handling being inconsistent with Gson (#1990)",
+    "description": "Gson does not actually use the specified LongSerializationPolicy but instead\nuses type adapters which emulate the behavior. However, previously Gson's\nimplementation did not match LongSerializationPolicy regarding null handling.\n\nBecause it is rather unlikely that LongSerializationPolicy has been used on\nits own, this commit adjusts its implementation to match Gson's behavior\n(instead of the other way around).",
+    "pr_number": 1990,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/LongSerializationPolicy.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes `LongSerializationPolicy` to properly handle null values consistently with Gson's type adapter behavior.",
+    "_id": "BUG-066"
+  },
+  {
+    "id": "BUG-068",
+    "commit": "b39494dbe68f91045850778cac4b661b38beb615",
+    "date": "2020-05-26",
+    "author": "Richard Hernandez",
+    "title": "Fix fallback behavior of UnsafeReflectionAllocator when AccessibleObject isn't so accessible",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/reflect/UnsafeReflectionAccessor.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes an exception when falling back in `UnsafeReflectionAccessor` if accessing `AccessibleObject` fields fails under strict module systems or security managers.",
+    "_id": "BUG-068"
+  },
+  {
+    "id": "BUG-071",
+    "commit": "e2296f42d553e3f299c7dd2f4d1a4efd60007ade",
+    "date": "2018-09-25",
+    "author": "Mike Cumings",
+    "title": "Fix issue with recursive type variable protections to fix #1390",
+    "description": "When a type variable is referenced multiple times it needs to resolve\nto the same value.  Previously, the second attempt would abort\nresolution early in order to protect against infinite recursion.",
+    "pr_number": null,
+    "issue_numbers": [
+      1390
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes premature abortion of type resolution when a type variable is referenced multiple times.",
+    "_id": "BUG-071"
+  },
+  {
+    "id": "BUG-073",
+    "commit": "a6890bbaba29fb1074388c06bf0c231f8e06b4f2",
+    "date": "2018-05-09",
+    "author": "inder123",
+    "title": "Fixed https://github.com/google/gson/issues/1310 (#1311)",
+    "description": "* Fixed https://github.com/google/gson/issues/1310\n\nAlso renamed VersionUtils to more readable abstraction JavaVersion\nAdded support for debian naming convention\nUsing min supported version (6) as the default if JDK version can't be figured out\n\n* Moved JavaVersion to an internal package",
+    "pr_number": 1311,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/JavaVersion.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/util/VersionUtils.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes a NumberFormatException when parsing JDK version strings on Debian-based systems.",
+    "_id": "BUG-073"
+  },
+  {
+    "id": "BUG-075",
+    "commit": "0aaf5ff408a54eb7dc238d3569b5d1cef9273047",
+    "date": "2017-12-30",
+    "author": "Andrey Mogilev",
+    "title": "fix Java9 DateFormat changes (#1211)",
+    "description": "* fix Java9 DateFormat changes\n\n* fix Codacy warnings",
+    "pr_number": 1211,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/util/VersionUtils.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes date parsing and formatting failures caused by Java 9 default locale and DateFormat changes.",
+    "_id": "BUG-075"
+  },
+  {
+    "id": "BUG-078",
+    "commit": "b1fb9ca9a1bea5440bc6a5b506ccf67236b08243",
+    "date": "2017-09-21",
+    "author": "Andrey Mogilev",
+    "title": "fix issue #1107: resolve element type in wildcard collection types (#1146)",
+    "description": "* fix issue #1107: resolve element type in wildcard collection types\n\n* fix Codacy warnings\n\n* fix Codacy warnings",
+    "pr_number": 1146,
+    "issue_numbers": [
+      1107
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes failure to resolve the collection element type when the collection type contains wildcards.",
+    "_id": "BUG-078"
+  },
+  {
+    "id": "BUG-079",
+    "commit": "7a9fd5962dce7f277efa15fcc996606be0733bac",
+    "date": "2017-09-17",
+    "author": "Lyubomyr Shaydariv",
+    "title": "Fixed DefaultDateTypeAdapter nullability issue and JSON primitives contract (#1100)",
+    "description": "* Fixed DefaultDateTypeAdapter nullability issue and JSON primitives contract\n\nRegression in:\n\n* b8f616c939c652b8540c95fa2b377b8c628ef3ff - Migrate DefaultDateTypeAdapter to streaming adapter (#1070)\n\nBug reports:\n\n* https://github.com/google/gson/issues/1096 - 2.8.1 can't serialize and deserialize date null (2.8.0 works fine)\n* https://github.com/google/gson/issues/1098 - Gson 2.8.1 DefaultDateTypeAdapter is not null safe.\n\n* Fixed DefaultDateTypeAdapter nullability on write",
+    "pr_number": 1100,
+    "issue_numbers": [
+      1070
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes a regression where DefaultDateTypeAdapter threw an exception when serializing or deserializing null date values.",
+    "_id": "BUG-079"
+  },
+  {
+    "id": "BUG-080",
+    "commit": "03a72e752ef68269990f984c9fd613cfd59224bc",
+    "date": "2017-07-31",
+    "author": "Andrey Mogilev",
+    "title": "Fix StackOverflowError on resolving types with TypeVariable recursion (#1128)",
+    "description": "* Fix StackOverflowError on resolving types with TypeVariable recursion\n\nSample failing code:\n  private static class TestType<X> {\n    TestType<? super X> superType;\n  }\n  ...\n  new Gson().getAdapter(TestType.class);\n\n* fix build errors",
+    "pr_number": 1128,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes a StackOverflowError caused by infinite recursion when resolving self-referential wildcard type variables.",
+    "_id": "BUG-080"
+  },
+  {
+    "id": "BUG-082",
+    "commit": "74e37110e5edf38d1c9ec1b46f42670340a0c6c7",
+    "date": "2017-06-19",
+    "author": "Niv Singer",
+    "title": "Avoid NPE in PostConstructAdapterFactory (#1103)",
+    "description": "* Avoid NPE in PostConstructAdapterFactory\n\nThe RawType's Superclass might be null. This happens, for example, when the type is a collection.\n\n* Add test case for NPE in PostConstructAdapterFactory\n\n* Improve the code quality of PostConstructAdapterFactoryTest\n\n* Improve the code quality of PostConstructAdapterFactoryTest\n\n* Improve the code quality of PostConstructAdapterFactoryTest",
+    "pr_number": 1103,
+    "issue_numbers": [],
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/PostConstructAdapterFactory.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Prevents a NullPointerException in PostConstructAdapterFactory when inspecting raw types with null superclasses.",
+    "_id": "BUG-082"
+  },
+  {
+    "id": "BUG-083",
+    "commit": "a300148003e3a067875b1444e8268b6e0f0e0e02",
+    "date": "2017-05-30",
+    "author": "Andrey Mogilev",
+    "title": "Fix StackOverflowError on resolving recursive types by collapsing chains of type bounds (#1075)",
+    "description": "* Fixes StackOverflowError on resolving recursive types.\n\nSee Issue #440, Issue #603, tests.\n\n* fix 'codacy' coding style warnings\n\n* added copyright header",
+    "pr_number": 1075,
+    "issue_numbers": [
+      440,
+      603
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Resolves a StackOverflowError caused by infinite loops when resolving recursive type bounds.",
+    "_id": "BUG-083"
+  },
+  {
+    "id": "BUG-084",
+    "commit": "9a2421997e83ec803c88ea370a2d102052699d3b",
+    "date": "2017-04-19",
+    "author": "Michele Vivoda",
+    "title": "negative zero test and fix (#1069)",
+    "description": "",
+    "pr_number": 1069,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes incorrect parsing of negative zero (-0) values in JsonReader.",
+    "_id": "BUG-084"
+  },
+  {
+    "id": "BUG-086",
+    "commit": "9e6f2bab20257b6823a5b753739f047d79e9dcbd",
+    "date": "2017-02-15",
+    "author": "André Rouél",
+    "title": "Fix ArrayIndexOutOfBoundsException when skipping a value with JsonTreeReader #1013 (#1014)",
+    "description": "",
+    "pr_number": 1014,
+    "issue_numbers": [
+      1013
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes an ArrayIndexOutOfBoundsException when calling skipValue on a JsonTreeReader.",
+    "_id": "BUG-086"
+  },
+  {
+    "id": "BUG-088",
+    "commit": "2928b3ef978a619a5433a6f3c9209e2968497904",
+    "date": "2016-05-23",
+    "author": "Nykolas Lima",
+    "title": "handle explicit null values in JSON",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Adds proper handling for explicit null JSON values in ProtoTypeAdapter to prevent unexpected failures.",
+    "_id": "BUG-088"
+  },
+  {
+    "id": "BUG-089",
+    "commit": "ab40462cc76f6708e3ce2e981f5c6b485347702b",
+    "date": "2016-04-20",
+    "author": "Ugljesa Jovanovic",
+    "title": "Check if class can be instantiated based on class modifiers. If not throw an unsupported operation exception.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Prevents instantiating interfaces and abstract classes with UnsafeAllocator by validating class modifiers first.",
+    "_id": "BUG-089"
+  },
+  {
+    "id": "BUG-090",
+    "commit": "966de9e60dd6a828cb52548dd8de77adc86bd319",
+    "date": "2016-04-15",
+    "author": "gavlyukovskiy",
+    "title": "fixed throwing RuntimeException instead of JsonIOException",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Throws JsonIOException instead of a raw RuntimeException to adhere to Gson's exception contract.",
+    "_id": "BUG-090"
+  },
+  {
+    "id": "BUG-091",
+    "commit": "c731abb293e79b26e53db3264306768fb86ef4c4",
+    "date": "2016-02-25",
+    "author": "Inderjeet Singh",
+    "title": "Fixed a regression in Gson 2.6 where Gson caused NPE if the TypeAdapterFactory.create() returned null.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixed a NullPointerException thrown when TypeAdapterFactory.create() returned null.",
+    "_id": "BUG-091"
+  },
+  {
+    "id": "BUG-093",
+    "commit": "7d1973e6c5e270c0c94eaf6a3e81f4f2c5b2a699",
+    "date": "2015-10-21",
+    "author": "jwilson",
+    "title": "Fix type hierarchy adapters to do a runtime check.",
+    "description": "Otherwise if we have a type hierarchy adapter for Vehicle, and we\nattempt to decode a JSON string as a Car, we get the right exception\nif the JSON string is actually decoded as a Truck.",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Added a runtime type check in type hierarchy adapters to ensure decoded objects match the requested subtype.",
+    "_id": "BUG-093"
+  },
+  {
+    "id": "BUG-094",
+    "commit": "3daf5859318d6c1f2d9b6a537115d4235533c0ef",
+    "date": "2015-09-26",
+    "author": "Inderjeet Singh",
+    "title": "Implemented equals and hashcode for LazilyParsedNumber to fix https://github.com/google/gson/issues/627",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Implemented equals and hashCode in LazilyParsedNumber to prevent incorrect equality comparisons between number instances.",
+    "_id": "BUG-094"
+  },
+  {
+    "id": "BUG-095",
+    "commit": "1867457030d3c149566e95a019033cce4ff3cf90",
+    "date": "2015-08-05",
+    "author": "Lachlan Coote",
+    "title": "fix #680 - make RuntimeTypeAdapterFactory null-safe",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      680
+    ],
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Made RuntimeTypeAdapterFactory null-safe to prevent NullPointerExceptions when serializing or deserializing null values.",
+    "_id": "BUG-095"
+  },
+  {
+    "id": "BUG-096",
+    "commit": "d8c12a727f465fcdc55fb5e25890b8b868db49e7",
+    "date": "2015-07-23",
+    "author": "Dillon Dixon",
+    "title": "Fixed accidental duplication of null elements",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonArray.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixed JsonArray deepCopy duplicating null elements incorrectly.",
+    "_id": "BUG-096"
+  },
+  {
+    "id": "BUG-097",
+    "commit": "0c3b9670f0907e36a4fcb435410dfad62873693b",
+    "date": "2014-12-05",
+    "author": "Inderjeet Singh",
+    "title": "Ensuring that UTC date adapter serializes nulls correctly",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/UtcDateTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Ensured that UtcDateTypeAdapter serializes null values properly instead of crashing or outputting incorrect JSON.",
+    "_id": "BUG-097"
+  },
+  {
+    "id": "BUG-099",
+    "commit": "b6a625fb6cb7e46a01938fef79ac6ea26c93a8dc",
+    "date": "2014-11-16",
+    "author": "Inderjeet Singh",
+    "title": "fixed issue 469 by adding a TypeAdapterFactory for throwables that ignores cause if it is self-referencing",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      469
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Prevented infinite recursion and StackOverflowError when serializing throwables with self-referencing causes.",
+    "_id": "BUG-099"
+  },
+  {
+    "id": "BUG-100",
+    "commit": "d6c8c1e3cf6749258e3f98d2bc03c973385e31a7",
+    "date": "2014-11-11",
+    "author": "Jesse Wilson",
+    "title": "Fix bugs in getPath() with arrays of objects and arrays of arrays",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixed incorrect JSON paths returned by JsonReader.getPath() for nested arrays and arrays of objects.",
+    "_id": "BUG-100"
+  },
+  {
+    "id": "BUG-105",
+    "commit": "6e8d3cd65e2777da196513d91b796d3e03e203d1",
+    "date": "2014-03-09",
+    "author": "Inderjeet Singh",
+    "title": "Created threadsafe implementation of JsonAdapter invocation. Also fixed a bug where runtime generated typeadapters were being carried over from a toJson/fromJson call to the next.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "concurrency",
+    "summary": "Makes JsonAdapter invocation thread-safe and prevents runtime-generated type adapters from leaking across calls.",
+    "_id": "BUG-105"
+  },
+  {
+    "id": "BUG-106",
+    "commit": "e280ffd7e2fe14140c9478a546c6f074cf089a13",
+    "date": "2014-03-09",
+    "author": "Inderjeet Singh",
+    "title": "Fixed broken test to ensure that a field JsonAdapter annotation supersedes the class JsonAdapter annotation. Added a map in Gson to keep track of TypeAdapters which are generated by Gson.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Ensures field-level @JsonAdapter annotations take precedence over class-level annotations by tracking generated adapters.",
+    "_id": "BUG-106"
+  },
+  {
+    "id": "BUG-107",
+    "commit": "c3d0f200b352f411b9ebe45c3bf49d4328b2c51f",
+    "date": "2014-03-08",
+    "author": "Inderjeet Singh",
+    "title": "Fixed a bug where an inner static class was incorrectly marked as non-static while creating parameterized types.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes an issue where static inner classes were treated as non-static when constructing parameterized types, causing incorrect validation failures.",
+    "_id": "BUG-107"
+  },
+  {
+    "id": "BUG-108",
+    "commit": "1840466704210c3c6c2d1d0bf06d1ff88c19c08d",
+    "date": "2013-05-14",
+    "author": "Jesse Wilson",
+    "title": "Fix a nasty bug where elements in LinkedHashTreeMap could be dropped.",
+    "description": "The underlying problem is that the doubleCapacity function would drop the parent links when all nodes ended up on the same side in a doubling. This was caused by the fact that the AvlIterator was destructive on parent nodes, and we weren't putting them back together with the AvlBuilder. This removes an incorrect optimization and fixes the problem.\n\nAlso move LinkedHashTreeMap back into main from test.",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes node corruption and dropped elements in LinkedHashTreeMap caused by destructive tree iteration during capacity doubling.",
+    "_id": "BUG-108"
+  },
+  {
+    "id": "BUG-112",
+    "commit": "7d53113ebc9ef6921c6238f013aabd10890611a0",
+    "date": "2013-04-04",
+    "author": "Inderjeet Singh",
+    "title": "fixed https://code.google.com/p/google-gson/issues/detail?id=509 by adding construction for EnumSet",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes failure to instantiate EnumSet during deserialization by adding dedicated constructor support.",
+    "_id": "BUG-112"
+  },
+  {
+    "id": "BUG-114",
+    "commit": "6dc6b4be9208221caad81b52aec665f133b5e9af",
+    "date": "2013-01-14",
+    "author": "Joel Leitch",
+    "title": "Fix object leak from ThreadLocal.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "other",
+    "summary": "Fixes a memory leak by properly cleaning up ThreadLocal state after type adapter lookups.",
+    "_id": "BUG-114"
+  },
+  {
+    "id": "BUG-116",
+    "commit": "2fef83799de82f67f2124908e982c773c49a6153",
+    "date": "2012-09-17",
+    "author": "Jesse Wilson",
+    "title": "Optimizations and bug fixes for LinkedHashTreeMap.",
+    "description": "The most interesting optimization is to replace ArrayDeque with a manual linked list that reuses the nodes 'parent' field. These optimizations save about 20%.",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes correctness bugs and optimizes node traversal in LinkedHashTreeMap.",
+    "_id": "BUG-116"
+  },
+  {
+    "id": "BUG-117",
+    "commit": "a6ab854302bf2398ed221afe7aefd0c717b5d1fa",
+    "date": "2012-09-12",
+    "author": "Jesse Wilson",
+    "title": "Fix a bug where we were unlinking nodes that shouldn't have been unlinked.",
+    "description": "Found by Guava's awesome collections test suite!",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes a bug in LinkedTreeMap where nodes were improperly unlinked during map modifications.",
+    "_id": "BUG-117"
+  },
+  {
+    "id": "BUG-119",
+    "commit": "46b73632b0f7591ef1328ee7ddd1e883916fec1e",
+    "date": "2012-08-28",
+    "author": "Jesse Wilson",
+    "title": "Fix a bug where we weren't reading enough characters when a BOM was encountered.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes JsonReader to ensure enough characters are buffered when skipping a byte order mark.",
+    "_id": "BUG-119"
+  },
+  {
+    "id": "BUG-120",
+    "commit": "448063dde142a07e07f13b017bc9844f3555cf74",
+    "date": "2012-08-27",
+    "author": "Jesse Wilson",
+    "title": "Fix a goof in number parsing.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes an incorrect character check in JsonReader number parsing logic.",
+    "_id": "BUG-120"
+  },
+  {
+    "id": "BUG-121",
+    "commit": "4c2980e6ff798f3209f00292ead5060c402d9774",
+    "date": "2012-08-27",
+    "author": "Jesse Wilson",
+    "title": "Fix a bug in integer parsing.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes an integer parsing bug in JsonReader.",
+    "_id": "BUG-121"
+  },
+  {
+    "id": "BUG-122",
+    "commit": "085856c12843a6b58d6de59672d37da47afdaa72",
+    "date": "2012-08-26",
+    "author": "Jesse Wilson",
+    "title": "Don't leave the JsonReader in an invalid state if nextInt(), nextDouble() or nextLong() fails. We now save a reference to the string before we parse it, and keep that referenced value if parsing fails.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Prevents JsonReader from entering an invalid state when nextInt(), nextDouble(), or nextLong() fails during parsing.",
+    "_id": "BUG-122"
+  },
+  {
+    "id": "BUG-124",
+    "commit": "6575cdebca64244f400c86989a5b4957eb49d773",
+    "date": "2012-07-02",
+    "author": "Inderjeet Singh",
+    "title": "When EOF is encountered prematurely, Streams.parse() (and JsonParser) now throw JsonSyntaxException.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Ensures Streams.parse() and JsonParser throw a JsonSyntaxException when encountering premature EOF instead of an incorrect exception or behavior.",
+    "_id": "BUG-124"
+  },
+  {
+    "id": "BUG-125",
+    "commit": "582b0a0c9c1894f04b476ea11bc181405e61303c",
+    "date": "2012-06-30",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 443 by relying on Streams.parse() to return a JsonNull on empty documents and throw a JsonParseException otherwise.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      443
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java",
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes handling of empty documents to return JsonNull and properly throw JsonParseException on invalid inputs.",
+    "_id": "BUG-125"
+  },
+  {
+    "id": "BUG-128",
+    "commit": "15e7819e9ae424a33aa747030320a268f62b1d28",
+    "date": "2012-02-16",
+    "author": "Jesse Wilson",
+    "title": "Fix testStringEndingInSlash by fixing nextNonWhitespace to always return the character at buffer[pos-1].",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes nextNonWhitespace in JsonReader to always return the character at buffer[pos-1], fixing strings ending in a slash.",
+    "_id": "BUG-128"
+  },
+  {
+    "id": "BUG-129",
+    "commit": "2c8bec27d48d0d9ba9d99ff5fb7a9bae36906c48",
+    "date": "2012-02-12",
+    "author": "Jesse Wilson",
+    "title": "Permit multiple top-level values in JsonWriter in lenient mode. Also fix some cases where we don't throw the right thing on a closed JsonWriter.",
+    "description": "I'd prefer to not support multiple top-level values, but we support it in JsonReader and it's easier to be consistent. Kevin Hayen's patch pointed me in the right direction here, but I needed to do more work to cover some of the edge cases.\n\nFixes issue 397.",
+    "pr_number": null,
+    "issue_numbers": [
+      397
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonWriter.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Permits multiple top-level values in JsonWriter in lenient mode and ensures correct exceptions are thrown when writing to a closed writer.",
+    "_id": "BUG-129"
+  },
+  {
+    "id": "BUG-130",
+    "commit": "7b75efd09ecc1aeb0b5c7a020d9cf17b5dad8bad",
+    "date": "2012-02-11",
+    "author": "Jesse Wilson",
+    "title": "Write some tests prescribed by missing code coverage. I found a bug where our nonexecute prefix code causes a problem.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes an issue in JsonReader where handling the non-execute prefix caused improper parsing.",
+    "_id": "BUG-130"
+  },
+  {
+    "id": "BUG-135",
+    "commit": "c01fc5c9352b34024fd19d296c814051d334a564",
+    "date": "2011-12-16",
+    "author": "Jesse Wilson",
+    "title": "Fix tests broken by r1078.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fix broken type adapter behavior in TypeAdapters introduced by a previous commit.",
+    "_id": "BUG-135"
+  },
+  {
+    "id": "BUG-139",
+    "commit": "eb2230caf0c8d1e2d9ea67e7c4afce72f1eccc3f",
+    "date": "2011-12-06",
+    "author": "Jesse Wilson",
+    "title": "Fix nullSafe() to not infinitely recurse on non-null input.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fix nullSafe() adapter to delegate to the wrapped adapter instead of recursively calling itself on non-null values.",
+    "_id": "BUG-139"
+  },
+  {
+    "id": "BUG-140",
+    "commit": "e2e672740a6e58f81924406decba024a239fb8a5",
+    "date": "2011-12-06",
+    "author": "Jesse Wilson",
+    "title": "Fix broken test in registering competing type hierarchy adapters.",
+    "description": "I actually tried to replicate this test but got an error \"type adapters conflict\" when I was doing it. I suspect the problem was that I was trying to use 'Object' as the base of my type hierarchy and that class is somehow special.",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fix an improper conflict error in GsonBuilder when registering competing type hierarchy adapters.",
+    "_id": "BUG-140"
+  },
+  {
+    "id": "BUG-141",
+    "commit": "d5ed0716db573e5785e55d140ade5ab9a3062410",
+    "date": "2011-12-06",
+    "author": "Jesse Wilson",
+    "title": "Fix type adapter precedence so that last-registered wins (except for tree type hierarchy adapters, which were always last).",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes type adapter precedence so that the most recently registered adapter takes priority as expected.",
+    "_id": "BUG-141"
+  },
+  {
+    "id": "BUG-145",
+    "commit": "9a80d095d9afb3aedcde4c275fb4a8619a5e3a35",
+    "date": "2011-11-23",
+    "author": "Jesse Wilson",
+    "title": "Fix a regression I introduced with the changes to type hierarchy registration. If the registered type was a raw type, we need to also match the parameterizations of that type.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java",
+      "gson/src/main/java/com/google/gson/TreeTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes a regression where registered type adapters for raw types failed to match parameterized variations of those types.",
+    "_id": "BUG-145"
+  },
+  {
+    "id": "BUG-147",
+    "commit": "016261d9cfdcab859a674f90c1b53858dee44f36",
+    "date": "2011-10-24",
+    "author": "Jesse Wilson",
+    "title": "Throw JsonParseException in event of binding failures like type mismatches.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Wraps binding failures and type mismatch exceptions into JsonParseException per the expected API contract.",
+    "_id": "BUG-147"
+  },
+  {
+    "id": "BUG-151",
+    "commit": "3f261441651fe6a5f57cf4e6aa655f9661dc606a",
+    "date": "2011-09-28",
+    "author": "Jesse Wilson",
+    "title": "Fix date adapters to work when run in any time zone.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/SqlDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Date type adapters produced incorrect results or failed when executed in non-default time zones.",
+    "_id": "BUG-151"
+  },
+  {
+    "id": "BUG-152",
+    "commit": "b2d5940a9baf82c6aa796adf710b86fe64fe14e7",
+    "date": "2011-09-27",
+    "author": "Inderjeet Singh",
+    "title": "Implemented runtime type serialization for keys and values of a map. This fixes MoreSpecificTypeSerializationTest.testMapOfSubclassFields",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Map keys and values of subtype instances were serialized using declared types instead of runtime types.",
+    "_id": "BUG-152"
+  },
+  {
+    "id": "BUG-156",
+    "commit": "b90b43ea474cd32f1aa6d68aeb4fbe19e1e7ca9d",
+    "date": "2011-09-16",
+    "author": "Joel Leitch",
+    "title": "A few minor fixes and one incompatible Java 1.6 API call.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Replaces a Java 1.6-only API call that caused runtime errors on Java 1.5 environments.",
+    "_id": "BUG-156"
+  },
+  {
+    "id": "BUG-158",
+    "commit": "ee9ffa808a24d690dbffedb6bda4a18876c29fbd",
+    "date": "2011-09-09",
+    "author": "Jesse Wilson",
+    "title": "If the reflective type isn't as expected, fail with a JsonSyntaxException",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapter.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Throws JsonSyntaxException instead of an unexpected runtime exception when JSON does not match the reflective type.",
+    "_id": "BUG-158"
+  },
+  {
+    "id": "BUG-161",
+    "commit": "e19672d0a394d552469147e12a70bf81413f0076",
+    "date": "2011-09-09",
+    "author": "Jesse Wilson",
+    "title": "Throw the right exceptions when primitives fail to parse.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/BigDecimalTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/BigIntegerTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes primitive type adapters to throw JsonSyntaxException instead of NumberFormatException when parsing invalid values.",
+    "_id": "BUG-161"
+  },
+  {
+    "id": "BUG-163",
+    "commit": "f7121ad87d2916c72a854f746b37d62aead1ff0b",
+    "date": "2011-08-12",
+    "author": "Inderjeet Singh",
+    "title": "Restored this behavior: If a type adapter is registered for a base class, then a field of that type is serialized with the type adapter instead of using the run-time type. This fixes: CustomSerializerTest.testBaseClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Restores serialization behavior so that fields declared as a base class use the registered base class adapter instead of the runtime subtype adapter.",
+    "_id": "BUG-163"
+  },
+  {
+    "id": "BUG-166",
+    "commit": "161b4babe861a9fcd386d2d7ba5636aa3cedf9cc",
+    "date": "2011-07-22",
+    "author": "Jesse Wilson",
+    "title": "Fix a pair of relatively benign off-by-one bugs. These only manifest if the source Reader returns characters one-at-a-time.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes off-by-one errors in JsonReader when reading from a Reader that yields characters one at a time.",
+    "_id": "BUG-166"
+  },
+  {
+    "id": "BUG-169",
+    "commit": "3c4d121dc8736c7359731f9cb99098e2999f8575",
+    "date": "2011-07-15",
+    "author": "Jesse Wilson",
+    "title": "Fix integration tests that fell out from some benchmarking.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "extras/src/main/java/com/google/gson/mini/MiniGson.java",
+      "extras/src/main/java/com/google/gson/mini/ReflectiveTypeAdapter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes issues in MiniGson and ReflectiveTypeAdapter that were causing integration test failures discovered during benchmarking.",
+    "_id": "BUG-169"
+  },
+  {
+    "id": "BUG-170",
+    "commit": "041d499a7c4af1b70617001ded11dbc01732d97f",
+    "date": "2011-07-12",
+    "author": "Jesse Wilson",
+    "title": "Fix serialization where one type depends (possibly indireclty) on itself!",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "extras/src/main/java/com/google/gson/mini/MiniGson.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes an infinite recursion crash during serialization of recursive or self-referential types.",
+    "_id": "BUG-170"
+  },
+  {
+    "id": "BUG-171",
+    "commit": "aa897730085d17e131768caf40f9b30f2aa7a0bc",
+    "date": "2011-06-07",
+    "author": "Joel Leitch",
+    "title": "Quick fix for threading issue. Should maybe look into synchronizing this method instead.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/FieldAttributes.java"
+    ],
+    "bug_type": "concurrency",
+    "summary": "Fixes a thread-safety issue in FieldAttributes.",
+    "_id": "BUG-171"
+  },
+  {
+    "id": "BUG-175",
+    "commit": "f291c4d33ea5fcc52afcfa5713e519e663378bda",
+    "date": "2011-04-20",
+    "author": "Joel Leitch",
+    "title": "Fix a bunch of preserve-type issues: - Issue 205 - Issue 294 - Issue 318",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      205,
+      294,
+      318
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/JsonSerializationContextDefault.java",
+      "gson/src/main/java/com/google/gson/ObjectNavigator.java",
+      "gson/src/main/java/com/google/gson/ObjectTypePair.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes multiple issues where type preservation was not maintained during serialization.",
+    "_id": "BUG-175"
+  },
+  {
+    "id": "BUG-180",
+    "commit": "0c35edab6584a01d89ec5533ee6acac8f7002a8b",
+    "date": "2011-03-14",
+    "author": "Inderjeet Singh",
+    "title": "Fixed the bug where copyOf() for a ParameterizedTypeHandlerMap was failing when hierarchical type adapters for a sub class and its base class were present.",
+    "description": "Fixed previously broken tests to verify the behavior that a hierarchical type adapter for a sub-class can be registered after registering a hierarchical type adapter for the base-class. The vice-versa is not allowed as it would result in hiding the sub-class hierarchical type adapter.",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/ParameterizedTypeHandlerMap.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes a failure in ParameterizedTypeHandlerMap.copyOf() when hierarchical adapters for subclasses and base classes are present.",
+    "_id": "BUG-180"
+  },
+  {
+    "id": "BUG-182",
+    "commit": "43137b6b4f005e70561a147b868284d94527069f",
+    "date": "2011-03-11",
+    "author": "Jesse Wilson",
+    "title": "Fix unsafe allocations on Android",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/MappedObjectConstructor.java",
+      "gson/src/main/java/com/google/gson/UnsafeAllocator.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes unsafe object allocation failure and crashes on Android platforms.",
+    "_id": "BUG-182"
+  },
+  {
+    "id": "BUG-185",
+    "commit": "f1e278c4c018c72efeabbde122bdd4c645d12070",
+    "date": "2010-11-11",
+    "author": "Inderjeet Singh",
+    "title": "Revised CallPath to handle null or empty paths correctly. Updated ResourceQuery callspec to accept a list in the response body.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "wsclient/src/main/java/com/google/gson/rest/query/client/ResourceQueryClient.java",
+      "wsdef/src/main/java/com/google/gson/webservice/definition/CallPath.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Handles null or empty paths properly in CallPath.",
+    "_id": "BUG-185"
+  },
+  {
+    "id": "BUG-186",
+    "commit": "32afd1a4e45e4ae42bb6bceb8a5823dfe8b44fa2",
+    "date": "2010-11-10",
+    "author": "Joel Leitch",
+    "title": "Fixing parsing of unquoted strings to be (somewhat) consistent with previous versions of Gson. The difference with this version is that Gson will throw a more specific exception rather than JsonParseException.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonParser.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes unquoted string parsing behavior to throw specific exceptions consistently with prior versions.",
+    "_id": "BUG-186"
+  },
+  {
+    "id": "BUG-187",
+    "commit": "103edb9c36988c42170a75046eee37407c0c6475",
+    "date": "2010-11-08",
+    "author": "Jesse Wilson",
+    "title": "Don't return null on an unexpected EOF unless the document is empty. This brings us back to compatibility with GSON 1.5.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Streams.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Prevents returning null on unexpected EOF in Streams unless the document is empty.",
+    "_id": "BUG-187"
+  },
+  {
+    "id": "BUG-190",
+    "commit": "c6a4f55d1a9b191dbbd958c366091e567191ccab",
+    "date": "2010-11-02",
+    "author": "Joel Leitch",
+    "title": "Fix for Issue #40.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      40
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeInfoFactory.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes an issue in TypeInfoFactory where generic type information was improperly resolved.",
+    "_id": "BUG-190"
+  },
+  {
+    "id": "BUG-192",
+    "commit": "c8c3a6965c5a1a01951452a25291e5a5944fa59a",
+    "date": "2010-11-01",
+    "author": "Jesse Wilson",
+    "title": "Fix a regression that expects different type adapters for long.class and Long.class. This is a temporary fix; later we may want to always use the canonical wrapped class.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes a regression where different type adapters were expected for primitive long and Long wrapper classes.",
+    "_id": "BUG-192"
+  },
+  {
+    "id": "BUG-193",
+    "commit": "20d895ff95414d4da23d07115c57920f5813a95d",
+    "date": "2010-11-01",
+    "author": "Jesse Wilson",
+    "title": "Fix primitive wrapping and casting.",
+    "description": "Issue: 235",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes primitive type wrapping and casting errors during deserialization.",
+    "_id": "BUG-193"
+  },
+  {
+    "id": "BUG-197",
+    "commit": "1a4bea73346135ce36422788c28fce11c3c5bbbb",
+    "date": "2010-09-28",
+    "author": "Inderjeet Singh",
+    "title": "removed redundant null checks. Fixed bug in Streams.copy where it was not honoring the closeInput and closeOutput parameters. Suppressed spurious unused warnings",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "wsclient/src/main/java/com/google/gson/webservice/client/RequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/RestRequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/Streams.java",
+      "wsf/src/main/java/com/google/gson/wsf/server/WebServiceCallServerBuilder.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes Streams.copy failing to honor closeInput and closeOutput flags.",
+    "_id": "BUG-197"
+  },
+  {
+    "id": "BUG-199",
+    "commit": "d5741b321f6a1c543fb330a8bc11a9fc882748d7",
+    "date": "2010-08-27",
+    "author": "Jesse Wilson",
+    "title": "Don't exclude enum constants, even if they are anonymous. See issue 226.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      226
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/AnonymousAndLocalClassExclusionStrategy.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Prevents anonymous enum constant classes from being incorrectly excluded from serialization.",
+    "_id": "BUG-199"
+  },
+  {
+    "id": "BUG-200",
+    "commit": "5bffa1f6790b2a5e8bc0996240c1b12317793324",
+    "date": "2010-08-21",
+    "author": "Joel Leitch",
+    "title": "Fix for Issue 178.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      178
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonCompactFormatter.java",
+      "gson/src/main/java/com/google/gson/JsonObject.java",
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes Issue 178 regarding handling of null or empty JSON members in formatters.",
+    "_id": "BUG-200"
+  },
+  {
+    "id": "BUG-202",
+    "commit": "b2af57d288514dba466241d75f33e7c55dd44cdc",
+    "date": "2010-06-24",
+    "author": "Inderjeet Singh",
+    "title": "Added checks to ensure that typeHierarchyAdapter being registered doesn't hide a previously existing one. Fixed a bug where registerIfAbsent was adding type adapters in the reverse order of priority. Added toString() to Pair.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/Pair.java",
+      "gson/src/main/java/com/google/gson/ParameterizedTypeHandlerMap.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes registerIfAbsent inserting type adapters in reverse priority order.",
+    "_id": "BUG-202"
+  },
+  {
+    "id": "BUG-204",
+    "commit": "a7e3971fddc7512fb1bd00aa2ea4388664656b2b",
+    "date": "2010-01-26",
+    "author": "Inderjeet Singh",
+    "title": "Added setting of content-length in requests even if the body is non existent. Fixed logs for requests. Ensured that streams are not inadvertently closed while copying output.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "wsclient/src/main/java/com/google/gson/webservice/client/Preconditions.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/RequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/Streams.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/WebServiceClient.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Ensures streams are not inadvertently closed prematurely while copying output.",
+    "_id": "BUG-204"
+  },
+  {
+    "id": "BUG-207",
+    "commit": "15fa10943c6e9db6d5db147efdec9640e86838a9",
+    "date": "2009-12-04",
+    "author": "Inderjeet Singh",
+    "title": "Fixed serializers and deserializers for java.sql Date and Time to ensure that Date does't serialize time, and time does't serialize the date portion.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes java.sql Date and Time serializers to exclude time from Date and date from Time in their outputs.",
+    "_id": "BUG-207"
+  },
+  {
+    "id": "BUG-210",
+    "commit": "bc1e5c5c991fe6d06a5a0f6b775684ac91d289d3",
+    "date": "2009-10-09",
+    "author": "Inderjeet Singh",
+    "title": "Ensured that custom deserializer is invoked with actual type returned for field values. Fixed a bug where a top-level object was constructed with default values even when the custom deserializer tried to set it to null.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonObjectDeserializationVisitor.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Ensures custom deserializers receive the actual field type and fixes top-level objects improperly defaulting when deserializers return null.",
+    "_id": "BUG-210"
+  },
+  {
+    "id": "BUG-212",
+    "commit": "60ef777efcf683f28b33497995d6746bfe13bf45",
+    "date": "2009-10-09",
+    "author": "Inderjeet Singh",
+    "title": "Fixed custom serilization invocation to correctly handle nulls returned by custom serializer.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Corrects serialization handling when a custom serializer returns null.",
+    "_id": "BUG-212"
+  },
+  {
+    "id": "BUG-213",
+    "commit": "1da3ef98916a360f6af703da0ac0a26b3a459ddb",
+    "date": "2009-10-06",
+    "author": "Inderjeet Singh",
+    "title": "Ensured that a custom handler is not visited during deserialization. Ensured that JsonTreeNavigator can handle null values as children of JsonObject. This is now possible since Gson exposes toJson(JsonElement) method to which the user can pass a JsonElement with null values.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonObjectDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonTreeNavigator.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Prevents visiting custom handlers during deserialization and allows JsonTreeNavigator to navigate null values inside JsonObject.",
+    "_id": "BUG-213"
+  },
+  {
+    "id": "BUG-214",
+    "commit": "e9a2a1d0f7e4f326207413cdc37eb5b9d4f15246",
+    "date": "2009-09-29",
+    "author": "Inderjeet Singh",
+    "title": "Fixed Issue 153 by using a stack to keep track of first elements at any level.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      153
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Tracks first elements per nesting level using a stack to fix incorrect JSON formatting in JsonPrintFormatter.",
+    "_id": "BUG-214"
+  },
+  {
+    "id": "BUG-216",
+    "commit": "19ae6c0763cffe5d4a9a020902ae7d9ecbb2d6ea",
+    "date": "2009-09-25",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 162 by making default date adapter thread-safe by synchronizing serialize() and deserialize() methods.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      162
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "bug_type": "concurrency",
+    "summary": "Synchronizes serialize and deserialize methods in the default date adapter to fix thread-safety issues with SimpleDateFormat.",
+    "_id": "BUG-216"
+  },
+  {
+    "id": "BUG-217",
+    "commit": "fdcd3945c53c4a1c921ea8097cbecbbf154fa9e8",
+    "date": "2009-09-23",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 147. Integral values (byte, short, integer, long, BigInteger) are now comparable to each other. Floating point values (float, double, BigDecimal) are now comparable to each other.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      147
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Enables proper comparison and equality checking between different integral and floating-point JsonPrimitive types.",
+    "_id": "BUG-217"
+  },
+  {
+    "id": "BUG-218",
+    "commit": "29ab864b2fda09ddee46554751f22f875c0ab736",
+    "date": "2009-09-23",
+    "author": "Inderjeet Singh",
+    "title": "Fixed bug 158",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes bug 158 where Gson failed when attempting to serialize or deserialize certain types.",
+    "_id": "BUG-218"
+  },
+  {
+    "id": "BUG-221",
+    "commit": "4f0728f6a09063ab9f2121dd6077634a316c9401",
+    "date": "2009-06-02",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 126 by ensuring that parameterized type deduction is not done for transient fields.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      126
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/ObjectNavigator.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Skips type deduction on transient fields to prevent unnecessary type resolution failures and crashes.",
+    "_id": "BUG-221"
+  },
+  {
+    "id": "BUG-225",
+    "commit": "c9cb05fc720a8b041a7fbcf1068beb85a134674a",
+    "date": "2009-03-27",
+    "author": "Joel Leitch",
+    "title": "Do not leak out a ClassCastException to our clients.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonElement.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Catches ClassCastException when casting elements and converts it to a standard JsonParseException.",
+    "_id": "BUG-225"
+  },
+  {
+    "id": "BUG-227",
+    "commit": "4fc6400f5c31c0731f950fd617c4a55f57303c56",
+    "date": "2009-03-12",
+    "author": "Inderjeet Singh",
+    "title": "Fixed the test that broke while fixing issue 100 in r394 by using a TreeSet for SortedSets and HashSet for other kind of sets.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      100
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Uses TreeSet for SortedSet and HashSet for standard sets during deserialization to fix broken set instantiation.",
+    "_id": "BUG-227"
+  },
+  {
+    "id": "BUG-228",
+    "commit": "a595032a902c0758610a1cb38379b5e91a01adbd",
+    "date": "2009-03-12",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 100 by adding support for deserialization of collections of elements that do not implement Comparable.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      100
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Fixes collection deserialization failing with ClassCastException when element types do not implement Comparable.",
+    "_id": "BUG-228"
+  },
+  {
+    "id": "BUG-233",
+    "commit": "90a461903438c1810588c94863cc5b50e3c75877",
+    "date": "2009-01-11",
+    "author": "Joel Leitch",
+    "title": "Minor fixes for pretty printing.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes formatting defects in JsonPrintFormatter that caused incorrect pretty-printed output.",
+    "_id": "BUG-233"
+  },
+  {
+    "id": "BUG-236",
+    "commit": "73117fe65256dadd2eb9e882b7212e9e878493b7",
+    "date": "2008-12-28",
+    "author": "Joel Leitch",
+    "title": "Wrapping UUID deserializer in exception wrapper to make it consistent with other deserializers",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "bug_type": "crash",
+    "summary": "Wraps the UUID deserializer in an exception wrapper so invalid UUID strings throw JsonParseException instead of an unhandled IllegalArgumentException.",
+    "_id": "BUG-236"
+  },
+  {
+    "id": "BUG-237",
+    "commit": "911a92bff98c8091b008e98e0d5e8938d4f2587a",
+    "date": "2008-12-27",
+    "author": "Joel Leitch",
+    "title": "Removal of all unnecessary \"Default\" InstanceCreators.  While refactoring the code, I found a bug that these InstanceCreators were being called when inside an \"Array\".  This bug is fixed in this change.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializationContextDefault.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes a bug where default instance creators were erroneously invoked for elements nested inside arrays.",
+    "_id": "BUG-237"
+  },
+  {
+    "id": "BUG-244",
+    "commit": "788d2bfbbbc9cc2e85d27c480a56b68089d30898",
+    "date": "2008-11-18",
+    "author": "Joel Leitch",
+    "title": "Fix parsing of double and big decimals that have an exponent but no fraction part.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes a parser error where numbers in scientific notation having an exponent without a fractional part failed to parse.",
+    "_id": "BUG-244"
+  },
+  {
+    "id": "BUG-247",
+    "commit": "c98d7bc340423a15ee816141066ec9244d3ea2f2",
+    "date": "2008-10-29",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 66 to allow escaped slash ( \\/) as a valid Json escaped character. Changed Gson version to 1.2.3.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      66
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java",
+      "gson/src/main/java/com/google/gson/JsonParserConstants.java",
+      "gson/src/main/java/com/google/gson/JsonParserTokenManager.java",
+      "gson/src/main/java/com/google/gson/StringUnmarshaller.java"
+    ],
+    "bug_type": "parsing",
+    "summary": "Fixes a parser failure that improperly rejected valid escaped forward slashes in JSON strings.",
+    "_id": "BUG-247"
+  },
+  {
+    "id": "BUG-248",
+    "commit": "9dfa454f6da6e88b51dba7840881feb874dbbdef",
+    "date": "2008-10-20",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 63 where Gson could not operate in a thread-safe manner. Resolved the issue by recreating ObjectNavigatorFactory for each call instead of reusing the same object everywhere. This is needed since ObjectNavigatorFactory had MemoryRefStack that was incorrectly being shared across calls.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      63
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "bug_type": "concurrency",
+    "summary": "Fixes thread-safety issues by avoiding the reuse of a shared MemoryRefStack instance across concurrent Gson calls.",
+    "_id": "BUG-248"
+  },
+  {
+    "id": "BUG-249",
+    "commit": "745c8e2a83360f5f71904d1be828fd7041f42222",
+    "date": "2008-10-14",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 58 by disabling the use of field value actual type for all cases except when it is marked as Object.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      58
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes incorrect serialization of polymorphic fields by using declared types rather than runtime types unless the field is declared as Object.",
+    "_id": "BUG-249"
+  },
+  {
+    "id": "BUG-251",
+    "commit": "2b9fd47b720f0743d69dfcc48bc04b471e37d240",
+    "date": "2008-10-13",
+    "author": "Inderjeet Singh",
+    "title": "Fixed issue 53 where default date instances were not getting serialized/deserialized properly. Added support for time style as well by using he default formatter that uses time style.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [
+      53
+    ],
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes date serialization and deserialization errors by incorporating a default formatter that handles time styles.",
+    "_id": "BUG-251"
+  },
+  {
+    "id": "BUG-252",
+    "commit": "cdd516345818eab763da02e1b9d7ec42404e98c4",
+    "date": "2008-10-10",
+    "author": "Inderjeet Singh",
+    "title": "fix for bug 56 where Gson wasn't serialization null fields of type string, collection and arrays properly even when serializeNulls was set.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes an issue where null fields of type String, Collection, and Array were omitted during serialization despite serializeNulls being enabled.",
+    "_id": "BUG-252"
+  },
+  {
+    "id": "BUG-255",
+    "commit": "1cad54f7b15974fb415a7ac5b63621a7460e3862",
+    "date": "2008-09-27",
+    "author": "Joel Leitch",
+    "title": "Fix pretty printing of interlacing arrays and objects.",
+    "description": "",
+    "pr_number": null,
+    "issue_numbers": [],
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "bug_type": "wrong_output",
+    "summary": "Fixes broken indentation and formatting when pretty printing interlacing JSON arrays and objects.",
+    "_id": "BUG-255"
+  }
+]

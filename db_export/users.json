@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "username": "nouran",
+    "password_hash": "c5f506c457395e3d6fd8524cf5a2845c638633d56f87ffe53d33e04d9b074cf5",
+    "salt": "bd0cb9d7ea554b6f34f353de892fd49a",
+    "full_name": "Nouran Sherif",
+    "email": "nouran@example.com",
+    "role": "Tech Lead & Maintainer",
+    "avatar_color": "#a78bfa",
+    "bio": "Project Lead, Gson Maintainer & Core Architect",
+    "created_at": "2026-10-24 14:12:46",
+    "_id": 1
+  },
+  {
+    "id": 2,
+    "username": "junior_dev",
+    "password_hash": "57006c07424d66c0e6a4ec6c0ea3edd34dcb4ebc29bd8cc606c247bbe92da32d",
+    "salt": "144392f6c557f8cce3c5628d5af0ae01",
+    "full_name": "Salma Ahmed",
+    "email": "salma@example.com",
+    "role": "Junior Developer",
+    "avatar_color": "#3ecf8e",
+    "bio": "New team member exploring Gson codebase",
+    "created_at": "2026-10-24 14:12:46",
+    "_id": 2
+  },
+  {
+    "id": 3,
+    "username": "senior_dev",
+    "password_hash": "91a26c2a186dbe4931f87328977e52d43f7b7cf7bf79bd955f32e8f1fdf8e8db",
+    "salt": "47b1129d0eeb32a27a1a99fb504511e4",
+    "full_name": "Omar Khaled",
+    "email": "omar@example.com",
+    "role": "Senior Backend Developer",
+    "avatar_color": "#7c9cff",
+    "bio": "Specializes in TypeAdapters and Serialization",
+    "created_at": "2026-10-24 14:12:46",
+    "_id": 3
+  },
+  {
+    "id": 4,
+    "username": "qa_engineer",
+    "password_hash": "91182d5de0a50bca1f7b0a44c3bf53552b6f27c1739d3f8bfba349d06a32f957",
+    "salt": "5064181f021523bdc18c3c5c383f7d2f",
+    "full_name": "Karim Mostafa",
+    "email": "karim@example.com",
+    "role": "QA & Reliability Engineer",
+    "avatar_color": "#f5b04c",
+    "bio": "Focuses on bug reproduction, regressions, and crash analysis",
+    "created_at": "2026-10-24 14:12:46",
+    "_id": 4
+  }
+]

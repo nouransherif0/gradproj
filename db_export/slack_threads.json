@@ -1,0 +1,6507 @@
+[
+  {
+    "_id": "T-002",
+    "thread_id": "T-002",
+    "bug_id": "BUG-002",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 3116,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "strict json parsing isn't failing on lone surrogates like high surrogate escape sequences",
+        "ts": "2026-09-06T10:24:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "wait really? strict mode should definitely reject unpaired surrogates per the json spec",
+        "ts": "2026-09-06T10:33:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "yeah it passes them straight through without verifying whether the following char is a matching low surrogate",
+        "ts": "2026-09-06T10:41:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "good catch, i just pushed PR #3116 to validate surrogate pairs properly in strict mode",
+        "ts": "2026-09-06T10:49:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-004",
+    "thread_id": "T-004",
+    "bug_id": "BUG-004",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 3063,
+    "issue_numbers": [
+      2994,
+      2995
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey is nextInt supposed to accept non-ascii numerals? someone passed full-width digits and it parsed",
+        "ts": "2026-07-23T10:19:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "json spec requires ascii digits only, where did this happen?",
+        "ts": "2026-07-23T10:33:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "in the tree reader when calling nextInt and nextLong on primitive elements",
+        "ts": "2026-07-23T10:35:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "standard java integer parsing allows unicode digits by default unless we specifically check for ascii",
+        "ts": "2026-07-23T10:36:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "makes sense, opened PR #3063 to reject any non-ascii digit characters",
+        "ts": "2026-07-23T10:39:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-005",
+    "thread_id": "T-005",
+    "bug_id": "BUG-005",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 3059,
+    "issue_numbers": [
+      992
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "running into a weird bug where two json primitives are equal but break when used in a hash set",
+        "ts": "2026-07-22T12:18:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "let me guess, numeric primitives with different number types?",
+        "ts": "2026-07-22T12:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "yeah 1 as a long and 1.0 as a double return true on equals but their hash codes differ",
+        "ts": "2026-07-22T12:48:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "that violates the general hashcode contract, map lookups will definitely fail",
+        "ts": "2026-07-22T13:09:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "submitting PR #3059 to align hashcode with how equals normalizes numbers",
+        "ts": "2026-07-22T13:32:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-006",
+    "thread_id": "T-006",
+    "bug_id": "BUG-006",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": 3067,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "has anyone noticed uri roundtripping altering characters for non-ascii uris?",
+        "ts": "2026-07-20T15:15:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "what is the uri adapter doing during serialization?",
+        "ts": "2026-07-20T15:34:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "checking TypeAdapters right now and it calls toASCIIString instead of toString",
+        "ts": "2026-07-20T15:43:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "so it percent-encodes or punycodes characters that were originally raw unicode",
+        "ts": "2026-07-20T15:44:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "yeah that breaks identity, i will write a fix to preserve original string representations",
+        "ts": "2026-07-20T16:09:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-007",
+    "thread_id": "T-007",
+    "bug_id": "BUG-007",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": 3038,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "got a crash deserializing an atomic long array containing a null element",
+        "ts": "2026-06-21T15:09:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "does it throw an unexpected null pointer exception?",
+        "ts": "2026-06-21T15:14:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "yes direct npe instead of our usual json syntax exception",
+        "ts": "2026-06-21T15:21:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "looking at TypeAdapters for atomic long array, it unboxes the parsed long value directly",
+        "ts": "2026-06-21T15:46:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "unboxing null would cause that npe immediately, i will update it to throw json syntax exception",
+        "ts": "2026-06-21T15:57:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-008",
+    "thread_id": "T-008",
+    "bug_id": "BUG-008",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": 3034,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "saw an issue where peekNumber rejects certain valid large numbers with trailing zeros",
+        "ts": "2026-06-03T10:04:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "like numbers above two to the sixty fourth power?",
+        "ts": "2026-06-03T10:16:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "in JsonReader the peekNumber logic tries to track overflow on digit shifts but trips on zero",
+        "ts": "2026-06-03T10:28:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "right, it treats the zero digit as an overflow error instead of letting it parse as an unquoted string number",
+        "ts": "2026-06-03T10:48:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "i can fix the overflow check condition so it handles those numerals correctly",
+        "ts": "2026-06-03T10:57:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-009",
+    "thread_id": "T-009",
+    "bug_id": "BUG-009",
+    "files": [
+      "proto/src/main/java/com/google/gson/protobuf/LegacyProtoTypeAdapterFactory.java"
+    ],
+    "link_style": "file",
+    "pr_number": 3027,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "we had an out of memory crash processing a proto json message with an unusually high field number",
+        "ts": "2026-05-27T16:13:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "was the payload itself large?",
+        "ts": "2026-05-27T16:16:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "tiny payload, just a single field tag that was huge",
+        "ts": "2026-05-27T16:34:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "in LegacyProtoTypeAdapterFactory it indexes bit fields directly by field number",
+        "ts": "2026-05-27T16:44:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "so it attempts to allocate massive arrays for crazy indexes, i will cap the bitfield index to avoid the memory blowup",
+        "ts": "2026-05-27T17:05:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-011",
+    "thread_id": "T-011",
+    "bug_id": "BUG-011",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java"
+    ],
+    "link_style": "file",
+    "pr_number": 3006,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "duplicate key detection seems broken when the first value in the map is null",
+        "ts": "2026-04-02T14:23:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "it should reject duplicate keys when complex keys are enabled, right?",
+        "ts": "2026-04-02T14:26:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "it does unless the existing value is null, then it just overwrites it without throwing",
+        "ts": "2026-04-02T14:28:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "inside MapTypeAdapterFactory it checks if map.put returned null to detect duplicates",
+        "ts": "2026-04-02T14:50:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "ah classic map mistake, if the old value was null it thinks the key was absent. i will fix it",
+        "ts": "2026-04-02T14:58:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-018",
+    "thread_id": "T-018",
+    "bug_id": "BUG-018",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+      "gson/src/main/java/com/google/gson/internal/bind/CollectionTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 2068,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone seeing weird behavior when deserializing into custom sets and maps?",
+        "ts": "2025-03-17T10:04:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "what kind of behavior? are values missing?",
+        "ts": "2025-03-17T10:17:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "no, the deserializer is giving back standard hash tables even when the field requested a sorted variant or a specialized collection.",
+        "ts": "2025-03-17T10:26:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "oh wait, i ran into that. the internal constructor logic has fallbacks that end up returning raw mismatching instances instead of checking if the requested interface is actually compatible with the concrete type it creates.",
+        "ts": "2025-03-17T10:41:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "that explains why we were getting type cast errors downstream.",
+        "ts": "2025-03-17T11:02:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, i can put together a fix so it selects the right container type properly.",
+        "ts": "2025-03-17T11:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-019",
+    "thread_id": "T-019",
+    "bug_id": "BUG-019",
+    "files": [
+      "extras/src/main/java/com/google/gson/graph/GraphAdapterBuilder.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 2811,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "heads up, when i configure multiple custom graph serializers, the second one keeps getting delegated to the previous creator instead of its own.",
+        "ts": "2025-02-20T14:07:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "wait, really? so registering a second type just reuses the creator from before?",
+        "ts": "2025-02-20T14:29:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly, the output for the second structure ends up completely wrong because it calls into the previous type handler.",
+        "ts": "2025-02-20T14:38:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "looking at the chaining logic now... yeah, the builder registration captures the existing delegate reference incorrectly and delegates backwards.",
+        "ts": "2025-02-20T15:01:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "good catch. i can take this and fix the registration chaining so each one keeps its own creator.",
+        "ts": "2025-02-20T15:23:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-021",
+    "thread_id": "T-021",
+    "bug_id": "BUG-021",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/Streams.java",
+      "gson/src/main/java/com/google/gson/internal/bind/EnumTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonElementTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 2740,
+    "issue_numbers": [
+      2739
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "our service froze during startup today under heavy load. thread dump shows two worker threads stuck waiting on each other.",
+        "ts": "2024-09-13T10:18:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "is it a synchronized block or static init?",
+        "ts": "2024-09-13T10:42:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "looks like a class loading deadlock. one thread initialized the core json serializer while the other accessed static adapter fields.",
+        "ts": "2024-09-13T10:50:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "ah classic, circular class initialization dependencies between the main serializer and the adapters.",
+        "ts": "2024-09-13T10:56:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "i see where the cycle is triggered. i'll open PR #2740 to break the static dependency and avoid the deadlock.",
+        "ts": "2024-09-13T11:11:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-023",
+    "thread_id": "T-023",
+    "bug_id": "BUG-023",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 2706,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "seeing a strange bug with generic type resolution on inner classes. the type arguments on the original type seem to get modified.",
+        "ts": "2024-06-25T13:22:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "wait, modified in place? are they not immutable?",
+        "ts": "2024-06-25T13:33:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, when resolving a parameterized type whose enclosing owner changes, the resolved types seem to bleed back into subsequent lookups.",
+        "ts": "2024-06-25T13:58:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "let me check the resolver. wow, when owner changes, it passes the existing array directly instead of cloning it.",
+        "ts": "2024-06-25T14:23:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "that's definitely it. i'll push a fix under PR #2706 shortly.",
+        "ts": "2024-06-25T14:25:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-026",
+    "thread_id": "T-026",
+    "bug_id": "BUG-026",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java",
+      "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 2556,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "quick question, does setting the date format with default date style actually work for you guys?",
+        "ts": "2024-02-29T09:13:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "i tried using it yesterday with default style and it seemed to ignore my setting and fallback to full timestamp string.",
+        "ts": "2024-02-29T09:22:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "yeah! the builder method that takes an integer style checks against default and drops it completely if only one part is specified.",
+        "ts": "2024-02-29T09:25:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "that's confusing, plus those integer constants are super error-prone anyway.",
+        "ts": "2024-02-29T09:32:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "totally. i'll put up PR #2556 to honor default styles properly and deprecate the old integer-based method.",
+        "ts": "2024-02-29T09:51:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-027",
+    "thread_id": "T-027",
+    "bug_id": "BUG-027",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2599,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "our pipeline threw a null pointer exception while comparing type variables in generic methods.",
+        "ts": "2024-01-27T14:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "which method was comparing them?",
+        "ts": "2024-01-27T14:37:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "it blew up inside $Gson$Types when checking if two type variables are equal.",
+        "ts": "2024-01-27T14:50:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "let me inspect that. it assumes the generic declaration is always a class, so calling getDeclaringClass on a method declaration returns null or causes a failure.",
+        "ts": "2024-01-27T15:11:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "ah, generic declarations can be methods or constructors too!",
+        "ts": "2024-01-27T15:26:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly. i will handle non-class declarations properly so it stops crashing.",
+        "ts": "2024-01-27T15:31:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-029",
+    "thread_id": "T-029",
+    "bug_id": "BUG-029",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/sql/SqlDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/sql/SqlTimeTypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2549,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "we have a weird date parsing issue where dates suddenly shift timezones after a few requests.",
+        "ts": "2023-12-03T11:24:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "is the formatter shared across threads?",
+        "ts": "2023-12-03T11:42:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "yes, but it happens even sequentially on one thread. once a date with a specific timezone is parsed, every subsequent date uses that timezone!",
+        "ts": "2023-12-03T12:00:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "wait, inside DefaultDateTypeAdapter it modifies the timezone on the underlying date format but never restores the original timezone afterwards.",
+        "ts": "2023-12-03T12:09:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "wow, that's why all following dates got corrupted. i'll update it to restore the previous timezone in a finally block.",
+        "ts": "2023-12-03T12:33:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-032",
+    "thread_id": "T-032",
+    "bug_id": "BUG-032",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeWriter.java",
+      "gson/src/main/java/com/google/gson/stream/JsonWriter.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2476,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "shouldn't calling name() throw an error if you're not inside an object?",
+        "ts": "2023-08-26T15:12:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "definitely, calling name inside an array or top level is invalid json. does it allow it?",
+        "ts": "2023-08-26T15:20:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, with JsonTreeWriter it just accepts the name call and produces corrupted tree output instead of throwing an illegal state exception.",
+        "ts": "2023-08-26T15:25:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "ah, standard writer enforces state checks but the tree writer implementation missed that validation.",
+        "ts": "2023-08-26T15:42:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "i'll add the proper state check to make sure it throws when outside an object.",
+        "ts": "2023-08-26T15:58:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-033",
+    "thread_id": "T-033",
+    "bug_id": "BUG-033",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/InstanceCreator.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2435,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "hey team, getting an illegalargumentexception when calling getDelegateAdapter on a type annotated with an adapter annotation. it just blows up with adapter not found",
+        "ts": "2023-08-21T09:05:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "wait, is this happening with custom factory delegation or standard Gson setup?",
+        "ts": "2023-08-21T09:26:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "standard Gson instance, just using the annotation on a class and then trying to fetch the delegate inside its factory",
+        "ts": "2023-08-21T09:32:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "ah i see the issue. the factory created from the annotation isn't passing the right skip-past factory reference, so it recurses and fails to find the next delegate",
+        "ts": "2023-08-21T09:54:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "yeah exactly, it cannot find delegate adapter for that type and throws",
+        "ts": "2023-08-21T10:08:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "let me push a fix for the delegate lookup logic",
+        "ts": "2023-08-21T10:28:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-038",
+    "thread_id": "T-038",
+    "bug_id": "BUG-038",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2337,
+    "issue_numbers": [
+      2334
+    ],
+    "message_count": 7,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "is anyone seeing unexpected syntax errors when streaming large payload chunks?",
+        "ts": "2023-03-05T15:20:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "what kind of error are you seeing?",
+        "ts": "2023-03-05T15:35:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "malformed json exception saying unexpected character, but the json is completely valid",
+        "ts": "2023-03-05T15:52:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "how are you reading it?",
+        "ts": "2023-03-05T16:01:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "just using JsonReader with a buffered input reader. happens right at the buffer boundary when parsing unquoted strings",
+        "ts": "2023-03-05T16:19:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "oh right, JsonReader has an issue where filling the buffer in the middle of a token loses track of the state or misreads the char buffer",
+        "ts": "2023-03-05T16:20:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "yeah that explains why it only repros on big payloads. i will write a test and fix it",
+        "ts": "2023-03-05T16:42:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-043",
+    "thread_id": "T-043",
+    "bug_id": "BUG-043",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 2311,
+    "issue_numbers": [],
+    "message_count": 7,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "hey, our equality checks for parsed numeric elements are failing in unit tests",
+        "ts": "2023-02-03T10:25:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "what values are failing?",
+        "ts": "2023-02-03T10:46:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "when we compare an arbitrary-precision integer element against an identical one, equals returns false",
+        "ts": "2023-02-03T10:57:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "wait really? even if they hold the exact same value?",
+        "ts": "2023-02-03T11:01:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, the equality check tries to cast to standard integer types or compares as floating point, losing precision",
+        "ts": "2023-02-03T11:11:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "ah, it doesn't handle the arbitrary precision branch in the equality comparison",
+        "ts": "2023-02-03T11:25:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "exactly. i can take care of patching the equality method to compare them accurately",
+        "ts": "2023-02-03T11:31:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-044",
+    "thread_id": "T-044",
+    "bug_id": "BUG-044",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializer.java",
+      "gson/src/main/java/com/google/gson/JsonSerializer.java",
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 1832,
+    "issue_numbers": [],
+    "message_count": 7,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "we are seeing intermittent crashes in production when multiple threads serialize models with self-referencing fields",
+        "ts": "2022-12-03T09:17:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "what kind of crash? stack overflow or null pointer?",
+        "ts": "2022-12-03T09:42:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "null pointer exception. it only happens under heavy concurrent load on startup",
+        "ts": "2022-12-03T09:48:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "interesting, cyclic types use a deferred placeholder while building the serializer, right?",
+        "ts": "2022-12-03T10:05:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "yes, and that map or lookup cache seems to leak across threads or get accessed before it is bound",
+        "ts": "2022-12-03T10:09:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "so one thread grabs another thread's uninitialized placeholder and calls it",
+        "ts": "2022-12-03T10:30:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "exactly. i will rework the thread safety around cyclical dependency resolution",
+        "ts": "2022-12-03T10:40:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-047",
+    "thread_id": "T-047",
+    "bug_id": "BUG-047",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/SerializationDelegatingTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 1787,
+    "issue_numbers": [],
+    "message_count": 7,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "why is runtime polymorphism not kicking in for tree-based serializer wrappers?",
+        "ts": "2022-10-07T12:12:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "what do you mean?",
+        "ts": "2022-10-07T12:37:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "if a field is declared as a base type, it serializes using the base serializer even when the actual instance is a subtype, whenever a tree adapter or future adapter is involved",
+        "ts": "2022-10-07T12:43:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "oh, the runtime wrapper check checks if the delegate is reflective, but it doesn't unwrap future or tree adapters to see that they wrap reflective adapters underneath",
+        "ts": "2022-10-07T13:01:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "right, so it thinks it shouldn't override the runtime type!",
+        "ts": "2022-10-07T13:26:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "someone started looking at this in PR #1787",
+        "ts": "2022-10-07T13:43:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "awesome, i will finish that up and get the checks unwrapping correctly",
+        "ts": "2022-10-07T13:44:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-050",
+    "thread_id": "T-050",
+    "bug_id": "BUG-050",
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 2172,
+    "issue_numbers": [],
+    "message_count": 7,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "why is our custom writer throwing an assertion error during serialization?",
+        "ts": "2022-08-05T14:01:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "wait, an assertion error? not an io exception?",
+        "ts": "2022-08-05T14:05:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, our underlying stream throws a custom io exception, but toJson wraps it in an assertion error thinking it can never happen with a string writer",
+        "ts": "2022-08-05T14:17:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "oh wow, it catches io exception and literally rethrows assertion error assuming it is impossible",
+        "ts": "2022-08-05T14:27:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "but custom adapters can explicitly throw io exceptions from their write methods!",
+        "ts": "2022-08-05T14:35:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "take a look at PR #2172, i think there was discussion on wrapping in jsonioexception instead",
+        "ts": "2022-08-05T14:37:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "perfect, i will fix it so it wraps in jsonioexception instead of blowing up with assertion error",
+        "ts": "2022-08-05T14:45:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-051",
+    "thread_id": "T-051",
+    "bug_id": "BUG-051",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 1782,
+    "issue_numbers": [
+      1767
+    ],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "why is parsing nan or infinity throwing numberformatexception instead of malformedjsonexception when reading an in-memory tree?",
+        "ts": "2022-08-05T10:24:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "wait, the stream reader throws malformedjsonexception for non-finite doubles when lenient mode is off, right?",
+        "ts": "2022-08-05T10:40:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "yeah exactly, but tree reader just lets numberformatexception bubble up instead of malformedjsonexception",
+        "ts": "2022-08-05T10:43:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "that breaks consistency for anyone handling parse exceptions",
+        "ts": "2022-08-05T11:08:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "i will submit PR #1782 to align the exception types across readers",
+        "ts": "2022-08-05T11:26:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "sounds good, thanks for fixing!",
+        "ts": "2022-08-05T11:51:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-052",
+    "thread_id": "T-052",
+    "bug_id": "BUG-052",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java"
+    ],
+    "link_style": "issue",
+    "pr_number": 1555,
+    "issue_numbers": [
+      1553
+    ],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "hey, has anyone noticed nullSafe wrapping behaving weirdly when called multiple times?",
+        "ts": "2022-08-04T11:18:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "in what way?",
+        "ts": "2022-08-04T11:24:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "if an adapter is already null-safe and you call nullSafe on it, or if it handles nulls internally, it delegates improperly or creates unnecessary wrappers",
+        "ts": "2022-08-04T11:33:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, there were cases where nullSafe was applied redundantly or did not check if the adapter already handled nulls, leading to wrong delegation behavior",
+        "ts": "2022-08-04T11:50:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "that is tracked in issue #1553 i think",
+        "ts": "2022-08-04T12:10:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "let me grab that and make sure nullSafe is idempotent and handles existing null-safety properly",
+        "ts": "2022-08-04T12:24:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-053",
+    "thread_id": "T-053",
+    "bug_id": "BUG-053",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "link_style": "issue",
+    "pr_number": 1703,
+    "issue_numbers": [
+      1702
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone seeing weird output when serializing objects lately?",
+        "ts": "2022-08-02T12:13:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, getting some unexpected results with CharSequence types. it's totally breaking our api responses.",
+        "ts": "2022-08-02T12:35:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "checked the repo, looks like issue #1702 covers exactly this behavior.",
+        "ts": "2022-08-02T12:56:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "oh wow, good catch. looks like it's failing to call the string representation correctly.",
+        "ts": "2022-08-02T13:08:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "i see it now. i'll take a look and get a patch ready.",
+        "ts": "2022-08-02T13:23:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-054",
+    "thread_id": "T-054",
+    "bug_id": "BUG-054",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2139,
+    "issue_numbers": [
+      712
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "anyone else having trouble with polymorphic serialization?",
+        "ts": "2022-07-18T16:08:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "yes! the output format is completely wrong for our nested objects.",
+        "ts": "2022-07-18T16:16:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "i think the issue is inside RuntimeTypeAdapterFactory, it seems to be dropping the type labels.",
+        "ts": "2022-07-18T16:19:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "that explains it. i'll dig into that logic and see why it's misbehaving.",
+        "ts": "2022-07-18T16:30:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "let me know if you need help testing the fix.",
+        "ts": "2022-07-18T16:31:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-055",
+    "thread_id": "T-055",
+    "bug_id": "BUG-055",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2134,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey guys, why is the date parser failing on valid inputs?",
+        "ts": "2022-06-13T12:01:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "not sure, what does the stack trace say?",
+        "ts": "2022-06-13T12:04:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "it seems like ISO8601Utils is rejecting some of our standard date strings now.",
+        "ts": "2022-06-13T12:27:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "ah, that might be a regression in the validation logic.",
+        "ts": "2022-06-13T12:48:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "i'm on it, i'll prepare a fix for the parsing error.",
+        "ts": "2022-06-13T12:50:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-057",
+    "thread_id": "T-057",
+    "bug_id": "BUG-057",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": 2061,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "getting an infinite loop in the parser, anyone else?",
+        "ts": "2022-01-26T10:11:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, looks like hasNext is returning true even when the document is empty.",
+        "ts": "2022-01-26T10:14:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "i think it's related to how JsonTreeReader handles the end of the stream.",
+        "ts": "2022-01-26T10:31:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "that makes sense. i'll double check the termination condition.",
+        "ts": "2022-01-26T10:39:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "great, i'll review your pr once you push it.",
+        "ts": "2022-01-26T10:48:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-058",
+    "thread_id": "T-058",
+    "bug_id": "BUG-058",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "hey, the app is dying with a weird index error when processing lists.",
+        "ts": "2021-11-08T16:18:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "i saw that too, it seems to happen whenever the list is empty.",
+        "ts": "2021-11-08T16:23:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "it looks like we are trying to access a position that doesn't exist.",
+        "ts": "2021-11-08T16:47:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly, the bounds check is definitely missing.",
+        "ts": "2021-11-08T17:06:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "i'll go ahead and add a proper check to prevent that crash.",
+        "ts": "2021-11-08T17:25:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-059",
+    "thread_id": "T-059",
+    "bug_id": "BUG-059",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/PreJava9ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionHelper.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/UnsafeReflectionAccessor.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 1902,
+    "issue_numbers": [
+      1218,
+      1540
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "our backend keeps crashing when trying to serialize private data structures.",
+        "ts": "2021-11-07T12:14:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "is it failing because of the constructor visibility?",
+        "ts": "2021-11-07T12:21:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, it seems to throw a hard error instead of trying to work around it.",
+        "ts": "2021-11-07T12:25:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "that's annoying. i'll look into adding a fallback for inaccessible constructors.",
+        "ts": "2021-11-07T12:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "thanks, that would save us a lot of trouble.",
+        "ts": "2021-11-07T12:51:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-061",
+    "thread_id": "T-061",
+    "bug_id": "BUG-061",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 1989,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "is anyone else noticing that the writer settings are being ignored?",
+        "ts": "2021-10-30T14:14:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, specifically the lenient and html-safe flags.",
+        "ts": "2021-10-30T14:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "i was just looking at PR #1989 and it seems like the configuration isn't propagating correctly.",
+        "ts": "2021-10-30T14:53:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "good find. i'll try to fix the propagation logic this afternoon.",
+        "ts": "2021-10-30T14:55:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "sounds good, let me know if you need eyes on the change.",
+        "ts": "2021-10-30T15:17:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-063",
+    "thread_id": "T-063",
+    "bug_id": "BUG-063",
+    "files": [
+      "gson/src/main/java/com/google/gson/FieldNamingPolicy.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 2004,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "hey, the field naming policy is acting super weird with special characters.",
+        "ts": "2021-10-29T10:13:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, it's uppercasing things that aren't even letters.",
+        "ts": "2021-10-29T10:37:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "i saw this mentioned in PR #2004 earlier today.",
+        "ts": "2021-10-29T10:48:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "oh, i missed that. i'll check the logic to make sure we only target actual letters.",
+        "ts": "2021-10-29T10:52:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "perfect, thanks for handling that.",
+        "ts": "2021-10-29T11:00:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-064",
+    "thread_id": "T-064",
+    "bug_id": "BUG-064",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 2001,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, seeing some random index out of bounds crashes in the reader during deep nesting",
+        "ts": "2021-10-24T12:05:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "oh that sounds like the getPath method isn't checking bounds properly",
+        "ts": "2021-10-24T12:19:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, looks like it's trying to access an index that doesn't exist when the tree is deep",
+        "ts": "2021-10-24T12:25:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "i think i have a fix for that, check out PR #2001 when you get a chance",
+        "ts": "2021-10-24T12:34:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "nice, that looks exactly like what we need, thanks",
+        "ts": "2021-10-24T12:49:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-065",
+    "thread_id": "T-065",
+    "bug_id": "BUG-065",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "link_style": "file",
+    "pr_number": 1991,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "security scan flagged a potential deserialization vulnerability in our internal classes",
+        "ts": "2021-10-12T10:18:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "that's not good, which part of the stack is triggering it?",
+        "ts": "2021-10-12T10:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "looks like the way we handle LazilyParsedNumber is being exploited",
+        "ts": "2021-10-12T10:24:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "ah, we should restrict that to prevent arbitrary class loading",
+        "ts": "2021-10-12T10:45:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "agreed, i'll put together a patch to block those classes during deserialization",
+        "ts": "2021-10-12T11:03:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-066",
+    "thread_id": "T-066",
+    "bug_id": "BUG-066",
+    "files": [
+      "gson/src/main/java/com/google/gson/LongSerializationPolicy.java"
+    ],
+    "link_style": "file",
+    "pr_number": 1990,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "anyone notice our output format for longs is inconsistent lately?",
+        "ts": "2021-10-10T10:06:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "yeah, it seems like the LongSerializationPolicy is behaving weirdly compared to the legacy version",
+        "ts": "2021-10-10T10:20:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "exactly, it's ignoring nulls in some cases where it shouldn't",
+        "ts": "2021-10-10T10:36:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "i'll take a look at the serialization logic and see why it deviates",
+        "ts": "2021-10-10T10:52:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "thanks, appreciate it",
+        "ts": "2021-10-10T10:59:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-068",
+    "thread_id": "T-068",
+    "bug_id": "BUG-068",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/reflect/UnsafeReflectionAccessor.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "we are seeing crashes when running on restricted environments",
+        "ts": "2020-05-24T09:13:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "is it failing to reflect into private fields?",
+        "ts": "2020-05-24T09:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, the UnsafeReflectionAccessor is throwing exceptions when it can't get access",
+        "ts": "2020-05-24T09:27:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "that makes sense, we probably need a better fallback for when the security manager gets in the way",
+        "ts": "2020-05-24T09:36:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "i'll look into a more robust fallback strategy today",
+        "ts": "2020-05-24T09:51:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-071",
+    "thread_id": "T-071",
+    "bug_id": "BUG-071",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [
+      1390
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "getting incorrect types back when dealing with recursive generics",
+        "ts": "2018-09-23T15:05:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "is the type resolution getting stuck in a loop?",
+        "ts": "2018-09-23T15:12:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "looks like it, the way $Gson$Types handles those variables seems to be failing",
+        "ts": "2018-09-23T15:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "we definitely need to add some protection against infinite recursion there",
+        "ts": "2018-09-23T15:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "i'm on it, will push a fix shortly",
+        "ts": "2018-09-23T15:31:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-073",
+    "thread_id": "T-073",
+    "bug_id": "BUG-073",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/JavaVersion.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/util/VersionUtils.java"
+    ],
+    "link_style": "file",
+    "pr_number": 1311,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "getting reports about crashes when parsing specific date formats",
+        "ts": "2018-05-06T09:02:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "is it related to the DefaultDateTypeAdapter?",
+        "ts": "2018-05-06T09:04:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, it seems to trip up on some edge case inputs",
+        "ts": "2018-05-06T09:23:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "i think i know the issue, it isn't handling nulls or empty strings gracefully there",
+        "ts": "2018-05-06T09:39:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "cool, let me know if you want me to help verify the fix",
+        "ts": "2018-05-06T09:56:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-075",
+    "thread_id": "T-075",
+    "bug_id": "BUG-075",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/util/VersionUtils.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 1211,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "date parsing is completely broken since we updated the runtime",
+        "ts": "2017-12-27T11:17:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "is it failing to recognize the format?",
+        "ts": "2017-12-27T11:20:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "yep, it just throws an exception instead of parsing the string",
+        "ts": "2017-12-27T11:26:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "sounds like the standard library changed how it formats dates",
+        "ts": "2017-12-27T11:29:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "i'll dig into the parsing logic and try to adjust for the new behavior",
+        "ts": "2017-12-27T11:49:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-078",
+    "thread_id": "T-078",
+    "bug_id": "BUG-078",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "vague",
+    "pr_number": 1146,
+    "issue_numbers": [
+      1107
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "i am getting the wrong type back when deserializing a collection with wildcards",
+        "ts": "2017-09-20T12:04:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "is it returning an object instead of the specific type?",
+        "ts": "2017-09-20T12:23:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "exactly, it's losing the element type information",
+        "ts": "2017-09-20T12:31:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "seems like the resolver isn't correctly unwrapping the wildcard",
+        "ts": "2017-09-20T12:50:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "i'll start working on a patch for the resolver",
+        "ts": "2017-09-20T13:10:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-079",
+    "thread_id": "T-079",
+    "bug_id": "BUG-079",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 1100,
+    "issue_numbers": [
+      1070
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, seeing a weird crash in the date adapter, getting nulls where i don't expect them.",
+        "ts": "2017-09-16T10:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "is it happening for all date formats or just the default one?",
+        "ts": "2017-09-16T10:41:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "looks like it's the default type adapter failing to handle primitives correctly.",
+        "ts": "2017-09-16T11:00:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "ah i think i see the issue, i'm opening PR #1100 to address the contract mismatch.",
+        "ts": "2017-09-16T11:17:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "awesome, thanks salma!",
+        "ts": "2017-09-16T11:28:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-080",
+    "thread_id": "T-080",
+    "bug_id": "BUG-080",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 1128,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "anyone else getting a stackoverflow error during type resolution?",
+        "ts": "2017-07-29T12:08:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, i saw that earlier. it seems to happen when there's recursion in the type variables.",
+        "ts": "2017-07-29T12:17:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly, the resolver just spins forever.",
+        "ts": "2017-07-29T12:30:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "i've got a fix ready in PR #1128, should stop the infinite loop.",
+        "ts": "2017-07-29T12:35:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "sweet, let me know when it's merged.",
+        "ts": "2017-07-29T12:57:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-082",
+    "thread_id": "T-082",
+    "bug_id": "BUG-082",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/PostConstructAdapterFactory.java"
+    ],
+    "link_style": "pr",
+    "pr_number": 1103,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "getting a random npe in the post construct adapter factory, anyone know why?",
+        "ts": "2017-06-16T13:11:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "that sounds like the factory isn't handling null instances properly.",
+        "ts": "2017-06-16T13:36:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, it's blowing up when the instance is null during reflection.",
+        "ts": "2017-06-16T13:39:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "i'll put up PR #1103 to add a null check there.",
+        "ts": "2017-06-16T13:40:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "thanks hassan, appreciate it.",
+        "ts": "2017-06-16T13:55:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-083",
+    "thread_id": "T-083",
+    "bug_id": "BUG-083",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "issue",
+    "pr_number": 1075,
+    "issue_numbers": [
+      440,
+      603
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, we have a major crash on recursive types, hitting a stack overflow.",
+        "ts": "2017-05-27T10:18:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "is this related to the issues we saw in issue #440?",
+        "ts": "2017-05-27T10:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, the type bounds are creating a loop.",
+        "ts": "2017-05-27T10:42:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "i'm going to collapse those chains and submit PR #1075 to fix it.",
+        "ts": "2017-05-27T10:51:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "perfect, thanks salma.",
+        "ts": "2017-05-27T10:56:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-084",
+    "thread_id": "T-084",
+    "bug_id": "BUG-084",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": 1069,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "we are having issues parsing negative zero values in the library.",
+        "ts": "2017-04-17T10:12:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "is it failing during the read operation?",
+        "ts": "2017-04-17T10:22:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, the JsonReader treats it as an invalid token sometimes.",
+        "ts": "2017-04-17T10:28:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "i see the logic error, i'll take care of the fix today.",
+        "ts": "2017-04-17T10:43:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "sounds good, thanks karim.",
+        "ts": "2017-04-17T11:01:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-086",
+    "thread_id": "T-086",
+    "bug_id": "BUG-086",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": 1014,
+    "issue_numbers": [
+      1013
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "getting an array index out of bounds exception when skipping values.",
+        "ts": "2017-02-12T13:22:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "are you using the JsonTreeReader for that?",
+        "ts": "2017-02-12T13:40:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "yep, it seems to be miscalculating the index on nested nodes.",
+        "ts": "2017-02-12T13:50:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "i'll look into it and push a fix for the skipping logic.",
+        "ts": "2017-02-12T14:12:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "thanks, let me know when it's ready.",
+        "ts": "2017-02-12T14:16:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-088",
+    "thread_id": "T-088",
+    "bug_id": "BUG-088",
+    "files": [
+      "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "we're failing to handle explicit nulls in the json stream.",
+        "ts": "2016-05-22T13:04:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "is it breaking the ProtoTypeAdapter?",
+        "ts": "2016-05-22T13:28:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "yes, it just ignores the null instead of setting the field.",
+        "ts": "2016-05-22T13:46:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "got it, i'll write a patch to handle those properly.",
+        "ts": "2016-05-22T13:51:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "cool, thanks omar.",
+        "ts": "2016-05-22T14:00:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-089",
+    "thread_id": "T-089",
+    "bug_id": "BUG-089",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "getting crashes when trying to instantiate specific classes.",
+        "ts": "2016-04-18T12:07:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "what kind of classes? maybe the UnsafeAllocator is failing?",
+        "ts": "2016-04-18T12:29:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly, the modifiers aren't being checked before allocation.",
+        "ts": "2016-04-18T12:50:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "i'll add a check to throw an unsupported operation exception instead.",
+        "ts": "2016-04-18T12:59:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "that would be a big help, thanks.",
+        "ts": "2016-04-18T13:16:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-090",
+    "thread_id": "T-090",
+    "bug_id": "BUG-090",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, the service is blowing up with unhandled exceptions during serialization",
+        "ts": "2016-04-13T13:03:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "is it happening on all requests?",
+        "ts": "2016-04-13T13:24:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "no, just when the stream is interrupted unexpectedly",
+        "ts": "2016-04-13T13:38:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "looks like we are throwing the wrong exception type so the handler doesn't catch it",
+        "ts": "2016-04-13T13:47:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "ah, good catch. i will swap it out for the correct exception type now",
+        "ts": "2016-04-13T13:49:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-091",
+    "thread_id": "T-091",
+    "bug_id": "BUG-091",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "we are seeing a sudden spike in crashes after the latest update",
+        "ts": "2016-02-24T14:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "any stack trace?",
+        "ts": "2016-02-24T14:30:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "it seems like we are hitting a null value where an object was expected during initialization",
+        "ts": "2016-02-24T14:36:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "i think i found it, the factory is returning nothing instead of an instance",
+        "ts": "2016-02-24T15:00:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "that explains the crash. i'll patch it to handle the empty return value",
+        "ts": "2016-02-24T15:15:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-093",
+    "thread_id": "T-093",
+    "bug_id": "BUG-093",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "hey, the output from the api is completely wrong for the nested structures",
+        "ts": "2015-10-18T15:04:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "are the custom TypeAdapters configured correctly?",
+        "ts": "2015-10-18T15:07:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "they seem fine, but the hierarchy isn't being resolved as expected",
+        "ts": "2015-10-18T15:30:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "i suspect we are missing a runtime check on the hierarchy",
+        "ts": "2015-10-18T15:35:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "that makes sense. i'll implement the check and push the fix",
+        "ts": "2015-10-18T15:53:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-094",
+    "thread_id": "T-094",
+    "bug_id": "BUG-094",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "our tests are failing because equality checks are returning false for identical numbers",
+        "ts": "2015-09-25T14:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "that sounds like an issue with LazilyParsedNumber",
+        "ts": "2015-09-25T14:19:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "exactly, the object comparison is failing even when the values are the same",
+        "ts": "2015-09-25T14:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "i'll add the missing comparison methods to fix the logic",
+        "ts": "2015-09-25T14:31:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "thanks, that should clear up the test failures",
+        "ts": "2015-09-25T14:43:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-095",
+    "thread_id": "T-095",
+    "bug_id": "BUG-095",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      680
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "the app is crashing whenever a null value hits our polymorphic setup",
+        "ts": "2015-08-04T14:22:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "is this related to issue #680?",
+        "ts": "2015-08-04T14:30:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "yes, it seems so",
+        "ts": "2015-08-04T14:52:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "i'll take a look at making the factory null-safe to prevent the crash",
+        "ts": "2015-08-04T14:56:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "awesome, let me know when you have a pr ready",
+        "ts": "2015-08-04T15:08:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-096",
+    "thread_id": "T-096",
+    "bug_id": "BUG-096",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonArray.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "i'm seeing duplicate nulls in the output array",
+        "ts": "2015-07-20T15:08:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "are you sure it's not just how you're constructing the JsonArray?",
+        "ts": "2015-07-20T15:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "pretty sure, it happens consistently during serialization",
+        "ts": "2015-07-20T15:20:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "i think i see the problem in the loop logic",
+        "ts": "2015-07-20T15:34:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "cool, i'll let you handle the fix then",
+        "ts": "2015-07-20T15:35:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-097",
+    "thread_id": "T-097",
+    "bug_id": "BUG-097",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/UtcDateTypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "our date serialization is stripping out nulls instead of keeping them",
+        "ts": "2014-12-04T14:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "are you using the UtcDateTypeAdapter?",
+        "ts": "2014-12-04T14:46:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, it seems to ignore nulls entirely",
+        "ts": "2014-12-04T14:54:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "i can fix the logic so it preserves the null values correctly",
+        "ts": "2014-12-04T15:03:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "please do, thanks",
+        "ts": "2014-12-04T15:09:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-099",
+    "thread_id": "T-099",
+    "bug_id": "BUG-099",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [
+      469
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "we are getting stack overflows when logging errors in Gson",
+        "ts": "2014-11-13T10:02:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "is there a circular reference?",
+        "ts": "2014-11-13T10:18:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "yes, the cause points back to the exception itself",
+        "ts": "2014-11-13T10:26:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "i'll add a factory to handle self-referencing throwables",
+        "ts": "2014-11-13T10:33:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "that should solve it, thanks",
+        "ts": "2014-11-13T10:48:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-100",
+    "thread_id": "T-100",
+    "bug_id": "BUG-100",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone else seeing weird output when parsing arrays of objects?",
+        "ts": "2014-11-09T13:08:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, i noticed it too. it seems like the nesting level is getting messed up.",
+        "ts": "2014-11-09T13:09:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "i think the issue is inside the JsonReader logic. it struggles when it hits an array of arrays.",
+        "ts": "2014-11-09T13:31:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "that makes sense. i'll take a look at the traversal logic there.",
+        "ts": "2014-11-09T13:38:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "thanks rana, let me know if you need help debugging that flow.",
+        "ts": "2014-11-09T13:51:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-105",
+    "thread_id": "T-105",
+    "bug_id": "BUG-105",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "anyone seeing intermittent weirdness with typeadapters in parallel requests?",
+        "ts": "2014-03-07T13:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "wait, are we seeing cross-talk between requests?",
+        "ts": "2014-03-07T13:34:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, it looks like generated adapters are leaking into the next call. it's definitely a concurrency issue in Gson.",
+        "ts": "2014-03-07T13:46:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "that sounds like we need a threadsafe adapter invocation. i'll jump on that today.",
+        "ts": "2014-03-07T14:07:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "awesome, thanks karim.",
+        "ts": "2014-03-07T14:24:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-106",
+    "thread_id": "T-106",
+    "bug_id": "BUG-106",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey, i'm seeing that the field-level annotation is being ignored in favor of the class-level one.",
+        "ts": "2014-03-07T14:04:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "that's definitely not right. it should prioritize the field.",
+        "ts": "2014-03-07T14:13:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "exactly. the tests are failing because of this override issue.",
+        "ts": "2014-03-07T14:19:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "i'll dig into the mapping logic and get it sorted out.",
+        "ts": "2014-03-07T14:38:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "thanks, let me know when you have a patch.",
+        "ts": "2014-03-07T14:47:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-107",
+    "thread_id": "T-107",
+    "bug_id": "BUG-107",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "the app is crashing whenever i try to deserialize these inner static classes.",
+        "ts": "2014-03-07T10:12:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "i see the same thing. it seems like the system thinks they are non-static.",
+        "ts": "2014-03-07T10:36:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, it breaks during the type creation phase.",
+        "ts": "2014-03-07T10:47:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "i'll check the reflection logic. i'll fix it.",
+        "ts": "2014-03-07T11:01:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "great, thanks rana.",
+        "ts": "2014-03-07T11:21:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-108",
+    "thread_id": "T-108",
+    "bug_id": "BUG-108",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "has anyone noticed data loss in our maps?",
+        "ts": "2013-05-11T10:19:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, it looks like elements are just disappearing from the LinkedHashTreeMap.",
+        "ts": "2013-05-11T10:26:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "this is pretty bad. i suspect some pointers are getting dropped during rebalancing.",
+        "ts": "2013-05-11T10:35:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "i'll investigate the LinkedHashTreeMap implementation right now.",
+        "ts": "2013-05-11T10:37:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "thanks karim, please keep us posted.",
+        "ts": "2013-05-11T11:00:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-112",
+    "thread_id": "T-112",
+    "bug_id": "BUG-112",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey, why is the app crashing on EnumSet deserialization?",
+        "ts": "2013-04-02T09:12:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "looks like we don't have a way to instantiate those collections.",
+        "ts": "2013-04-02T09:26:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "the ConstructorConstructor doesn't seem to know how to handle them.",
+        "ts": "2013-04-02T09:29:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "i see. i'll add the construction logic for them today.",
+        "ts": "2013-04-02T09:51:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "thanks hassan!",
+        "ts": "2013-04-02T10:02:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-114",
+    "thread_id": "T-114",
+    "bug_id": "BUG-114",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "is anyone else seeing memory pressure in Gson?",
+        "ts": "2013-01-11T14:24:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "oh yeah, i think we have an object leak in the thread locals.",
+        "ts": "2013-01-11T14:34:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "that would explain the heap growth. are we not cleaning them up?",
+        "ts": "2013-01-11T14:51:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "looks like it. i'll refactor the cleanup and push a fix.",
+        "ts": "2013-01-11T15:01:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "sounds good, thanks rana.",
+        "ts": "2013-01-11T15:23:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-116",
+    "thread_id": "T-116",
+    "bug_id": "BUG-116",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "the order of elements in our maps is coming out totally wrong.",
+        "ts": "2012-09-15T14:23:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "i've noticed that too. the LinkedHashTreeMap seems to be corrupted.",
+        "ts": "2012-09-15T14:33:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "i'll take a look at the logic. it needs some optimization anyway.",
+        "ts": "2012-09-15T14:51:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "cool, let me know if you need a second pair of eyes on that LinkedHashTreeMap code.",
+        "ts": "2012-09-15T14:56:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "will do!",
+        "ts": "2012-09-15T15:03:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-117",
+    "thread_id": "T-117",
+    "bug_id": "BUG-117",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, anyone seeing weird structure issues in the graph? some nodes are disappearing.",
+        "ts": "2012-09-10T15:20:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "i saw that too. looks like we are unlinking stuff that should stay connected.",
+        "ts": "2012-09-10T15:39:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "could it be the logic inside LinkedTreeMap? i remember touching that area last week.",
+        "ts": "2012-09-10T15:49:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "oh good catch, let me check the pointers there.",
+        "ts": "2012-09-10T16:02:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "yep, looks like an accidental removal during the rebalance.",
+        "ts": "2012-09-10T16:20:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "got it, i'll push a fix for that now.",
+        "ts": "2012-09-10T16:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-119",
+    "thread_id": "T-119",
+    "bug_id": "BUG-119",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "is anyone else having trouble parsing files with a BOM?",
+        "ts": "2012-08-26T13:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, it seems like the JsonReader is skipping over the byte order mark incorrectly.",
+        "ts": "2012-08-26T13:33:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "it feels like we aren't reading enough characters at the start.",
+        "ts": "2012-08-26T13:53:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "i'll take a look at how we handle the buffer initialization.",
+        "ts": "2012-08-26T14:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "thanks, let me know if you need help.",
+        "ts": "2012-08-26T14:25:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-120",
+    "thread_id": "T-120",
+    "bug_id": "BUG-120",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "hey, the parser is throwing exceptions on valid numbers.",
+        "ts": "2012-08-25T16:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "really? which part?",
+        "ts": "2012-08-25T16:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "it seems like JsonReader is failing on some edge cases.",
+        "ts": "2012-08-25T16:46:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "i think i see the issue, the logic for number parsing is a bit too strict.",
+        "ts": "2012-08-25T17:02:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "can you take a look? i'm stuck on this.",
+        "ts": "2012-08-25T17:26:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "sure, i'll submit a fix today.",
+        "ts": "2012-08-25T17:32:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-121",
+    "thread_id": "T-121",
+    "bug_id": "BUG-121",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "is our integer parsing broken?",
+        "ts": "2012-08-24T10:17:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "what makes you say that?",
+        "ts": "2012-08-24T10:39:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "some values are coming back as null or crashing the JsonReader.",
+        "ts": "2012-08-24T11:00:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "ah, let me check the integer logic.",
+        "ts": "2012-08-24T11:20:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "found it, it's definitely in the parsing method.",
+        "ts": "2012-08-24T11:31:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "alright, i'll get that fixed up.",
+        "ts": "2012-08-24T11:34:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-122",
+    "thread_id": "T-122",
+    "bug_id": "BUG-122",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "hey, the parser is getting stuck in a bad state after a failed conversion.",
+        "ts": "2012-08-25T13:07:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, i noticed it doesn't recover properly.",
+        "ts": "2012-08-25T13:12:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "it just keeps failing for every subsequent read, it's super annoying.",
+        "ts": "2012-08-25T13:13:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "i think we need to hold onto the raw string before trying to parse it.",
+        "ts": "2012-08-25T13:15:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "agreed, i'll work on that.",
+        "ts": "2012-08-25T13:23:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-124",
+    "thread_id": "T-124",
+    "bug_id": "BUG-124",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "getting unexpected crashes when the content ends abruptly.",
+        "ts": "2012-06-30T10:14:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "i'm seeing that too, it just dies instead of throwing a clean exception.",
+        "ts": "2012-06-30T10:35:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "exactly, the app just shuts down.",
+        "ts": "2012-06-30T10:54:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "i'll add a check to throw a proper exception when the end is reached too early.",
+        "ts": "2012-06-30T11:01:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-125",
+    "thread_id": "T-125",
+    "bug_id": "BUG-125",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java",
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      443
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "anyone working on issue #443?",
+        "ts": "2012-06-27T15:13:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "not yet, what's the deal?",
+        "ts": "2012-06-27T15:21:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "empty docs are failing to parse correctly.",
+        "ts": "2012-06-27T15:26:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "ah, i see, it should probably just return a null object.",
+        "ts": "2012-06-27T15:47:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "exactly, i'll fix it now.",
+        "ts": "2012-06-27T16:10:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-128",
+    "thread_id": "T-128",
+    "bug_id": "BUG-128",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "the parser is failing on strings ending with a slash.",
+        "ts": "2012-02-15T10:08:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "did you check the JsonReader logic?",
+        "ts": "2012-02-15T10:14:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "yeah, the whitespace check seems to be off by one.",
+        "ts": "2012-02-15T10:37:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "classic off-by-one, good catch.",
+        "ts": "2012-02-15T10:54:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "i'll update it to point to the correct position.",
+        "ts": "2012-02-15T11:09:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-129",
+    "thread_id": "T-129",
+    "bug_id": "BUG-129",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonWriter.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      397
+    ],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone else seeing a crash when trying to write multiple objects to the stream?",
+        "ts": "2012-02-11T12:15:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, i hit that too. looks like issue #397 might be related.",
+        "ts": "2012-02-11T12:20:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "ah, good catch. it seems like it's choking when the writer is already closed too.",
+        "ts": "2012-02-11T12:35:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, the state checking is definitely off there. i'll take a look at the lenient mode logic.",
+        "ts": "2012-02-11T12:57:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-130",
+    "thread_id": "T-130",
+    "bug_id": "BUG-130",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "hey, the parsing logic is acting weird with some prefixes.",
+        "ts": "2012-02-08T14:20:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "what kind of weird? are you using JsonReader?",
+        "ts": "2012-02-08T14:44:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, the nonexecute prefix is causing some unexpected behavior during tokenization.",
+        "ts": "2012-02-08T15:01:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "i see. it's probably missing some coverage. i'll dig into the code and add some tests.",
+        "ts": "2012-02-08T15:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-135",
+    "thread_id": "T-135",
+    "bug_id": "BUG-135",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "heads up, a bunch of tests are failing after the latest merge.",
+        "ts": "2011-12-13T16:24:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "oh no, is it the TypeAdapters stuff again?",
+        "ts": "2011-12-13T16:40:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "looks like it. everything seems to be returning the wrong values.",
+        "ts": "2011-12-13T16:55:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "karim",
+        "text": "got it. i'll check the recent commits and get those tests passing again.",
+        "ts": "2011-12-13T17:04:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-139",
+    "thread_id": "T-139",
+    "bug_id": "BUG-139",
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey, i'm getting a stack overflow in the serialization layer.",
+        "ts": "2011-12-05T13:21:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "that sounds like an infinite loop. are you using a custom TypeAdapter?",
+        "ts": "2011-12-05T13:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, it seems to happen when calling nullSafe on non-null inputs.",
+        "ts": "2011-12-05T13:38:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "yikes, that shouldn't be recursing like that. i'll fix the logic.",
+        "ts": "2011-12-05T13:53:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-140",
+    "thread_id": "T-140",
+    "bug_id": "BUG-140",
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "anyone else seeing a crash when registering multiple type hierarchy adapters?",
+        "ts": "2011-12-05T13:09:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "are you configuring them through GsonBuilder?",
+        "ts": "2011-12-05T13:20:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "exactly. it blows up as soon as i try to use them together.",
+        "ts": "2011-12-05T13:31:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "that's definitely a bug. i'll look into the registration logic and fix the test.",
+        "ts": "2011-12-05T13:49:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-141",
+    "thread_id": "T-141",
+    "bug_id": "BUG-141",
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "why is the wrong adapter being picked up? i registered the correct one last.",
+        "ts": "2011-12-05T11:08:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "are you adding them via GsonBuilder?",
+        "ts": "2011-12-05T11:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "yes, but it's completely ignoring the precedence rules.",
+        "ts": "2011-12-05T11:44:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "i suspect the precedence logic is flipped. i'll check it out.",
+        "ts": "2011-12-05T11:49:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-145",
+    "thread_id": "T-145",
+    "bug_id": "BUG-145",
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java",
+      "gson/src/main/java/com/google/gson/TreeTypeAdapter.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "hey, i'm seeing some weird behavior with generic types.",
+        "ts": "2011-11-20T12:14:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "what's happening? is it not matching the right implementation?",
+        "ts": "2011-11-20T12:28:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "exactly. if i register a raw type, it's failing to recognize the parameterized versions.",
+        "ts": "2011-11-20T12:39:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "that makes sense. i think i broke the matching logic in the latest update. i'll patch it.",
+        "ts": "2011-11-20T12:57:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-147",
+    "thread_id": "T-147",
+    "bug_id": "BUG-147",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 4,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey, the app is crashing when it gets an unexpected data format.",
+        "ts": "2011-10-22T15:07:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "is it throwing a generic exception instead of something we can catch?",
+        "ts": "2011-10-22T15:21:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, it's basically dying on type mismatches during binding.",
+        "ts": "2011-10-22T15:34:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "i'll update it to throw a proper parsing exception so we can handle it gracefully.",
+        "ts": "2011-10-22T15:59:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-151",
+    "thread_id": "T-151",
+    "bug_id": "BUG-151",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/SqlDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, has anyone noticed that our dates are shifting by a few hours in the staging environment?",
+        "ts": "2011-09-25T09:16:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, i saw that. looks like it depends on the server timezone.",
+        "ts": "2011-09-25T09:17:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "are we using the standard date adapters? maybe gson is doing something weird with the local time zone settings.",
+        "ts": "2011-09-25T09:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "i think so. it seems to be ignoring utc and applying local offsets.",
+        "ts": "2011-09-25T09:39:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "found it. the adapters are assuming the default zone. i'll patch them to be timezone agnostic.",
+        "ts": "2011-09-25T10:04:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-152",
+    "thread_id": "T-152",
+    "bug_id": "BUG-152",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "the map serialization is failing when i use subclasses in the values.",
+        "ts": "2011-09-25T15:16:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "interesting. are you checking the test cases for map types?",
+        "ts": "2011-09-25T15:24:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, testMapOfSubclassFields is definitely broken right now.",
+        "ts": "2011-09-25T15:33:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "looks like MapTypeAdapterFactory isn't handling the runtime type properly for the values.",
+        "ts": "2011-09-25T15:47:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "good catch. i'll update the factory to handle that logic.",
+        "ts": "2011-09-25T16:03:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-156",
+    "thread_id": "T-156",
+    "bug_id": "BUG-156",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "the build is crashing on the older ci agent.",
+        "ts": "2011-09-15T15:22:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "what error are you seeing?",
+        "ts": "2011-09-15T15:44:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "looks like a method not found exception, seems like a java version issue.",
+        "ts": "2011-09-15T15:57:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "maybe something in DefaultTypeAdapters is using a newer api call?",
+        "ts": "2011-09-15T16:21:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "yep, found one call that is definitely 1.7 only. i'll swap it out.",
+        "ts": "2011-09-15T16:27:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-158",
+    "thread_id": "T-158",
+    "bug_id": "BUG-158",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "getting random crashes during deserialization when the types don't match up.",
+        "ts": "2011-09-07T11:13:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "is it just returning null or actually blowing up?",
+        "ts": "2011-09-07T11:32:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "it's throwing a raw exception, not caught.",
+        "ts": "2011-09-07T11:51:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "check the ReflectiveTypeAdapter, it might be missing a proper validation check.",
+        "ts": "2011-09-07T12:13:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "you're right, it needs to throw a proper JsonSyntaxException. i'm on it.",
+        "ts": "2011-09-07T12:14:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-161",
+    "thread_id": "T-161",
+    "bug_id": "BUG-161",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/BigDecimalTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/BigIntegerTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "why are we getting generic exceptions when parsing numbers?",
+        "ts": "2011-09-08T15:15:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "not sure, which part of the parser?",
+        "ts": "2011-09-08T15:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "it's failing inside the BigDecimalTypeAdapter when the input is garbage.",
+        "ts": "2011-09-08T15:23:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "ah, it's probably swallowing the specific error. we should throw something more descriptive.",
+        "ts": "2011-09-08T15:32:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "agreed, i'll fix the exception handling there.",
+        "ts": "2011-09-08T15:45:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-163",
+    "thread_id": "T-163",
+    "bug_id": "BUG-163",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "our custom serializers are being ignored when dealing with base classes.",
+        "ts": "2011-08-10T12:11:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "is it using the runtime type instead?",
+        "ts": "2011-08-10T12:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "exactly. testBaseClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances is failing.",
+        "ts": "2011-08-10T12:47:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "check TypeAdapterRuntimeTypeWrapper, it might be overriding the preference.",
+        "ts": "2011-08-10T13:00:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "good call, found the logic error. i'll restore the expected behavior.",
+        "ts": "2011-08-10T13:09:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-166",
+    "thread_id": "T-166",
+    "bug_id": "BUG-166",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "the parser is acting up when reading character by character.",
+        "ts": "2011-07-20T13:16:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "that sounds like an off-by-one error in the buffer handling.",
+        "ts": "2011-07-20T13:17:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "yeah, i've been looking at the JsonReader implementation.",
+        "ts": "2011-07-20T13:41:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "did you check the boundary conditions?",
+        "ts": "2011-07-20T13:59:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "karim",
+        "text": "found a couple of spots where the index is off. fixing it now.",
+        "ts": "2011-07-20T14:01:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-169",
+    "thread_id": "T-169",
+    "bug_id": "BUG-169",
+    "files": [
+      "extras/src/main/java/com/google/gson/mini/MiniGson.java",
+      "extras/src/main/java/com/google/gson/mini/ReflectiveTypeAdapter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "the integration tests are failing after the latest benchmark refactor.",
+        "ts": "2011-07-13T12:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "did we change any of the core serialization logic?",
+        "ts": "2011-07-13T12:46:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "not really, just some performance tweaks in MiniGson.",
+        "ts": "2011-07-13T12:48:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "maybe check if those changes affected the default behavior.",
+        "ts": "2011-07-13T13:13:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "good idea, i'll trace the changes and fix the tests.",
+        "ts": "2011-07-13T13:14:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-170",
+    "thread_id": "T-170",
+    "bug_id": "BUG-170",
+    "files": [
+      "extras/src/main/java/com/google/gson/mini/MiniGson.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, the app keeps blowing up whenever i try to serialize some of our complex objects.",
+        "ts": "2011-07-11T12:20:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "that sounds bad. is it happening consistently?",
+        "ts": "2011-07-11T12:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, every time it hits a recursive structure it just dies.",
+        "ts": "2011-07-11T12:33:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "i think i see why, it hits an infinite loop trying to resolve the structure.",
+        "ts": "2011-07-11T12:38:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "ah, that makes sense. can you handle that?",
+        "ts": "2011-07-11T12:54:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "on it, i'll patch the serialization logic now.",
+        "ts": "2011-07-11T13:16:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-171",
+    "thread_id": "T-171",
+    "bug_id": "BUG-171",
+    "files": [
+      "gson/src/main/java/com/google/gson/FieldAttributes.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "anyone else seeing weird state inconsistencies during heavy load?",
+        "ts": "2011-06-06T12:23:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, i noticed some values getting overwritten unexpectedly.",
+        "ts": "2011-06-06T12:32:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "looks like a race condition, it's totally non-deterministic.",
+        "ts": "2011-06-06T12:57:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "found it, multiple threads are accessing that shared method without protection.",
+        "ts": "2011-06-06T13:09:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "good catch, should we just sync the method?",
+        "ts": "2011-06-06T13:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "yeah, that should stop the bleeding for now.",
+        "ts": "2011-06-06T13:35:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-175",
+    "thread_id": "T-175",
+    "bug_id": "BUG-175",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/JsonSerializationContextDefault.java",
+      "gson/src/main/java/com/google/gson/ObjectNavigator.java",
+      "gson/src/main/java/com/google/gson/ObjectTypePair.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      205,
+      294,
+      318
+    ],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "the output format for our entities is completely wrong again.",
+        "ts": "2011-04-17T10:10:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "is it related to issue #205?",
+        "ts": "2011-04-17T10:14:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "exactly, the type information is being stripped out.",
+        "ts": "2011-04-17T10:33:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "i see a few other spots where that's happening too.",
+        "ts": "2011-04-17T10:34:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "mona",
+        "text": "can you take a look? it's breaking the consumer side.",
+        "ts": "2011-04-17T10:44:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "working on it now, i'll push a fix for all those cases.",
+        "ts": "2011-04-17T11:03:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-180",
+    "thread_id": "T-180",
+    "bug_id": "BUG-180",
+    "files": [
+      "gson/src/main/java/com/google/gson/ParameterizedTypeHandlerMap.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "our service is crashing hard during type mapping.",
+        "ts": "2011-03-11T15:23:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "any stack trace info?",
+        "ts": "2011-03-11T15:30:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "it seems like ParameterizedTypeHandlerMap is failing when we have nested class hierarchies.",
+        "ts": "2011-03-11T15:33:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "oh i think i know why, it's not handling the copy operation correctly for those base types.",
+        "ts": "2011-03-11T15:52:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "can you confirm?",
+        "ts": "2011-03-11T16:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "yep, verified. i'll get a fix out in ten minutes.",
+        "ts": "2011-03-11T16:36:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-182",
+    "thread_id": "T-182",
+    "bug_id": "BUG-182",
+    "files": [
+      "gson/src/main/java/com/google/gson/MappedObjectConstructor.java",
+      "gson/src/main/java/com/google/gson/UnsafeAllocator.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "getting frequent crashes on the android build.",
+        "ts": "2011-03-10T10:22:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "is it related to the memory allocation?",
+        "ts": "2011-03-10T10:42:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "looks like it, MappedObjectConstructor is throwing an exception in some environments.",
+        "ts": "2011-03-10T10:46:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "that's an unsafe allocation pattern, we should change how we're doing that.",
+        "ts": "2011-03-10T11:05:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "agreed, can you handle the refactor?",
+        "ts": "2011-03-10T11:07:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "doing it right now.",
+        "ts": "2011-03-10T11:19:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-185",
+    "thread_id": "T-185",
+    "bug_id": "BUG-185",
+    "files": [
+      "wsclient/src/main/java/com/google/gson/rest/query/client/ResourceQueryClient.java",
+      "wsdef/src/main/java/com/google/gson/webservice/definition/CallPath.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "the api response is returning empty for valid requests.",
+        "ts": "2010-11-08T15:03:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "are you sure the path is correct?",
+        "ts": "2010-11-08T15:20:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "yeah, the ResourceQueryClient is just failing to parse the body if it's a list.",
+        "ts": "2010-11-08T15:41:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "ah, it probably expects a single object only.",
+        "ts": "2010-11-08T15:52:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "can we make it more flexible?",
+        "ts": "2010-11-08T15:53:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "yeah, i'll update the spec to handle lists.",
+        "ts": "2010-11-08T16:07:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-186",
+    "thread_id": "T-186",
+    "bug_id": "BUG-186",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonParser.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "we have a regression in our data parsing logic.",
+        "ts": "2010-11-08T10:12:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "what changed?",
+        "ts": "2010-11-08T10:33:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "it's handling unquoted strings differently than it used to in Gson.",
+        "ts": "2010-11-08T10:48:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "that might be intentional, but it's throwing the wrong exception type.",
+        "ts": "2010-11-08T11:11:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "can we make it throw the specific one we need?",
+        "ts": "2010-11-08T11:16:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "sure, i'll adjust the parser.",
+        "ts": "2010-11-08T11:30:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-187",
+    "thread_id": "T-187",
+    "bug_id": "BUG-187",
+    "files": [
+      "gson/src/main/java/com/google/gson/Streams.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "the parser is returning null on unexpected end of file.",
+        "ts": "2010-11-07T13:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "that's breaking our downstream logic.",
+        "ts": "2010-11-07T13:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, it's happening inside the Streams implementation.",
+        "ts": "2010-11-07T13:53:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "we should check if the document is actually empty before returning null.",
+        "ts": "2010-11-07T14:12:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly, that would restore the old behavior.",
+        "ts": "2010-11-07T14:21:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "i'll push the fix shortly.",
+        "ts": "2010-11-07T14:32:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-190",
+    "thread_id": "T-190",
+    "bug_id": "BUG-190",
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeInfoFactory.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [
+      40
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "hey, the service is crashing whenever we try to deserialize the new payload.",
+        "ts": "2010-11-01T10:15:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "is it throwing a null pointer?",
+        "ts": "2010-11-01T10:23:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, looks like it's happening inside TypeInfoFactory during the reflection phase.",
+        "ts": "2010-11-01T10:48:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "ah, i think i see why, the factory isn't handling the new generic types correctly.",
+        "ts": "2010-11-01T11:03:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "i'll take a look and get a fix pushed out.",
+        "ts": "2010-11-01T11:22:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-192",
+    "thread_id": "T-192",
+    "bug_id": "BUG-192",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "anyone else seeing crashes with long fields in Gson?",
+        "ts": "2010-10-29T15:01:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "what kind of crash?",
+        "ts": "2010-10-29T15:17:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "it seems to be failing when it hits a primitive long vs the wrapper class.",
+        "ts": "2010-10-29T15:28:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "oh, i see what's happening. it's treating them as the same adapter but they have different requirements.",
+        "ts": "2010-10-29T15:34:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "i'll throw together a patch to keep them separate for now.",
+        "ts": "2010-10-29T15:50:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-193",
+    "thread_id": "T-193",
+    "bug_id": "BUG-193",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey team, everything is blowing up when we try to cast these objects.",
+        "ts": "2010-10-31T14:11:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "is it happening on the client side or backend?",
+        "ts": "2010-10-31T14:20:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "backend, getting a hard crash on startup.",
+        "ts": "2010-10-31T14:40:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "it looks like the primitive values aren't wrapping correctly before the cast.",
+        "ts": "2010-10-31T15:03:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "good catch, can you handle that?",
+        "ts": "2010-10-31T15:12:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "yup, on it.",
+        "ts": "2010-10-31T15:30:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-197",
+    "thread_id": "T-197",
+    "bug_id": "BUG-197",
+    "files": [
+      "wsclient/src/main/java/com/google/gson/webservice/client/RequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/RestRequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/Streams.java",
+      "wsf/src/main/java/com/google/gson/wsf/server/WebServiceCallServerBuilder.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "hey, the output stream is being closed prematurely.",
+        "ts": "2010-09-27T12:08:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "are you sure? it should be keeping the streams open based on the flags.",
+        "ts": "2010-09-27T12:32:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "it's definitely closing them even when i tell it not to.",
+        "ts": "2010-09-27T12:46:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "that's weird. let me check the logic where we handle the stream copying.",
+        "ts": "2010-09-27T13:02:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "found it, the flag isn't propagating correctly. i'll fix it.",
+        "ts": "2010-09-27T13:20:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-199",
+    "thread_id": "T-199",
+    "bug_id": "BUG-199",
+    "files": [
+      "gson/src/main/java/com/google/gson/AnonymousAndLocalClassExclusionStrategy.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      226
+    ],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "why are my enum constants missing from the output?",
+        "ts": "2010-08-26T16:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "are they anonymous enums?",
+        "ts": "2010-08-26T16:16:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, they are.",
+        "ts": "2010-08-26T16:19:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "that's a known issue #226 that we haven't touched yet.",
+        "ts": "2010-08-26T16:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "can we prioritize it? it's breaking the frontend.",
+        "ts": "2010-08-26T16:37:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "fine, i'll patch it today.",
+        "ts": "2010-08-26T16:50:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-200",
+    "thread_id": "T-200",
+    "bug_id": "BUG-200",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonCompactFormatter.java",
+      "gson/src/main/java/com/google/gson/JsonObject.java",
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      178
+    ],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "the data format is completely wrong for the latest API response.",
+        "ts": "2010-08-18T12:22:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "is it missing fields?",
+        "ts": "2010-08-18T12:41:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "no, it's just serializing the wrong types for some reason.",
+        "ts": "2010-08-18T12:53:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "oh, that sounds like issue #178.",
+        "ts": "2010-08-18T13:09:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "can you verify? we need this fixed asap.",
+        "ts": "2010-08-18T13:27:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "checking now, i'll get it sorted.",
+        "ts": "2010-08-18T13:44:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-202",
+    "thread_id": "T-202",
+    "bug_id": "BUG-202",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/Pair.java",
+      "gson/src/main/java/com/google/gson/ParameterizedTypeHandlerMap.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "the type adapter priority seems completely messed up in the latest build.",
+        "ts": "2010-06-22T15:12:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "what do you mean?",
+        "ts": "2010-06-22T15:35:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "it's registering the DefaultTypeAdapters in the wrong order, so the wrong one is being used.",
+        "ts": "2010-06-22T15:50:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "that explains why the serialization tests are failing.",
+        "ts": "2010-06-22T15:59:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "yep, i'm going to fix the registration logic now.",
+        "ts": "2010-06-22T16:09:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-204",
+    "thread_id": "T-204",
+    "bug_id": "BUG-204",
+    "files": [
+      "wsclient/src/main/java/com/google/gson/webservice/client/Preconditions.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/RequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/Streams.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/WebServiceClient.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "the requests are failing because the content-length header is missing when there's no body.",
+        "ts": "2010-01-24T12:24:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "did you check the Preconditions logic?",
+        "ts": "2010-01-24T12:31:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "i did, it looks like it's blocking the header set even if the length is zero.",
+        "ts": "2010-01-24T12:42:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "that sounds like a bug, it should allow zero.",
+        "ts": "2010-01-24T12:46:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "agreed, i'll submit a fix for that.",
+        "ts": "2010-01-24T13:10:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-207",
+    "thread_id": "T-207",
+    "bug_id": "BUG-207",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone else seeing weird data in the db dumps?",
+        "ts": "2009-12-01T11:07:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "what kind of weird?",
+        "ts": "2009-12-01T11:31:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "the sql date objects are including time components during serialization, it's messing up the format.",
+        "ts": "2009-12-01T11:47:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "ah, i think that's happening in DefaultTypeAdapters.",
+        "ts": "2009-12-01T11:56:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "good catch, let me take a look at those adapters.",
+        "ts": "2009-12-01T12:20:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "thanks, let me know if you need help testing the fix.",
+        "ts": "2009-12-01T12:39:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-210",
+    "thread_id": "T-210",
+    "bug_id": "BUG-210",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonObjectDeserializationVisitor.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "why is this object getting default values instead of null?",
+        "ts": "2009-10-06T13:07:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "what do you mean?",
+        "ts": "2009-10-06T13:17:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "my custom deserializer is explicitly setting it to null, but it's ignored.",
+        "ts": "2009-10-06T13:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "that sounds like an issue with the JsonDeserializationVisitor logic.",
+        "ts": "2009-10-06T13:37:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, i'll dig into that visitor and see why it's overriding the nulls.",
+        "ts": "2009-10-06T13:43:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "sounds good, let me know what you find.",
+        "ts": "2009-10-06T13:53:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-212",
+    "thread_id": "T-212",
+    "bug_id": "BUG-212",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "my custom serializer is returning null but it's causing an error downstream.",
+        "ts": "2009-10-08T11:02:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "is it crashing or just outputting wrong data?",
+        "ts": "2009-10-08T11:04:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "it's outputting some garbage instead of just skipping it.",
+        "ts": "2009-10-08T11:22:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "check the JsonSerializationVisitor, it might not be handling the null return gracefully.",
+        "ts": "2009-10-08T11:32:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "oh you're right, it's definitely missing a null check there.",
+        "ts": "2009-10-08T11:55:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "i'll patch it up real quick.",
+        "ts": "2009-10-08T12:00:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-213",
+    "thread_id": "T-213",
+    "bug_id": "BUG-213",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonObjectDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonTreeNavigator.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "the app is throwing a null pointer exception when parsing nested json objects.",
+        "ts": "2009-10-03T16:01:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "is it happening during the tree traversal?",
+        "ts": "2009-10-03T16:20:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "yeah, looks like it.",
+        "ts": "2009-10-03T16:30:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "check if the JsonDeserializationVisitor is trying to visit a custom handler incorrectly.",
+        "ts": "2009-10-03T16:46:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "that looks like the culprit, it shouldn't be hitting that node.",
+        "ts": "2009-10-03T17:02:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "i'll fix the visitor logic to skip those.",
+        "ts": "2009-10-03T17:17:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-214",
+    "thread_id": "T-214",
+    "bug_id": "BUG-214",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [
+      153
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "anyone notice the output formatting is broken on nested lists?",
+        "ts": "2009-09-27T11:09:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, the separators are all over the place.",
+        "ts": "2009-09-27T11:25:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "it seems like we are losing track of which element is the first one in the list.",
+        "ts": "2009-09-27T11:29:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "it definitely feels like a state tracking issue.",
+        "ts": "2009-09-27T11:32:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "i'll implement a stack to keep track of the hierarchy, that should clean it up.",
+        "ts": "2009-09-27T11:45:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-216",
+    "thread_id": "T-216",
+    "bug_id": "BUG-216",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [
+      162
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "we are getting random corrupted dates in the logs under heavy load.",
+        "ts": "2009-09-23T10:05:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "that sounds like a race condition.",
+        "ts": "2009-09-23T10:10:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "exactly, the date formatter seems to be shared across threads.",
+        "ts": "2009-09-23T10:29:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "laila",
+        "text": "yikes, let's make sure those adapters are properly synchronized.",
+        "ts": "2009-09-23T10:39:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "youssef",
+        "text": "on it, i'll add the synchronization locks now.",
+        "ts": "2009-09-23T10:42:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-217",
+    "thread_id": "T-217",
+    "bug_id": "BUG-217",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      147
+    ],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "hey, is there a fix for issue #147 yet?",
+        "ts": "2009-09-22T10:20:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "not yet, why?",
+        "ts": "2009-09-22T10:40:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "my unit tests are failing because longs and ints aren't being compared correctly.",
+        "ts": "2009-09-22T11:00:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "oh, right, the numeric types are not comparable to each other currently.",
+        "ts": "2009-09-22T11:08:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "exactly, it's driving me crazy.",
+        "ts": "2009-09-22T11:33:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "i'll fix the comparison logic so they treat types consistently.",
+        "ts": "2009-09-22T11:50:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-218",
+    "thread_id": "T-218",
+    "bug_id": "BUG-218",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 6,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "i'm seeing a stack overflow when parsing recursive structures in Gson.",
+        "ts": "2009-09-21T16:10:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "is it deep nesting?",
+        "ts": "2009-09-21T16:29:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "not even that deep, just standard recursive objects.",
+        "ts": "2009-09-21T16:43:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "that's weird, i'll take a look at the traversal code.",
+        "ts": "2009-09-21T16:53:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "thanks, it's blocking the build for now.",
+        "ts": "2009-09-21T17:12:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "rana",
+        "text": "got it, i'll push a fix shortly.",
+        "ts": "2009-09-21T17:32:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-221",
+    "thread_id": "T-221",
+    "bug_id": "BUG-221",
+    "files": [
+      "gson/src/main/java/com/google/gson/ObjectNavigator.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      126
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone else getting a stack overflow when serializing objects with transient fields?",
+        "ts": "2009-06-01T10:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "oh, yeah, i saw that earlier. looks like it's trying to do type deduction on fields it shouldn't be touching.",
+        "ts": "2009-06-01T10:28:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "hassan",
+        "text": "is this related to issue #126?",
+        "ts": "2009-06-01T10:37:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "rana",
+        "text": "exactly, it's definitely hitting the logic we touched there.",
+        "ts": "2009-06-01T10:59:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "omar",
+        "text": "i'll look into skipping the deduction for transient fields and get a fix out.",
+        "ts": "2009-06-01T11:02:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-225",
+    "thread_id": "T-225",
+    "bug_id": "BUG-225",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonElement.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "we've got a crash in production where a classcastexception is bubbling all the way up to the client.",
+        "ts": "2009-03-26T12:18:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "that's weird, i thought we caught those inside our core logic.",
+        "ts": "2009-03-26T12:21:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "laila",
+        "text": "it seems like the gson integration layer is leaking it before we can wrap it.",
+        "ts": "2009-03-26T12:27:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "salma",
+        "text": "yeah, it's crashing the user's process completely.",
+        "ts": "2009-03-26T12:28:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      },
+      {
+        "user": "youssef",
+        "text": "i see the issue. i'll add a catch block to handle those exceptions properly.",
+        "ts": "2009-03-26T12:42:00",
+        "synthetic": true,
+        "channel": "#bugs"
+      }
+    ]
+  },
+  {
+    "_id": "T-227",
+    "thread_id": "T-227",
+    "bug_id": "BUG-227",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      100
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "the main build is failing again, the set tests are failing with a cast error.",
+        "ts": "2009-03-10T16:02:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "did that happen after the fix for issue #100?",
+        "ts": "2009-03-10T16:10:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "yeah, it looks like we changed the underlying collection type and the test expectation is now wrong.",
+        "ts": "2009-03-10T16:20:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "i'll update the test to handle both treese and hashset properly.",
+        "ts": "2009-03-10T16:43:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "thanks, that should stabilize the suite.",
+        "ts": "2009-03-10T16:53:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-228",
+    "thread_id": "T-228",
+    "bug_id": "BUG-228",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [
+      100
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "getting crashes when deserializing lists of custom objects that don't implement comparable.",
+        "ts": "2009-03-09T16:22:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "ah, that might be a limitation in how DefaultTypeAdapters handles collections.",
+        "ts": "2009-03-09T16:30:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "salma",
+        "text": "can we make it more flexible?",
+        "ts": "2009-03-09T16:39:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "i think so, i'll look into relaxing the requirement for comparable elements.",
+        "ts": "2009-03-09T17:00:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "omar",
+        "text": "sounds good, let me know if you need a hand with the logic.",
+        "ts": "2009-03-09T17:19:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-233",
+    "thread_id": "T-233",
+    "bug_id": "BUG-233",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "the output from the pretty printer looks really broken for nested objects.",
+        "ts": "2009-01-08T12:04:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "are you seeing extra newlines or just bad indentation?",
+        "ts": "2009-01-08T12:22:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "it's missing indentation entirely for deeper levels.",
+        "ts": "2009-01-08T12:30:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "i think the JsonPrintFormatter state is getting desynced.",
+        "ts": "2009-01-08T12:51:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, that makes sense. i'll take a look and patch it.",
+        "ts": "2009-01-08T12:56:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-236",
+    "thread_id": "T-236",
+    "bug_id": "BUG-236",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "hassan",
+        "text": "we're seeing unhandled exceptions when parsing malformed uuids.",
+        "ts": "2008-12-26T11:02:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "mona",
+        "text": "do they crash the whole thread?",
+        "ts": "2008-12-26T11:08:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "yes, it seems inconsistent compared to how we handle other types in DefaultTypeAdapters.",
+        "ts": "2008-12-26T11:18:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "rana",
+        "text": "we should definitely wrap that in our standard exception handler.",
+        "ts": "2008-12-26T11:38:00",
+        "synthetic": true,
+        "channel": "#dev"
+      },
+      {
+        "user": "hassan",
+        "text": "agreed, i'll submit a fix for that.",
+        "ts": "2008-12-26T12:02:00",
+        "synthetic": true,
+        "channel": "#dev"
+      }
+    ]
+  },
+  {
+    "_id": "T-237",
+    "thread_id": "T-237",
+    "bug_id": "BUG-237",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializationContextDefault.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "salma",
+        "text": "why is the output showing empty object structures when we have arrays of primitives?",
+        "ts": "2008-12-24T13:04:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "i noticed that too, it looks like it's trying to instantiate objects that shouldn't exist.",
+        "ts": "2008-12-24T13:19:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "it's definitely firing during the array processing loop.",
+        "ts": "2008-12-24T13:42:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "salma",
+        "text": "i'll remove those redundant instantiation calls and see if the output cleans up.",
+        "ts": "2008-12-24T13:52:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "that should fix it, thanks.",
+        "ts": "2008-12-24T14:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-244",
+    "thread_id": "T-244",
+    "bug_id": "BUG-244",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java"
+    ],
+    "link_style": "vague",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "karim",
+        "text": "the parser is throwing an error on numbers like 1e5.",
+        "ts": "2008-11-16T13:15:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "mona",
+        "text": "wait, is it failing because there is no decimal point?",
+        "ts": "2008-11-16T13:18:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "yeah, it seems to expect a fraction part if it sees an exponent.",
+        "ts": "2008-11-16T13:38:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "hassan",
+        "text": "that's definitely a bug in our number detection logic.",
+        "ts": "2008-11-16T13:40:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "i'll fix the regex to handle scientific notation without decimals.",
+        "ts": "2008-11-16T13:54:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-247",
+    "thread_id": "T-247",
+    "bug_id": "BUG-247",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java",
+      "gson/src/main/java/com/google/gson/JsonParserConstants.java",
+      "gson/src/main/java/com/google/gson/JsonParserTokenManager.java",
+      "gson/src/main/java/com/google/gson/StringUnmarshaller.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      66
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "hey, is anyone else having trouble with forward slashes in the json parser?",
+        "ts": "2008-10-26T14:01:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "omar",
+        "text": "what kind of trouble? like getting an error during parsing?",
+        "ts": "2008-10-26T14:04:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, it seems escaped slashes are failing. i think this is related to issue #66.",
+        "ts": "2008-10-26T14:12:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "ah, good catch. i think we need to update the gson version to 1.2.3 to handle that.",
+        "ts": "2008-10-26T14:34:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "cool, i'll bump the version and see if that clears it up.",
+        "ts": "2008-10-26T14:53:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-248",
+    "thread_id": "T-248",
+    "bug_id": "BUG-248",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      63
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "youssef",
+        "text": "seeing some weird memory errors in prod, looks like state is leaking between threads.",
+        "ts": "2008-10-17T09:19:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "oh no, is it failing consistently?",
+        "ts": "2008-10-17T09:21:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "youssef",
+        "text": "yeah, it looks like issue #63, the internal stack is being shared when it shouldn't be.",
+        "ts": "2008-10-17T09:46:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "laila",
+        "text": "that makes sense, we probably need to stop reusing the factory object.",
+        "ts": "2008-10-17T10:11:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "karim",
+        "text": "i'll look into creating a new factory for each call to keep it thread-safe.",
+        "ts": "2008-10-17T10:17:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-249",
+    "thread_id": "T-249",
+    "bug_id": "BUG-249",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      58
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "mona",
+        "text": "hey, the output for some fields is showing the wrong type, it's casting things incorrectly.",
+        "ts": "2008-10-12T16:06:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "are you seeing this for all fields or just specific ones?",
+        "ts": "2008-10-12T16:25:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "looks like it's trying to use the actual type of the field value too aggressively. it's issue #58.",
+        "ts": "2008-10-12T16:39:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "hassan",
+        "text": "ah, i see. we should probably only do that when it's explicitly marked as an object.",
+        "ts": "2008-10-12T17:00:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "mona",
+        "text": "agreed, i'll submit a patch to restrict that behavior.",
+        "ts": "2008-10-12T17:16:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-251",
+    "thread_id": "T-251",
+    "bug_id": "BUG-251",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "link_style": "issue",
+    "pr_number": null,
+    "issue_numbers": [
+      53
+    ],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "rana",
+        "text": "dates are not serializing correctly, they keep coming out empty or wrong.",
+        "ts": "2008-10-12T16:14:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "are you using the default date instances?",
+        "ts": "2008-10-12T16:25:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "yeah, it's definitely issue #53.",
+        "ts": "2008-10-12T16:36:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "salma",
+        "text": "we might be missing the time style support in the formatter.",
+        "ts": "2008-10-12T16:58:00",
+        "synthetic": true,
+        "channel": "#backend"
+      },
+      {
+        "user": "rana",
+        "text": "i'll add support for the default formatter to handle that.",
+        "ts": "2008-10-12T17:02:00",
+        "synthetic": true,
+        "channel": "#backend"
+      }
+    ]
+  },
+  {
+    "_id": "T-252",
+    "thread_id": "T-252",
+    "bug_id": "BUG-252",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "omar",
+        "text": "why are null fields missing in the output even when serializeNulls is on?",
+        "ts": "2008-10-09T14:23:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "that sounds like a bug in JsonSerializationVisitor.",
+        "ts": "2008-10-09T14:39:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "yeah, it seems to be skipping strings and collections specifically.",
+        "ts": "2008-10-09T14:49:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "youssef",
+        "text": "i'll check the logic in that class and see why it's ignoring the flag.",
+        "ts": "2008-10-09T15:11:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "omar",
+        "text": "thanks, let me know if you need help testing the fix.",
+        "ts": "2008-10-09T15:24:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  },
+  {
+    "_id": "T-255",
+    "thread_id": "T-255",
+    "bug_id": "BUG-255",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "link_style": "file",
+    "pr_number": null,
+    "issue_numbers": [],
+    "message_count": 5,
+    "messages": [
+      {
+        "user": "laila",
+        "text": "the pretty printing is totally breaking when arrays and objects are nested together.",
+        "ts": "2008-09-24T09:03:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "is the indentation getting messed up?",
+        "ts": "2008-09-24T09:14:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "yeah, the interlacing is all wrong. it looks like an issue inside JsonPrintFormatter.",
+        "ts": "2008-09-24T09:23:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "karim",
+        "text": "i'll take a look at the formatting logic, it probably loses track of the depth.",
+        "ts": "2008-09-24T09:34:00",
+        "synthetic": true,
+        "channel": "#help"
+      },
+      {
+        "user": "laila",
+        "text": "sounds good, let me know when you have a fix.",
+        "ts": "2008-09-24T09:38:00",
+        "synthetic": true,
+        "channel": "#help"
+      }
+    ]
+  }
+]

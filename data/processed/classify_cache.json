@@ -1,0 +1,1538 @@
+{
+  "BUG-001": {
+    "id": "BUG-001",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Delegated removeIf in JsonArray list views to the backing ArrayList to avoid quadratic time complexity."
+  },
+  "BUG-002": {
+    "id": "BUG-002",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "JsonReader in strict mode allowed unpaired Unicode surrogates instead of rejecting them as invalid JSON."
+  },
+  "BUG-003": {
+    "id": "BUG-003",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Wrapped adapter exceptions such as MalformedURLException to include JSON document location details in error messages."
+  },
+  "BUG-004": {
+    "id": "BUG-004",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "JsonTreeReader accepted non-ASCII Unicode digits for integers and longs instead of rejecting them like JsonReader does."
+  },
+  "BUG-005": {
+    "id": "BUG-005",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "JsonPrimitive produced differing hash codes for equivalent instances, violating the Java equals and hashCode contract."
+  },
+  "BUG-006": {
+    "id": "BUG-006",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "The URI adapter percent-encoded non-ASCII characters on serialization without decoding on read, corrupting international URIs."
+  },
+  "BUG-007": {
+    "id": "BUG-007",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Deserializing a JSON array containing null into an AtomicLongArray threw a NullPointerException instead of a JsonSyntaxException."
+  },
+  "BUG-008": {
+    "id": "BUG-008",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "JsonReader rejected valid large numeric literals in strict mode due to long overflow in the leading-zero check."
+  },
+  "BUG-009": {
+    "id": "BUG-009",
+    "is_real_bug": true,
+    "bug_type": "security",
+    "summary": "Uncapped bitField indices in LegacyProtoTypeAdapterFactory allowed untrusted JSON to allocate excessive heap and cause an OutOfMemoryError."
+  },
+  "BUG-010": {
+    "id": "BUG-010",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Enriched NumberFormatException messages thrown from JsonReader with JSON document location information."
+  },
+  "BUG-011": {
+    "id": "BUG-011",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Duplicate map keys were not detected when the previous value was null because Map.put returns null in that case."
+  },
+  "BUG-012": {
+    "id": "BUG-012",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Assigned the instantiated SimpleDateFormat object to an unused variable to silence a static analysis warning."
+  },
+  "BUG-013": {
+    "id": "BUG-013",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adjusted member visibility modifiers to satisfy a new Error Prone EffectivelyPrivate check."
+  },
+  "BUG-014": {
+    "id": "BUG-014",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Removed internal GsonPreconditions class and refactored precondition checks with clearer exception messages."
+  },
+  "BUG-015": {
+    "id": "BUG-015",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Cleaned up code in TreeTypeAdapter to address minor Error Prone warnings."
+  },
+  "BUG-016": {
+    "id": "BUG-016",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Resolved several new Error Prone static analysis warnings across LinkedTreeMap, TreeTypeAdapter, and JsonReader."
+  },
+  "BUG-017": {
+    "id": "BUG-017",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Restructured an assignment expression in Excluder to avoid a compiler/linter warning."
+  },
+  "BUG-018": {
+    "id": "BUG-018",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "ConstructorConstructor could instantiate incompatible Collection or Map types such as EnumMap or Protobuf repeated fields."
+  },
+  "BUG-019": {
+    "id": "BUG-019",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "GraphAdapterBuilder reused custom InstanceCreators registered by addType(Type, InstanceCreator) when addType(Type) was called."
+  },
+  "BUG-020": {
+    "id": "BUG-020",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixed Error Prone static analysis warnings that were breaking the build under -Werror."
+  },
+  "BUG-021": {
+    "id": "BUG-021",
+    "is_real_bug": true,
+    "bug_type": "concurrency",
+    "summary": "Resolves a circular class-initialization dependency in TypeAdapters that could cause a class-loading deadlock."
+  },
+  "BUG-022": {
+    "id": "BUG-022",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Introduces NullSafeTypeAdapter to avoid creating redundant nested wrapper adapters when nullSafe() is called repeatedly."
+  },
+  "BUG-023": {
+    "id": "BUG-023",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Clones the typeArguments array when resolving a ParameterizedType with a changed owner type to prevent sharing mutable array references."
+  },
+  "BUG-024": {
+    "id": "BUG-024",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Rewrites a Yoda condition in JsonReader to satisfy static analysis warnings."
+  },
+  "BUG-025": {
+    "id": "BUG-025",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds Javadoc documentation noting that JsonReader methods can throw IllegalStateException."
+  },
+  "BUG-026": {
+    "id": "BUG-026",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes GsonBuilder.setDateFormat improperly ignoring DateFormat.DEFAULT when used as a date or time style."
+  },
+  "BUG-027": {
+    "id": "BUG-027",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes equality checks on TypeVariable instances whose generic declaration is a Method or Constructor rather than a Class."
+  },
+  "BUG-028": {
+    "id": "BUG-028",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Enables additional Error Prone static analysis checks and updates codebase to resolve resulting warnings."
+  },
+  "BUG-029": {
+    "id": "BUG-029",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Ensures the original time zone of DateFormat instances is restored after parsing/formatting to avoid unintended side effects."
+  },
+  "BUG-030": {
+    "id": "BUG-030",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Removes the redundant DateTypeAdapter class to consolidate date formatting logic into DefaultDateTypeAdapter."
+  },
+  "BUG-031": {
+    "id": "BUG-031",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Disallows registering custom type adapters for Object and JsonElement by throwing an IllegalArgumentException."
+  },
+  "BUG-032": {
+    "id": "BUG-032",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes JsonWriter allowing name() to be called inside a JSON array, which violated the state contract and produced malformed JSON."
+  },
+  "BUG-033": {
+    "id": "BUG-033",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes Gson.getDelegateAdapter failing to find the proper delegate adapter when invoked from an adapter created via @JsonAdapter."
+  },
+  "BUG-034": {
+    "id": "BUG-034",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds validation to TypeToken to throw an exception when capturing unresolved type variables."
+  },
+  "BUG-035": {
+    "id": "BUG-035",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates Error Prone to the latest version and fixes newly flagged warnings in NonNullElementWrapperList."
+  },
+  "BUG-036": {
+    "id": "BUG-036",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds links to the troubleshooting guide within various exception messages."
+  },
+  "BUG-037": {
+    "id": "BUG-037",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates an outdated URL in the Javadoc and comments of ISO8601Utils."
+  },
+  "BUG-038": {
+    "id": "BUG-038",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Throws MalformedJsonException instead of an unexpected NumberFormatException when parsing invalid Unicode escape sequences."
+  },
+  "BUG-039": {
+    "id": "BUG-039",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Resolves and suppresses various Error Prone warnings across the codebase."
+  },
+  "BUG-040": {
+    "id": "BUG-040",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds Javadoc summary fragments to resolve Error Prone MissingSummary warnings."
+  },
+  "BUG-041": {
+    "id": "BUG-041",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes static analysis warnings reported by Error Prone across several classes."
+  },
+  "BUG-042": {
+    "id": "BUG-042",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds configuration options to specify the newline character sequence used during JSON formatting."
+  },
+  "BUG-043": {
+    "id": "BUG-043",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes JsonPrimitive.equals to correctly compare instances containing BigInteger values."
+  },
+  "BUG-044": {
+    "id": "BUG-044",
+    "is_real_bug": true,
+    "bug_type": "concurrency",
+    "summary": "Fixes thread-safety issues in Gson.getAdapter when resolving type adapters for types with cyclic dependencies."
+  },
+  "BUG-045": {
+    "id": "BUG-045",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improves the exception message thrown when duplicate serialized field names are detected."
+  },
+  "BUG-046": {
+    "id": "BUG-046",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Addresses Error Prone warnings and adds warning suppressions in JsonTreeReader."
+  },
+  "BUG-047": {
+    "id": "BUG-047",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes TypeAdapterRuntimeTypeWrapper to properly detect delegating TreeTypeAdapter and FutureTypeAdapter instances so that runtime types are not incorrectly serialized with base reflective adapters."
+  },
+  "BUG-048": {
+    "id": "BUG-048",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates the Maven build to fail on compiler warnings and cleans up compiler warning suppressions."
+  },
+  "BUG-049": {
+    "id": "BUG-049",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Throws UnsupportedOperationException instead of an internal error when JsonWriter.jsonValue is called on unsupported writers."
+  },
+  "BUG-050": {
+    "id": "BUG-050",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes TypeAdapter.toJson to rethrow custom IOExceptions as JsonIOException instead of incorrectly wrapping them in an AssertionError."
+  },
+  "BUG-051": {
+    "id": "BUG-051",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "JsonTreeReader threw the wrong exception type (IllegalArgumentException instead of NumberFormatException/MalformedJsonException) when encountering non-finite doubles."
+  },
+  "BUG-052": {
+    "id": "BUG-052",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "The nullSafe attribute on @JsonAdapter was ignored for JsonSerializer and JsonDeserializer, causing unexpected null handling behavior."
+  },
+  "BUG-053": {
+    "id": "BUG-053",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Streams.AppendableWriter created a CharSequence implementation that failed to implement toString(), leading to unexpected string conversions."
+  },
+  "BUG-054": {
+    "id": "BUG-054",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "RuntimeTypeAdapterFactory failed to serialize the type label into the JSON object, breaking polymorphic deserialization."
+  },
+  "BUG-055": {
+    "id": "BUG-055",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "ISO8601Utils accepted invalid local dates without throwing an exception instead of failing parsing."
+  },
+  "BUG-056": {
+    "id": "BUG-056",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improves the exception error message when an abstract class cannot be constructed."
+  },
+  "BUG-057": {
+    "id": "BUG-057",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "JsonReader and JsonTreeReader hasNext() incorrectly returned true when at the end of the JSON document."
+  },
+  "BUG-058": {
+    "id": "BUG-058",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "JsonReader cached the buffer position before calling fillBuffer, resulting in an ArrayIndexOutOfBoundsException."
+  },
+  "BUG-059": {
+    "id": "BUG-059",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Serialization of Collection or Map instances failed when their constructors were inaccessible on modular Java versions."
+  },
+  "BUG-060": {
+    "id": "BUG-060",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Cleans up compiler warnings in JsonArray without changing runtime behavior."
+  },
+  "BUG-061": {
+    "id": "BUG-061",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes `Gson.newJsonWriter` to respect the configured lenient and HTML-safe settings instead of ignoring them."
+  },
+  "BUG-062": {
+    "id": "BUG-062",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Makes default type adapters stricter, reduces synchronized block scopes, and improves exception messages and documentation."
+  },
+  "BUG-063": {
+    "id": "BUG-063",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes `FieldNamingPolicy.upperCaseFirstLetter` incorrectly attempting to modify non-letter characters."
+  },
+  "BUG-064": {
+    "id": "BUG-064",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes potential `ArrayIndexOutOfBoundsException` crashes in `JsonTreeReader.getPath()` when handling arrays or objects on the stack without following iterators."
+  },
+  "BUG-065": {
+    "id": "BUG-065",
+    "is_real_bug": true,
+    "bug_type": "security",
+    "summary": "Prevents standard Java deserialization of internal classes to protect against potential denial-of-service attacks."
+  },
+  "BUG-066": {
+    "id": "BUG-066",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes `LongSerializationPolicy` to properly handle null values consistently with Gson's type adapter behavior."
+  },
+  "BUG-067": {
+    "id": "BUG-067",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Refactors `RuntimeTypeAdapterFactory` to avoid depending on internal `Streams` class and cleans up the gson-extras build module."
+  },
+  "BUG-068": {
+    "id": "BUG-068",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes an exception when falling back in `UnsafeReflectionAccessor` if accessing `AccessibleObject` fields fails under strict module systems or security managers."
+  },
+  "BUG-069": {
+    "id": "BUG-069",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes compiler warnings in `$Gson$Types.java` without altering runtime behavior."
+  },
+  "BUG-070": {
+    "id": "BUG-070",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Corrects JPMS module-info configuration and restores causes in assertion errors."
+  },
+  "BUG-071": {
+    "id": "BUG-071",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes premature abortion of type resolution when a type variable is referenced multiple times."
+  },
+  "BUG-072": {
+    "id": "BUG-072",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Appends Gson version information to certain runtime exceptions to assist debugging on Android."
+  },
+  "BUG-073": {
+    "id": "BUG-073",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes a NumberFormatException when parsing JDK version strings on Debian-based systems."
+  },
+  "BUG-074": {
+    "id": "BUG-074",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Refactors sun.misc.Unsafe access to use reflection instead of a direct binary dependency."
+  },
+  "BUG-075": {
+    "id": "BUG-075",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes date parsing and formatting failures caused by Java 9 default locale and DateFormat changes."
+  },
+  "BUG-076": {
+    "id": "BUG-076",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Optimizes protobuf deserialization by avoiding repeated calls to build() via the message's default instance."
+  },
+  "BUG-077": {
+    "id": "BUG-077",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds compatibility for Protocol Buffers v3 by switching from GeneratedMessage to Message."
+  },
+  "BUG-078": {
+    "id": "BUG-078",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes failure to resolve the collection element type when the collection type contains wildcards."
+  },
+  "BUG-079": {
+    "id": "BUG-079",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes a regression where DefaultDateTypeAdapter threw an exception when serializing or deserializing null date values."
+  },
+  "BUG-080": {
+    "id": "BUG-080",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes a StackOverflowError caused by infinite recursion when resolving self-referential wildcard type variables."
+  },
+  "BUG-081": {
+    "id": "BUG-081",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes mismatched quote styles in UtcDateTypeAdapter exception messages."
+  },
+  "BUG-082": {
+    "id": "BUG-082",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Prevents a NullPointerException in PostConstructAdapterFactory when inspecting raw types with null superclasses."
+  },
+  "BUG-083": {
+    "id": "BUG-083",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Resolves a StackOverflowError caused by infinite loops when resolving recursive type bounds."
+  },
+  "BUG-084": {
+    "id": "BUG-084",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes incorrect parsing of negative zero (-0) values in JsonReader."
+  },
+  "BUG-085": {
+    "id": "BUG-085",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Avoids reflection-based initialization of the null key surrogate to improve performance."
+  },
+  "BUG-086": {
+    "id": "BUG-086",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes an ArrayIndexOutOfBoundsException when calling skipValue on a JsonTreeReader."
+  },
+  "BUG-087": {
+    "id": "BUG-087",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Appends the JSON string representation to exception messages thrown by JsonElement helper methods."
+  },
+  "BUG-088": {
+    "id": "BUG-088",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Adds proper handling for explicit null JSON values in ProtoTypeAdapter to prevent unexpected failures."
+  },
+  "BUG-089": {
+    "id": "BUG-089",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Prevents instantiating interfaces and abstract classes with UnsafeAllocator by validating class modifiers first."
+  },
+  "BUG-090": {
+    "id": "BUG-090",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Throws JsonIOException instead of a raw RuntimeException to adhere to Gson's exception contract."
+  },
+  "BUG-091": {
+    "id": "BUG-091",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixed a NullPointerException thrown when TypeAdapterFactory.create() returned null."
+  },
+  "BUG-092": {
+    "id": "BUG-092",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improved the error message in the exception thrown when a field is missing."
+  },
+  "BUG-093": {
+    "id": "BUG-093",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Added a runtime type check in type hierarchy adapters to ensure decoded objects match the requested subtype."
+  },
+  "BUG-094": {
+    "id": "BUG-094",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Implemented equals and hashCode in LazilyParsedNumber to prevent incorrect equality comparisons between number instances."
+  },
+  "BUG-095": {
+    "id": "BUG-095",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Made RuntimeTypeAdapterFactory null-safe to prevent NullPointerExceptions when serializing or deserializing null values."
+  },
+  "BUG-096": {
+    "id": "BUG-096",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixed JsonArray deepCopy duplicating null elements incorrectly."
+  },
+  "BUG-097": {
+    "id": "BUG-097",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Ensured that UtcDateTypeAdapter serializes null values properly instead of crashing or outputting incorrect JSON."
+  },
+  "BUG-098": {
+    "id": "BUG-098",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixed a build issue in the extras module."
+  },
+  "BUG-099": {
+    "id": "BUG-099",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Prevented infinite recursion and StackOverflowError when serializing throwables with self-referencing causes."
+  },
+  "BUG-100": {
+    "id": "BUG-100",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixed incorrect JSON paths returned by JsonReader.getPath() for nested arrays and arrays of objects."
+  },
+  "BUG-101": {
+    "id": "BUG-101",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds a set method to JsonArray as a new API convenience."
+  },
+  "BUG-102": {
+    "id": "BUG-102",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds remove and contains methods to JsonArray as new API additions."
+  },
+  "BUG-103": {
+    "id": "BUG-103",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Performs code cleanup and moves an internal helper method to test classes."
+  },
+  "BUG-104": {
+    "id": "BUG-104",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates Javadoc documentation to clarify when fromJson returns null."
+  },
+  "BUG-105": {
+    "id": "BUG-105",
+    "is_real_bug": true,
+    "bug_type": "concurrency",
+    "summary": "Makes JsonAdapter invocation thread-safe and prevents runtime-generated type adapters from leaking across calls."
+  },
+  "BUG-106": {
+    "id": "BUG-106",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Ensures field-level @JsonAdapter annotations take precedence over class-level annotations by tracking generated adapters."
+  },
+  "BUG-107": {
+    "id": "BUG-107",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes an issue where static inner classes were treated as non-static when constructing parameterized types, causing incorrect validation failures."
+  },
+  "BUG-108": {
+    "id": "BUG-108",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes node corruption and dropped elements in LinkedHashTreeMap caused by destructive tree iteration during capacity doubling."
+  },
+  "BUG-109": {
+    "id": "BUG-109",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Moves an incomplete, broken class into the test package and disables its test."
+  },
+  "BUG-110": {
+    "id": "BUG-110",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Attempts an incomplete hash adjustment in LinkedHashTreeMap that does not resolve the underlying failure."
+  },
+  "BUG-111": {
+    "id": "BUG-111",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Removes StringPool usage and string interning to improve performance."
+  },
+  "BUG-112": {
+    "id": "BUG-112",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes failure to instantiate EnumSet during deserialization by adding dedicated constructor support."
+  },
+  "BUG-113": {
+    "id": "BUG-113",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Corrects the referenced method name in error messages."
+  },
+  "BUG-114": {
+    "id": "BUG-114",
+    "is_real_bug": true,
+    "bug_type": "other",
+    "summary": "Fixes a memory leak by properly cleaning up ThreadLocal state after type adapter lookups."
+  },
+  "BUG-115": {
+    "id": "BUG-115",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Resolves compiler warnings in Gson."
+  },
+  "BUG-116": {
+    "id": "BUG-116",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes correctness bugs and optimizes node traversal in LinkedHashTreeMap."
+  },
+  "BUG-117": {
+    "id": "BUG-117",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes a bug in LinkedTreeMap where nodes were improperly unlinked during map modifications."
+  },
+  "BUG-118": {
+    "id": "BUG-118",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes copy-paste errors in JsonToken Javadoc documentation."
+  },
+  "BUG-119": {
+    "id": "BUG-119",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes JsonReader to ensure enough characters are buffered when skipping a byte order mark."
+  },
+  "BUG-120": {
+    "id": "BUG-120",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes an incorrect character check in JsonReader number parsing logic."
+  },
+  "BUG-121": {
+    "id": "BUG-121",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes an integer parsing bug in JsonReader."
+  },
+  "BUG-122": {
+    "id": "BUG-122",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Prevents JsonReader from entering an invalid state when nextInt(), nextDouble(), or nextLong() fails during parsing."
+  },
+  "BUG-123": {
+    "id": "BUG-123",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates oss-parent version in pom.xml and fixes Eclipse compiler warnings."
+  },
+  "BUG-124": {
+    "id": "BUG-124",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Ensures Streams.parse() and JsonParser throw a JsonSyntaxException when encountering premature EOF instead of an incorrect exception or behavior."
+  },
+  "BUG-125": {
+    "id": "BUG-125",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes handling of empty documents to return JsonNull and properly throw JsonParseException on invalid inputs."
+  },
+  "BUG-126": {
+    "id": "BUG-126",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Renames Gson.getNextAdapter to getDelegateAdapter and updates associated tests."
+  },
+  "BUG-127": {
+    "id": "BUG-127",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes Eclipse compiler warnings in StringMap."
+  },
+  "BUG-128": {
+    "id": "BUG-128",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes nextNonWhitespace in JsonReader to always return the character at buffer[pos-1], fixing strings ending in a slash."
+  },
+  "BUG-129": {
+    "id": "BUG-129",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Permits multiple top-level values in JsonWriter in lenient mode and ensures correct exceptions are thrown when writing to a closed writer."
+  },
+  "BUG-130": {
+    "id": "BUG-130",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes an issue in JsonReader where handling the non-execute prefix caused improper parsing."
+  },
+  "BUG-131": {
+    "id": "BUG-131",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Remove the unused and non-functional GsonInternalAccess class and refactor its callers."
+  },
+  "BUG-132": {
+    "id": "BUG-132",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Implement graph type adapter deserialization support as part of a new feature."
+  },
+  "BUG-133": {
+    "id": "BUG-133",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Add a new extension to support serialization of circular object graphs."
+  },
+  "BUG-134": {
+    "id": "BUG-134",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Complete a dangling sentence in the Javadoc of TypeAdapter."
+  },
+  "BUG-135": {
+    "id": "BUG-135",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fix broken type adapter behavior in TypeAdapters introduced by a previous commit."
+  },
+  "BUG-136": {
+    "id": "BUG-136",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improve a variable name in an example class."
+  },
+  "BUG-137": {
+    "id": "BUG-137",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Optimize local field access in nextString to slightly improve performance."
+  },
+  "BUG-138": {
+    "id": "BUG-138",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improve parse failure exception messages by including line and column numbers."
+  },
+  "BUG-139": {
+    "id": "BUG-139",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fix nullSafe() adapter to delegate to the wrapped adapter instead of recursively calling itself on non-null values."
+  },
+  "BUG-140": {
+    "id": "BUG-140",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fix an improper conflict error in GsonBuilder when registering competing type hierarchy adapters."
+  },
+  "BUG-141": {
+    "id": "BUG-141",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes type adapter precedence so that the most recently registered adapter takes priority as expected."
+  },
+  "BUG-142": {
+    "id": "BUG-142",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds a nullSafe() helper method to TypeAdapter to reduce boilerplate null handling."
+  },
+  "BUG-143": {
+    "id": "BUG-143",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Optimizes map key deserialization to reduce object allocations and improve performance."
+  },
+  "BUG-144": {
+    "id": "BUG-144",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Adds an LRU cache for computed type adapters to significantly improve performance."
+  },
+  "BUG-145": {
+    "id": "BUG-145",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes a regression where registered type adapters for raw types failed to match parameterized variations of those types."
+  },
+  "BUG-146": {
+    "id": "BUG-146",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes compilation errors encountered during the release build."
+  },
+  "BUG-147": {
+    "id": "BUG-147",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Wraps binding failures and type mismatch exceptions into JsonParseException per the expected API contract."
+  },
+  "BUG-148": {
+    "id": "BUG-148",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improves diagnostic error messages when object constructor invocation fails."
+  },
+  "BUG-149": {
+    "id": "BUG-149",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes broken code examples in the Javadoc documentation."
+  },
+  "BUG-150": {
+    "id": "BUG-150",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Cleans up compiler warnings reported by the Eclipse IDE."
+  },
+  "BUG-151": {
+    "id": "BUG-151",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Date type adapters produced incorrect results or failed when executed in non-default time zones."
+  },
+  "BUG-152": {
+    "id": "BUG-152",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Map keys and values of subtype instances were serialized using declared types instead of runtime types."
+  },
+  "BUG-153": {
+    "id": "BUG-153",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Cleans up compiler and IDE warnings without changing runtime behavior."
+  },
+  "BUG-154": {
+    "id": "BUG-154",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds serialization and deserialization support for primitive char types."
+  },
+  "BUG-155": {
+    "id": "BUG-155",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Refactors EnumTypeAdapter and default type adapters to reuse static instances and removes obsolete behaviors."
+  },
+  "BUG-156": {
+    "id": "BUG-156",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Replaces a Java 1.6-only API call that caused runtime errors on Java 1.5 environments."
+  },
+  "BUG-157": {
+    "id": "BUG-157",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds native support for serializing maps as arrays within the map type adapter."
+  },
+  "BUG-158": {
+    "id": "BUG-158",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Throws JsonSyntaxException instead of an unexpected runtime exception when JSON does not match the reflective type."
+  },
+  "BUG-159": {
+    "id": "BUG-159",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Disallows registering custom serializers for primitive types to optimize adapter performance."
+  },
+  "BUG-160": {
+    "id": "BUG-160",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates Object deserialization behavior to dynamically map primitives and collections for Gson 2.0."
+  },
+  "BUG-161": {
+    "id": "BUG-161",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes primitive type adapters to throw JsonSyntaxException instead of NumberFormatException when parsing invalid values."
+  },
+  "BUG-162": {
+    "id": "BUG-162",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Removes an unnecessary exception catch clause in Gson."
+  },
+  "BUG-163": {
+    "id": "BUG-163",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Restores serialization behavior so that fields declared as a base class use the registered base class adapter instead of the runtime subtype adapter."
+  },
+  "BUG-164": {
+    "id": "BUG-164",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates Gson to reject and throw an error on duplicate field names in a class hierarchy."
+  },
+  "BUG-165": {
+    "id": "BUG-165",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Refactors Gson to use the new streaming binding internally, temporarily breaking tests."
+  },
+  "BUG-166": {
+    "id": "BUG-166",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes off-by-one errors in JsonReader when reading from a Reader that yields characters one at a time."
+  },
+  "BUG-167": {
+    "id": "BUG-167",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds line and column position details to JsonReader error messages."
+  },
+  "BUG-168": {
+    "id": "BUG-168",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Cleans up code following an experiment to specialize BoundField to avoid autoboxing."
+  },
+  "BUG-169": {
+    "id": "BUG-169",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes issues in MiniGson and ReflectiveTypeAdapter that were causing integration test failures discovered during benchmarking."
+  },
+  "BUG-170": {
+    "id": "BUG-170",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes an infinite recursion crash during serialization of recursive or self-referential types."
+  },
+  "BUG-171": {
+    "id": "BUG-171",
+    "is_real_bug": true,
+    "bug_type": "concurrency",
+    "summary": "Fixes a thread-safety issue in FieldAttributes."
+  },
+  "BUG-172": {
+    "id": "BUG-172",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates and fixes Javadoc comments in FieldAttributes."
+  },
+  "BUG-173": {
+    "id": "BUG-173",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Refactors the instantiation of the members map to its field declaration."
+  },
+  "BUG-174": {
+    "id": "BUG-174",
+    "is_real_bug": false,
+    "bug_type": "parsing",
+    "summary": "Changes deserialization policy to disallow truncating floating-point numbers into integer types."
+  },
+  "BUG-175": {
+    "id": "BUG-175",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes multiple issues where type preservation was not maintained during serialization."
+  },
+  "BUG-176": {
+    "id": "BUG-176",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Renames a method in ExclusionStrategy and GsonBuilder to make it singular."
+  },
+  "BUG-177": {
+    "id": "BUG-177",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Switches to an accessor method to resolve broken test execution in continuous builds."
+  },
+  "BUG-178": {
+    "id": "BUG-178",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Adds a cache for no-arg constructors to improve instantiation performance."
+  },
+  "BUG-179": {
+    "id": "BUG-179",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates precondition checks across multiple classes to consistently throw NullPointerException."
+  },
+  "BUG-180": {
+    "id": "BUG-180",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes a failure in ParameterizedTypeHandlerMap.copyOf() when hierarchical adapters for subclasses and base classes are present."
+  },
+  "BUG-181": {
+    "id": "BUG-181",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Refactors exception handling wrapping in primitive deserializers and adds tests."
+  },
+  "BUG-182": {
+    "id": "BUG-182",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes unsafe object allocation failure and crashes on Android platforms."
+  },
+  "BUG-183": {
+    "id": "BUG-183",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Suppresses and fixes compiler and Eclipse warnings across multiple files."
+  },
+  "BUG-184": {
+    "id": "BUG-184",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds default type adapters for StringBuilder and StringBuffer."
+  },
+  "BUG-185": {
+    "id": "BUG-185",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Handles null or empty paths properly in CallPath."
+  },
+  "BUG-186": {
+    "id": "BUG-186",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes unquoted string parsing behavior to throw specific exceptions consistently with prior versions."
+  },
+  "BUG-187": {
+    "id": "BUG-187",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Prevents returning null on unexpected EOF in Streams unless the document is empty."
+  },
+  "BUG-188": {
+    "id": "BUG-188",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Fixes compiler warnings in type adapters and serialization visitors."
+  },
+  "BUG-189": {
+    "id": "BUG-189",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates JsonParser API to throw more specific exception types."
+  },
+  "BUG-190": {
+    "id": "BUG-190",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes an issue in TypeInfoFactory where generic type information was improperly resolved."
+  },
+  "BUG-191": {
+    "id": "BUG-191",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Renames MalformedJsonException and adjusts syntax exception types thrown."
+  },
+  "BUG-192": {
+    "id": "BUG-192",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes a regression where different type adapters were expected for primitive long and Long wrapper classes."
+  },
+  "BUG-193": {
+    "id": "BUG-193",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes primitive type wrapping and casting errors during deserialization."
+  },
+  "BUG-194": {
+    "id": "BUG-194",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Cleans up exception conversion logic in Streams."
+  },
+  "BUG-195": {
+    "id": "BUG-195",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds a transient map to Metadata and fixes imports."
+  },
+  "BUG-196": {
+    "id": "BUG-196",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Introduces JsonIOException for handling I/O errors."
+  },
+  "BUG-197": {
+    "id": "BUG-197",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes Streams.copy failing to honor closeInput and closeOutput flags."
+  },
+  "BUG-198": {
+    "id": "BUG-198",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adjusts escaping characters in JsonWriter and updates tests."
+  },
+  "BUG-199": {
+    "id": "BUG-199",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Prevents anonymous enum constant classes from being incorrectly excluded from serialization."
+  },
+  "BUG-200": {
+    "id": "BUG-200",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes Issue 178 regarding handling of null or empty JSON members in formatters."
+  },
+  "BUG-201": {
+    "id": "BUG-201",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates copyright notice and makes minor cosmetic code changes."
+  },
+  "BUG-202": {
+    "id": "BUG-202",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes registerIfAbsent inserting type adapters in reverse priority order."
+  },
+  "BUG-203": {
+    "id": "BUG-203",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds a type cast in ParamMap to fix compiler incompatibilities across JDK versions."
+  },
+  "BUG-204": {
+    "id": "BUG-204",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Ensures streams are not inadvertently closed prematurely while copying output."
+  },
+  "BUG-205": {
+    "id": "BUG-205",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds Content-Length header to outgoing web service requests and enhances failure logging."
+  },
+  "BUG-206": {
+    "id": "BUG-206",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds deserialization support for TreeSet collections as a new feature."
+  },
+  "BUG-207": {
+    "id": "BUG-207",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes java.sql Date and Time serializers to exclude time from Date and date from Time in their outputs."
+  },
+  "BUG-208": {
+    "id": "BUG-208",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds type adapter support for serializing and deserializing java.sql Date and Timestamp classes."
+  },
+  "BUG-209": {
+    "id": "BUG-209",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Lazily initializes fields in FieldAttributes to reduce unnecessary reflection calls."
+  },
+  "BUG-210": {
+    "id": "BUG-210",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Ensures custom deserializers receive the actual field type and fixes top-level objects improperly defaulting when deserializers return null."
+  },
+  "BUG-211": {
+    "id": "BUG-211",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Performs minor internal code cleanups and fixes in JsonSerializationVisitor."
+  },
+  "BUG-212": {
+    "id": "BUG-212",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Corrects serialization handling when a custom serializer returns null."
+  },
+  "BUG-213": {
+    "id": "BUG-213",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Prevents visiting custom handlers during deserialization and allows JsonTreeNavigator to navigate null values inside JsonObject."
+  },
+  "BUG-214": {
+    "id": "BUG-214",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Tracks first elements per nesting level using a stack to fix incorrect JSON formatting in JsonPrintFormatter."
+  },
+  "BUG-215": {
+    "id": "BUG-215",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds support for serializing polymorphic object fields and array elements based on their runtime types."
+  },
+  "BUG-216": {
+    "id": "BUG-216",
+    "is_real_bug": true,
+    "bug_type": "concurrency",
+    "summary": "Synchronizes serialize and deserialize methods in the default date adapter to fix thread-safety issues with SimpleDateFormat."
+  },
+  "BUG-217": {
+    "id": "BUG-217",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Enables proper comparison and equality checking between different integral and floating-point JsonPrimitive types."
+  },
+  "BUG-218": {
+    "id": "BUG-218",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes bug 158 where Gson failed when attempting to serialize or deserialize certain types."
+  },
+  "BUG-219": {
+    "id": "BUG-219",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds support for serializing Object arrays and fixes an inaccurate internal warning."
+  },
+  "BUG-220": {
+    "id": "BUG-220",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds new public toJson APIs for converting JsonElement objects to JSON strings."
+  },
+  "BUG-221": {
+    "id": "BUG-221",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Skips type deduction on transient fields to prevent unnecessary type resolution failures and crashes."
+  },
+  "BUG-222": {
+    "id": "BUG-222",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adjusts code to maintain backwards compatibility and compile with JDK 1.5."
+  },
+  "BUG-223": {
+    "id": "BUG-223",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Improves error messaging when users omit the TypeToken idiom for generic types."
+  },
+  "BUG-224": {
+    "id": "BUG-224",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Removes redundant catch blocks and exception handling in the Gson class."
+  },
+  "BUG-225": {
+    "id": "BUG-225",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Catches ClassCastException when casting elements and converts it to a standard JsonParseException."
+  },
+  "BUG-226": {
+    "id": "BUG-226",
+    "is_real_bug": false,
+    "bug_type": "security",
+    "summary": "Adds the generateNonExecutableJson feature to prefix output JSON and prevent JavaScript execution attacks."
+  },
+  "BUG-227": {
+    "id": "BUG-227",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Uses TreeSet for SortedSet and HashSet for standard sets during deserialization to fix broken set instantiation."
+  },
+  "BUG-228": {
+    "id": "BUG-228",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Fixes collection deserialization failing with ClassCastException when element types do not implement Comparable."
+  },
+  "BUG-229": {
+    "id": "BUG-229",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Exposes FieldNamingStrategy as a public interface and adds configuration methods in GsonBuilder."
+  },
+  "BUG-230": {
+    "id": "BUG-230",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds default serialization and deserialization adapter support for GregorianCalendar."
+  },
+  "BUG-231": {
+    "id": "BUG-231",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Applies profiling-based performance optimizations across several internal classes without changing behavior."
+  },
+  "BUG-232": {
+    "id": "BUG-232",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Performs general code cleanup and minor performance enhancements across JSON AST and formatting classes."
+  },
+  "BUG-233": {
+    "id": "BUG-233",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes formatting defects in JsonPrintFormatter that caused incorrect pretty-printed output."
+  },
+  "BUG-234": {
+    "id": "BUG-234",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds new support for deserializing java.util.Properties objects."
+  },
+  "BUG-235": {
+    "id": "BUG-235",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds a feature to optionally serialize Long values as JSON strings for JavaScript compatibility."
+  },
+  "BUG-236": {
+    "id": "BUG-236",
+    "is_real_bug": true,
+    "bug_type": "crash",
+    "summary": "Wraps the UUID deserializer in an exception wrapper so invalid UUID strings throw JsonParseException instead of an unhandled IllegalArgumentException."
+  },
+  "BUG-237": {
+    "id": "BUG-237",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes a bug where default instance creators were erroneously invoked for elements nested inside arrays."
+  },
+  "BUG-238": {
+    "id": "BUG-238",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Changes the default escaping behavior to output literal Unicode characters rather than escaped Unicode sequences."
+  },
+  "BUG-239": {
+    "id": "BUG-239",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Updates the toJson API methods to accept Appendable instead of Writer for broader flexibility."
+  },
+  "BUG-240": {
+    "id": "BUG-240",
+    "is_real_bug": false,
+    "bug_type": "parsing",
+    "summary": "Adds lenient parsing support for JSON object field names that lack surrounding quotes."
+  },
+  "BUG-241": {
+    "id": "BUG-241",
+    "is_real_bug": false,
+    "bug_type": "parsing",
+    "summary": "Adds lenient deserialization support for string-formatted numbers and boolean values."
+  },
+  "BUG-242": {
+    "id": "BUG-242",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds a new remove method to JsonObject to allow removing properties by key."
+  },
+  "BUG-243": {
+    "id": "BUG-243",
+    "is_real_bug": false,
+    "bug_type": "parsing",
+    "summary": "Improves number parsing by using BigDecimal and BigInteger internally to reduce floating-point precision loss."
+  },
+  "BUG-244": {
+    "id": "BUG-244",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes a parser error where numbers in scientific notation having an exponent without a fractional part failed to parse."
+  },
+  "BUG-245": {
+    "id": "BUG-245",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Removes unnecessary exception wrappers from serializers since they operate on in-memory objects rather than raw JSON."
+  },
+  "BUG-246": {
+    "id": "BUG-246",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds support for overriding the built-in default type adapters for primitive types."
+  },
+  "BUG-247": {
+    "id": "BUG-247",
+    "is_real_bug": true,
+    "bug_type": "parsing",
+    "summary": "Fixes a parser failure that improperly rejected valid escaped forward slashes in JSON strings."
+  },
+  "BUG-248": {
+    "id": "BUG-248",
+    "is_real_bug": true,
+    "bug_type": "concurrency",
+    "summary": "Fixes thread-safety issues by avoiding the reuse of a shared MemoryRefStack instance across concurrent Gson calls."
+  },
+  "BUG-249": {
+    "id": "BUG-249",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes incorrect serialization of polymorphic fields by using declared types rather than runtime types unless the field is declared as Object."
+  },
+  "BUG-250": {
+    "id": "BUG-250",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds support to serialize fields declared as java.lang.Object using their runtime instance types."
+  },
+  "BUG-251": {
+    "id": "BUG-251",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes date serialization and deserialization errors by incorporating a default formatter that handles time styles."
+  },
+  "BUG-252": {
+    "id": "BUG-252",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes an issue where null fields of type String, Collection, and Array were omitted during serialization despite serializeNulls being enabled."
+  },
+  "BUG-253": {
+    "id": "BUG-253",
+    "is_real_bug": false,
+    "bug_type": "performance",
+    "summary": "Refactors string matching in the parser from grammar productions to tokens to lower memory usage and support very large strings."
+  },
+  "BUG-254": {
+    "id": "BUG-254",
+    "is_real_bug": false,
+    "bug_type": "parsing",
+    "summary": "Adds lenient parsing support to allow single quotes to delimit JSON field names and string values."
+  },
+  "BUG-255": {
+    "id": "BUG-255",
+    "is_real_bug": true,
+    "bug_type": "wrong_output",
+    "summary": "Fixes broken indentation and formatting when pretty printing interlacing JSON arrays and objects."
+  },
+  "BUG-256": {
+    "id": "BUG-256",
+    "is_real_bug": false,
+    "bug_type": "other",
+    "summary": "Adds toString() methods to Gson and related adapter classes for better debugging and inspection rather than fixing a defect."
+  }
+}

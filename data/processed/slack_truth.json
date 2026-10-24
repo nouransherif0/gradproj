@@ -1,0 +1,1418 @@
+[
+  {
+    "thread_id": "T-002",
+    "bug_id": "BUG-002",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": 3116,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-004",
+    "bug_id": "BUG-004",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": 3063,
+    "issue_numbers": [
+      2994,
+      2995
+    ],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-005",
+    "bug_id": "BUG-005",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "pr_number": 3059,
+    "issue_numbers": [
+      992
+    ],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-006",
+    "bug_id": "BUG-006",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": 3067,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-007",
+    "bug_id": "BUG-007",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": 3038,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-008",
+    "bug_id": "BUG-008",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": 3034,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-009",
+    "bug_id": "BUG-009",
+    "files": [
+      "proto/src/main/java/com/google/gson/protobuf/LegacyProtoTypeAdapterFactory.java"
+    ],
+    "pr_number": 3027,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-011",
+    "bug_id": "BUG-011",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java"
+    ],
+    "pr_number": 3006,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-018",
+    "bug_id": "BUG-018",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+      "gson/src/main/java/com/google/gson/internal/bind/CollectionTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java"
+    ],
+    "pr_number": 2068,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-019",
+    "bug_id": "BUG-019",
+    "files": [
+      "extras/src/main/java/com/google/gson/graph/GraphAdapterBuilder.java"
+    ],
+    "pr_number": 2811,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-021",
+    "bug_id": "BUG-021",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/Streams.java",
+      "gson/src/main/java/com/google/gson/internal/bind/EnumTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonElementTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": 2740,
+    "issue_numbers": [
+      2739
+    ],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-023",
+    "bug_id": "BUG-023",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": 2706,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-026",
+    "bug_id": "BUG-026",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java",
+      "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java"
+    ],
+    "pr_number": 2556,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-027",
+    "bug_id": "BUG-027",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": 2599,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-029",
+    "bug_id": "BUG-029",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/sql/SqlDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/sql/SqlTimeTypeAdapter.java"
+    ],
+    "pr_number": 2549,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-032",
+    "bug_id": "BUG-032",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeWriter.java",
+      "gson/src/main/java/com/google/gson/stream/JsonWriter.java"
+    ],
+    "pr_number": 2476,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-033",
+    "bug_id": "BUG-033",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/InstanceCreator.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java"
+    ],
+    "pr_number": 2435,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-038",
+    "bug_id": "BUG-038",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": 2337,
+    "issue_numbers": [
+      2334
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-043",
+    "bug_id": "BUG-043",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "pr_number": 2311,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-044",
+    "bug_id": "BUG-044",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializer.java",
+      "gson/src/main/java/com/google/gson/JsonSerializer.java",
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "pr_number": 1832,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-047",
+    "bug_id": "BUG-047",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/SerializationDelegatingTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java"
+    ],
+    "pr_number": 1787,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-050",
+    "bug_id": "BUG-050",
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "pr_number": 2172,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-051",
+    "bug_id": "BUG-051",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "pr_number": 1782,
+    "issue_numbers": [
+      1767
+    ],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-052",
+    "bug_id": "BUG-052",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TreeTypeAdapter.java"
+    ],
+    "pr_number": 1555,
+    "issue_numbers": [
+      1553
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-053",
+    "bug_id": "BUG-053",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "pr_number": 1703,
+    "issue_numbers": [
+      1702
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-054",
+    "bug_id": "BUG-054",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java"
+    ],
+    "pr_number": 2139,
+    "issue_numbers": [
+      712
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-055",
+    "bug_id": "BUG-055",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/util/ISO8601Utils.java"
+    ],
+    "pr_number": 2134,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-057",
+    "bug_id": "BUG-057",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java",
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": 2061,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-058",
+    "bug_id": "BUG-058",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-059",
+    "bug_id": "BUG-059",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/PreJava9ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionHelper.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/UnsafeReflectionAccessor.java"
+    ],
+    "pr_number": 1902,
+    "issue_numbers": [
+      1218,
+      1540
+    ],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-061",
+    "bug_id": "BUG-061",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": 1989,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-063",
+    "bug_id": "BUG-063",
+    "files": [
+      "gson/src/main/java/com/google/gson/FieldNamingPolicy.java"
+    ],
+    "pr_number": 2004,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-064",
+    "bug_id": "BUG-064",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "pr_number": 2001,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-065",
+    "bug_id": "BUG-065",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "pr_number": 1991,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-066",
+    "bug_id": "BUG-066",
+    "files": [
+      "gson/src/main/java/com/google/gson/LongSerializationPolicy.java"
+    ],
+    "pr_number": 1990,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-068",
+    "bug_id": "BUG-068",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/reflect/UnsafeReflectionAccessor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-071",
+    "bug_id": "BUG-071",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      1390
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-073",
+    "bug_id": "BUG-073",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/JavaVersion.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/reflect/ReflectionAccessor.java",
+      "gson/src/main/java/com/google/gson/util/VersionUtils.java"
+    ],
+    "pr_number": 1311,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-075",
+    "bug_id": "BUG-075",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/PreJava9DateFormatProvider.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/util/VersionUtils.java"
+    ],
+    "pr_number": 1211,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-078",
+    "bug_id": "BUG-078",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": 1146,
+    "issue_numbers": [
+      1107
+    ],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-079",
+    "bug_id": "BUG-079",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultDateTypeAdapter.java"
+    ],
+    "pr_number": 1100,
+    "issue_numbers": [
+      1070
+    ],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-080",
+    "bug_id": "BUG-080",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": 1128,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-082",
+    "bug_id": "BUG-082",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/PostConstructAdapterFactory.java"
+    ],
+    "pr_number": 1103,
+    "issue_numbers": [],
+    "link_style": "pr"
+  },
+  {
+    "thread_id": "T-083",
+    "bug_id": "BUG-083",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": 1075,
+    "issue_numbers": [
+      440,
+      603
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-084",
+    "bug_id": "BUG-084",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": 1069,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-086",
+    "bug_id": "BUG-086",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonTreeReader.java"
+    ],
+    "pr_number": 1014,
+    "issue_numbers": [
+      1013
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-088",
+    "bug_id": "BUG-088",
+    "files": [
+      "proto/src/main/java/com/google/gson/protobuf/ProtoTypeAdapter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-089",
+    "bug_id": "BUG-089",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/UnsafeAllocator.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-090",
+    "bug_id": "BUG-090",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-091",
+    "bug_id": "BUG-091",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-093",
+    "bug_id": "BUG-093",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-094",
+    "bug_id": "BUG-094",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LazilyParsedNumber.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-095",
+    "bug_id": "BUG-095",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      680
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-096",
+    "bug_id": "BUG-096",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonArray.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-097",
+    "bug_id": "BUG-097",
+    "files": [
+      "extras/src/main/java/com/google/gson/typeadapters/UtcDateTypeAdapter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-099",
+    "bug_id": "BUG-099",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      469
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-100",
+    "bug_id": "BUG-100",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-105",
+    "bug_id": "BUG-105",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-106",
+    "bug_id": "BUG-106",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/JsonAdapterAnnotationTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-107",
+    "bug_id": "BUG-107",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/$Gson$Types.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-108",
+    "bug_id": "BUG-108",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-112",
+    "bug_id": "BUG-112",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/ConstructorConstructor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-114",
+    "bug_id": "BUG-114",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-116",
+    "bug_id": "BUG-116",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedHashTreeMap.java",
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-117",
+    "bug_id": "BUG-117",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/LinkedTreeMap.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-119",
+    "bug_id": "BUG-119",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-120",
+    "bug_id": "BUG-120",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-121",
+    "bug_id": "BUG-121",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-122",
+    "bug_id": "BUG-122",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-124",
+    "bug_id": "BUG-124",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-125",
+    "bug_id": "BUG-125",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java",
+      "gson/src/main/java/com/google/gson/internal/Streams.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      443
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-128",
+    "bug_id": "BUG-128",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-129",
+    "bug_id": "BUG-129",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonWriter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      397
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-130",
+    "bug_id": "BUG-130",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-135",
+    "bug_id": "BUG-135",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-139",
+    "bug_id": "BUG-139",
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeAdapter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-140",
+    "bug_id": "BUG-140",
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-141",
+    "bug_id": "BUG-141",
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-145",
+    "bug_id": "BUG-145",
+    "files": [
+      "gson/src/main/java/com/google/gson/GsonBuilder.java",
+      "gson/src/main/java/com/google/gson/TreeTypeAdapter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-147",
+    "bug_id": "BUG-147",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-151",
+    "bug_id": "BUG-151",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/internal/bind/DateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/SqlDateTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-152",
+    "bug_id": "BUG-152",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/MapTypeAdapterFactory.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-156",
+    "bug_id": "BUG-156",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapterFactory.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-158",
+    "bug_id": "BUG-158",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/ReflectiveTypeAdapter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-161",
+    "bug_id": "BUG-161",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/BigDecimalTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/BigIntegerTypeAdapter.java",
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-163",
+    "bug_id": "BUG-163",
+    "files": [
+      "gson/src/main/java/com/google/gson/internal/bind/TypeAdapterRuntimeTypeWrapper.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-166",
+    "bug_id": "BUG-166",
+    "files": [
+      "gson/src/main/java/com/google/gson/stream/JsonReader.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-169",
+    "bug_id": "BUG-169",
+    "files": [
+      "extras/src/main/java/com/google/gson/mini/MiniGson.java",
+      "extras/src/main/java/com/google/gson/mini/ReflectiveTypeAdapter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-170",
+    "bug_id": "BUG-170",
+    "files": [
+      "extras/src/main/java/com/google/gson/mini/MiniGson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-171",
+    "bug_id": "BUG-171",
+    "files": [
+      "gson/src/main/java/com/google/gson/FieldAttributes.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-175",
+    "bug_id": "BUG-175",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/JsonSerializationContextDefault.java",
+      "gson/src/main/java/com/google/gson/ObjectNavigator.java",
+      "gson/src/main/java/com/google/gson/ObjectTypePair.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      205,
+      294,
+      318
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-180",
+    "bug_id": "BUG-180",
+    "files": [
+      "gson/src/main/java/com/google/gson/ParameterizedTypeHandlerMap.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-182",
+    "bug_id": "BUG-182",
+    "files": [
+      "gson/src/main/java/com/google/gson/MappedObjectConstructor.java",
+      "gson/src/main/java/com/google/gson/UnsafeAllocator.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-185",
+    "bug_id": "BUG-185",
+    "files": [
+      "wsclient/src/main/java/com/google/gson/rest/query/client/ResourceQueryClient.java",
+      "wsdef/src/main/java/com/google/gson/webservice/definition/CallPath.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-186",
+    "bug_id": "BUG-186",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonParser.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-187",
+    "bug_id": "BUG-187",
+    "files": [
+      "gson/src/main/java/com/google/gson/Streams.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-190",
+    "bug_id": "BUG-190",
+    "files": [
+      "gson/src/main/java/com/google/gson/TypeInfoFactory.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      40
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-192",
+    "bug_id": "BUG-192",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-193",
+    "bug_id": "BUG-193",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-197",
+    "bug_id": "BUG-197",
+    "files": [
+      "wsclient/src/main/java/com/google/gson/webservice/client/RequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/RestRequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/Streams.java",
+      "wsf/src/main/java/com/google/gson/wsf/server/WebServiceCallServerBuilder.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-199",
+    "bug_id": "BUG-199",
+    "files": [
+      "gson/src/main/java/com/google/gson/AnonymousAndLocalClassExclusionStrategy.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      226
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-200",
+    "bug_id": "BUG-200",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonCompactFormatter.java",
+      "gson/src/main/java/com/google/gson/JsonObject.java",
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      178
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-202",
+    "bug_id": "BUG-202",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/Pair.java",
+      "gson/src/main/java/com/google/gson/ParameterizedTypeHandlerMap.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-204",
+    "bug_id": "BUG-204",
+    "files": [
+      "wsclient/src/main/java/com/google/gson/webservice/client/Preconditions.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/RequestSender.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/Streams.java",
+      "wsclient/src/main/java/com/google/gson/webservice/client/WebServiceClient.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-207",
+    "bug_id": "BUG-207",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-210",
+    "bug_id": "BUG-210",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonObjectDeserializationVisitor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-212",
+    "bug_id": "BUG-212",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-213",
+    "bug_id": "BUG-213",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonObjectDeserializationVisitor.java",
+      "gson/src/main/java/com/google/gson/JsonTreeNavigator.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-214",
+    "bug_id": "BUG-214",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      153
+    ],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-216",
+    "bug_id": "BUG-216",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      162
+    ],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-217",
+    "bug_id": "BUG-217",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrimitive.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      147
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-218",
+    "bug_id": "BUG-218",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-221",
+    "bug_id": "BUG-221",
+    "files": [
+      "gson/src/main/java/com/google/gson/ObjectNavigator.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      126
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-225",
+    "bug_id": "BUG-225",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/JsonElement.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-227",
+    "bug_id": "BUG-227",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      100
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-228",
+    "bug_id": "BUG-228",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      100
+    ],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-233",
+    "bug_id": "BUG-233",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-236",
+    "bug_id": "BUG-236",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-237",
+    "bug_id": "BUG-237",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializationContextDefault.java",
+      "gson/src/main/java/com/google/gson/JsonDeserializationVisitor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-244",
+    "bug_id": "BUG-244",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "vague"
+  },
+  {
+    "thread_id": "T-247",
+    "bug_id": "BUG-247",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonParser.java",
+      "gson/src/main/java/com/google/gson/JsonParserConstants.java",
+      "gson/src/main/java/com/google/gson/JsonParserTokenManager.java",
+      "gson/src/main/java/com/google/gson/StringUnmarshaller.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      66
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-248",
+    "bug_id": "BUG-248",
+    "files": [
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      63
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-249",
+    "bug_id": "BUG-249",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      58
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-251",
+    "bug_id": "BUG-251",
+    "files": [
+      "gson/src/main/java/com/google/gson/DefaultTypeAdapters.java",
+      "gson/src/main/java/com/google/gson/Gson.java",
+      "gson/src/main/java/com/google/gson/GsonBuilder.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [
+      53
+    ],
+    "link_style": "issue"
+  },
+  {
+    "thread_id": "T-252",
+    "bug_id": "BUG-252",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonSerializationVisitor.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  },
+  {
+    "thread_id": "T-255",
+    "bug_id": "BUG-255",
+    "files": [
+      "gson/src/main/java/com/google/gson/JsonPrintFormatter.java"
+    ],
+    "pr_number": null,
+    "issue_numbers": [],
+    "link_style": "file"
+  }
+]

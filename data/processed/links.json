@@ -1,0 +1,983 @@
+[
+  {
+    "thread_id": "T-002",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-004",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonReader.java",
+      "JsonTreeReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-005",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonPrimitive.java"
+    ]
+  },
+  {
+    "thread_id": "T-006",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-007",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-008",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-009",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LegacyProtoTypeAdapterFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-011",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "MapTypeAdapterFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-018",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-019",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-021",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "EnumTypeAdapter.java",
+      "Gson.java",
+      "JsonElementTypeAdapter.java",
+      "Streams.java",
+      "TypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-023",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "$Gson$Types.java"
+    ]
+  },
+  {
+    "thread_id": "T-026",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "DefaultDateTypeAdapter.java",
+      "Gson.java",
+      "GsonBuilder.java",
+      "PreJava9DateFormatProvider.java"
+    ]
+  },
+  {
+    "thread_id": "T-027",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "$Gson$Types.java"
+    ]
+  },
+  {
+    "thread_id": "T-029",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultDateTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-032",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonTreeWriter.java"
+    ]
+  },
+  {
+    "thread_id": "T-033",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-038",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-043",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-044",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-047",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "Gson.java",
+      "SerializationDelegatingTypeAdapter.java",
+      "TreeTypeAdapter.java",
+      "TypeAdapterRuntimeTypeWrapper.java"
+    ]
+  },
+  {
+    "thread_id": "T-050",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "TypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-051",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonTreeReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-052",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonAdapterAnnotationTypeAdapterFactory.java",
+      "TreeTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-053",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "Streams.java"
+    ]
+  },
+  {
+    "thread_id": "T-054",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "RuntimeTypeAdapterFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-055",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "ISO8601Utils.java"
+    ]
+  },
+  {
+    "thread_id": "T-057",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonTreeReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-058",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-059",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-061",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-063",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "FieldNamingPolicy.java"
+    ]
+  },
+  {
+    "thread_id": "T-064",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonTreeReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-065",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LazilyParsedNumber.java"
+    ]
+  },
+  {
+    "thread_id": "T-066",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LongSerializationPolicy.java"
+    ]
+  },
+  {
+    "thread_id": "T-068",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "UnsafeReflectionAccessor.java"
+    ]
+  },
+  {
+    "thread_id": "T-071",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "$Gson$Types.java"
+    ]
+  },
+  {
+    "thread_id": "T-073",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultDateTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-075",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-078",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-079",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "DefaultDateTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-080",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "$Gson$Types.java"
+    ]
+  },
+  {
+    "thread_id": "T-082",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "PostConstructAdapterFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-083",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "$Gson$Types.java"
+    ]
+  },
+  {
+    "thread_id": "T-084",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-086",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonTreeReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-088",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "ProtoTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-089",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "UnsafeAllocator.java"
+    ]
+  },
+  {
+    "thread_id": "T-090",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-091",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-093",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-094",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LazilyParsedNumber.java"
+    ]
+  },
+  {
+    "thread_id": "T-095",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "RuntimeTypeAdapterFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-096",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonArray.java"
+    ]
+  },
+  {
+    "thread_id": "T-097",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "UtcDateTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-099",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-100",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-105",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-106",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-107",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-108",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LinkedHashTreeMap.java"
+    ]
+  },
+  {
+    "thread_id": "T-112",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "ConstructorConstructor.java"
+    ]
+  },
+  {
+    "thread_id": "T-114",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-116",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LinkedHashTreeMap.java"
+    ]
+  },
+  {
+    "thread_id": "T-117",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "LinkedTreeMap.java"
+    ]
+  },
+  {
+    "thread_id": "T-119",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-120",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-121",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-122",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-124",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-125",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonParser.java",
+      "Streams.java"
+    ]
+  },
+  {
+    "thread_id": "T-128",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-129",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonWriter.java"
+    ]
+  },
+  {
+    "thread_id": "T-130",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-135",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-139",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-140",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "GsonBuilder.java"
+    ]
+  },
+  {
+    "thread_id": "T-141",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "GsonBuilder.java"
+    ]
+  },
+  {
+    "thread_id": "T-145",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-147",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-151",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-152",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "MapTypeAdapterFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-156",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultTypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-158",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonSyntaxException.java",
+      "ReflectiveTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-161",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "BigDecimalTypeAdapter.java"
+    ]
+  },
+  {
+    "thread_id": "T-163",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeAdapterRuntimeTypeWrapper.java"
+    ]
+  },
+  {
+    "thread_id": "T-166",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonReader.java"
+    ]
+  },
+  {
+    "thread_id": "T-169",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "MiniGson.java"
+    ]
+  },
+  {
+    "thread_id": "T-170",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-171",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-175",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "DefaultTypeAdapters.java",
+      "JsonSerializationContextDefault.java",
+      "ObjectNavigator.java",
+      "ObjectTypePair.java"
+    ]
+  },
+  {
+    "thread_id": "T-180",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "ParameterizedTypeHandlerMap.java"
+    ]
+  },
+  {
+    "thread_id": "T-182",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "MappedObjectConstructor.java"
+    ]
+  },
+  {
+    "thread_id": "T-185",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "ResourceQueryClient.java"
+    ]
+  },
+  {
+    "thread_id": "T-186",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-187",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Streams.java"
+    ]
+  },
+  {
+    "thread_id": "T-190",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "TypeInfoFactory.java"
+    ]
+  },
+  {
+    "thread_id": "T-192",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-193",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-197",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-199",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "AnonymousAndLocalClassExclusionStrategy.java"
+    ]
+  },
+  {
+    "thread_id": "T-200",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonCompactFormatter.java",
+      "JsonObject.java",
+      "JsonPrintFormatter.java"
+    ]
+  },
+  {
+    "thread_id": "T-202",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultTypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-204",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Preconditions.java"
+    ]
+  },
+  {
+    "thread_id": "T-207",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultTypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-210",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonDeserializationVisitor.java"
+    ]
+  },
+  {
+    "thread_id": "T-212",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonSerializationVisitor.java"
+    ]
+  },
+  {
+    "thread_id": "T-213",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonDeserializationVisitor.java"
+    ]
+  },
+  {
+    "thread_id": "T-214",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-216",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-217",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonPrimitive.java"
+    ]
+  },
+  {
+    "thread_id": "T-218",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "Gson.java"
+    ]
+  },
+  {
+    "thread_id": "T-221",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "ObjectNavigator.java"
+    ]
+  },
+  {
+    "thread_id": "T-225",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-227",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "DefaultTypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-228",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultTypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-233",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonPrintFormatter.java"
+    ]
+  },
+  {
+    "thread_id": "T-236",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "DefaultTypeAdapters.java"
+    ]
+  },
+  {
+    "thread_id": "T-237",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-244",
+    "method": "none",
+    "confidence": "none",
+    "files": []
+  },
+  {
+    "thread_id": "T-247",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonParser.java",
+      "JsonParserConstants.java",
+      "JsonParserTokenManager.java",
+      "StringUnmarshaller.java"
+    ]
+  },
+  {
+    "thread_id": "T-248",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "Gson.java",
+      "GsonBuilder.java"
+    ]
+  },
+  {
+    "thread_id": "T-249",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "JsonSerializationVisitor.java"
+    ]
+  },
+  {
+    "thread_id": "T-251",
+    "method": "id_link",
+    "confidence": "high",
+    "files": [
+      "DefaultTypeAdapters.java",
+      "Gson.java",
+      "GsonBuilder.java"
+    ]
+  },
+  {
+    "thread_id": "T-252",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonSerializationVisitor.java"
+    ]
+  },
+  {
+    "thread_id": "T-255",
+    "method": "file_name",
+    "confidence": "medium",
+    "files": [
+      "JsonPrintFormatter.java"
+    ]
+  }
+]
